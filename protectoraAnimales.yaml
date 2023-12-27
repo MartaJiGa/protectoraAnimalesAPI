@@ -1,9 +1,48 @@
 openapi: 3.0.3
 info:
-  title: Title
-  description: Title
+  title: Refugio Bastet
+  description: API para gestionar una protectora de animales llamada "Refugio Bastet".
   version: 1.0.0
 servers:
-  - url: 'https'
+  - url: 'https://api.refugiobastet.com'
 paths:
+  /animals:
+    get:
+    post:
+  /animal/{animalId}:
+    get:
+    put:
+    delete:
+  /animal/{animalId}/location/{locationId}:
+    get:
+    delete:
+    put:
+  /locations:
+    get:
+    post:
+  /location/{locationId}:
+    get:
+    put:
+    delete:
+  /users:
+    get:
+    post:
+  /user/{userId}:
+    get:
+    put:
+    delete:
+  /user/{userId}/adoptions:
+    get:
+    post:
+  /user/{userId}/adoption/{adoptionId}:
+    get:
+    delete:
+    put:
+  /user/{userId}/donations:
+    get:
+    post:
+  /user/{userId}/donation/{donationId}:
+    get:
+    delete:
+    put:
   

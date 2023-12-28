@@ -5,9 +5,55 @@ info:
   version: 1.0.0
 servers:
   - url: 'https://api.refugiobastet.com'
+
+tags:
+  - name: animals
+    description: Operaciones a realizar sobre animales
+  - name: locations
+    description: Operaciones para las ubicaciones importantes de la protectora.
+  - name: users
+    description: Operaciones para gestionar a los usuarios
+
 paths:
   /animals:
     get:
+      tags:
+        - animals
+      summary: Listar los animales
+      description: |
+        Esta operación permite consultar todos los animales que hay en el refugio.
+        - Poner la especie.
+        - Introducir la edad en el caso de que te interesen los años del animal.
+        - Escribir el tamaño del animal.
+      parameters:
+        - name: especie
+          in: query
+          description: Tipo de animal (perro, gato, hurón, etc.)
+          required: false
+          schema:
+            type: string
+        - name: edad
+          in: query
+          description: Edad del animal
+          required: false
+          schema:
+            type: number
+            format: int32
+        - name: tamaño
+          in: query
+          description: Escribir el tamaño (pequeño/mediano/grande)
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Devuelve la lista completa de animales de la protectora.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Animal'
     post:
   /animal/{animalId}:
     get:
@@ -19,6 +65,36 @@ paths:
     put:
   /locations:
     get:
+      tags:
+        - locations
+      summary: Listar las ubicaciones
+      description: |
+        Esta operación permite consultar todas las ubicaciones en las que pueden estar los animales de la protectora.
+        - Ciudad por la que queramos filtrar.
+        - Código postal que nos resulte de interés.
+      parameters:
+        - name: city
+          in: query
+          description: Ciudad
+          required: false
+          schema:
+            type: string
+        - name: zipCode
+          in: query
+          description: Código postal
+          required: false
+          schema:
+            type: number
+            format: int32
+      responses:
+        '200':
+          description: Devuelve una lista de lugares.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Location'
     post:
   /location/{locationId}:
     get:
@@ -26,6 +102,20 @@ paths:
     delete:
   /users:
     get:
+      tags:
+        - users
+      summary: Listar los usuarios
+      description: |
+        Esta operación permite consultar todos los usuarios del sistema.
+      responses:
+        '200':
+          description: Devuelve la lista completa de usuarios de la protectora.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
     post:
   /user/{userId}:
     get:
@@ -45,4 +135,88 @@ paths:
     get:
     delete:
     put:
-  
+
+components:
+  schemas:
+    Animal:
+      type: object
+      properties:
+        id:
+          type: number
+          format: int32
+          example: 1
+        name:
+          type: string
+          example: Coco
+        species:
+          type: string
+          example: Perro
+        age:
+          type: number
+          format: int32
+          example: 4
+        breed:
+          type: string
+          example: Chihuahua
+        size:
+          type: string
+          example: Pequeño
+        neutered:
+          type: boolean
+        incorporationDate:
+          type: string
+          format: date
+        price:
+          type: number
+          format: float
+          example: 148.95
+        description:
+          type: string
+    Location:
+      type: object
+      properties:
+        id:
+          type: number
+          format: int32
+          example: 12
+        mainSite:
+          type: boolean
+        address:
+          type: string
+          example: Avenida de Murcia, 75, 2.º G
+        zipCode:
+          type: number
+          format: int32
+          example: 17260
+        city:
+          type: string
+          example: Gijón
+        description:
+          type: string
+    User:
+      type: object
+      properties:
+        id:
+          type: number
+          format: int32
+          example: 8
+        username:
+          type: string
+          example: PedroPicapiedra3
+        password:
+          type: string
+        name:
+          type: string
+          example: Pedro
+        surname:
+          type: string
+          example: Roca
+        dateOfBirth:
+          type: string
+          format: date
+          example: 1989-04-21
+        email:
+          type: string
+          example: pedroPicapiedra@ejemplo.com
+    Adoption:
+    Donation:

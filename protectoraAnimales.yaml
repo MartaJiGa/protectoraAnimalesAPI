@@ -8,18 +8,18 @@ servers:
 
 tags:
   - name: animals
-    description: Operaciones a realizar sobre animales
+    description: Operaciones a realizar sobre animales.
   - name: locations
     description: Operaciones para las ubicaciones importantes de la protectora.
   - name: users
-    description: Operaciones para gestionar a los usuarios
+    description: Operaciones para gestionar a los usuarios.
 
 paths:
   /animals:
     get:
       tags:
         - animals
-      summary: Listar los animales
+      summary: Listar los animales.
       description: |
         Esta operación permite consultar todos los animales que hay en el refugio.
         - Poner la especie.
@@ -54,12 +54,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AnimalOutDTO'
-        '400':
-          description: Bad Request (Error de validación en los datos de entrada)
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BadRequest'
         '500':
           description: Internal Server Error
           content:
@@ -79,7 +73,7 @@ paths:
               $ref: '#/components/schemas/AnimalInDTO'
       responses:
         '201':
-          description: El animal ha sido registrado correctamente
+          description: El animal ha sido registrado correctamente.
           content:
             application/json:
               schema:
@@ -87,7 +81,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/AnimalOutDTO'
         '400':
-          description: Bad Request (Error de validación en los datos de entrada)
+          description: Bad Request (Error de validación en los datos de entrada).
           content:
             application/json:
               schema:
@@ -99,18 +93,94 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerError'
   /animal/{animalId}:
+    parameters:
+      - $ref: '#/components/parameters/AnimalId'
     get:
+      tags:
+        - animals
+      summary: Obtiene los datos de un animal.
+      description: |
+        Esta operación permite consultar la información de un animal.
+      responses:
+        '200':
+          description: El animal ha sido encontrado correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/AnimalOutDTO'
+        '404':
+          description: No se ha podido encontrar al animal.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
     put:
+      tags:
+        - animals
+      summary: Modifica un animal.
+      description: |
+        Esta operación permite modificar a un animal de la base de datos.
+      responses:
+        '200':
+          description: El animal ha sido modificado correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/AnimalOutDTO'
+        '404':
+          description: No se ha podido encontrar al animal.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
     delete:
-  /animal/{animalId}/location/{locationId}:
-    get:
-    delete:
-    put:
+      tags:
+        - animals
+      summary: Elimina un animal.
+      description: |
+        Esta operación permite eliminar a un animal de la base de datos.
+      responses:
+        '200':
+          description: El animal ha sido eliminado correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/AnimalOutDTO'
+        '404':
+          description: No se ha podido encontrar al animal.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
   /locations:
     get:
       tags:
         - locations
-      summary: Listar las ubicaciones
+      summary: Listar las ubicaciones.
       description: |
         Esta operación permite consultar todas las ubicaciones en las que pueden estar los animales de la protectora.
         - Ciudad por la que queramos filtrar.
@@ -138,12 +208,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/LocationOutDTO'
-        '400':
-          description: Bad Request (Error de validación en los datos de entrada)
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BadRequest'
         '500':
           description: Internal Server Error
           content:
@@ -153,7 +217,7 @@ paths:
     post:
       tags:
         - locations
-      summary: Añadir una nueva ubicación
+      summary: Añadir una nueva ubicación.
       description: |
         Esta operación permite registrar una nueva ubicación vinculada a la protectora.
       requestBody:
@@ -171,7 +235,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/LocationOutDTO'
         '400':
-          description: Bad Request (Error de validación en los datos de entrada)
+          description: Bad Request (Error de validación en los datos de entrada).
           content:
             application/json:
               schema:
@@ -183,14 +247,53 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerError'
   /location/{locationId}:
+    parameters:
+      - $ref: '#/components/parameters/LocationId'
     get:
+      tags:
+        - locations
+      summary: Obtiene los datos de una localización.
+      description: |
+        Esta operación permite consultar las ubicaciones de los animales del refugio.
+      responses:
+        '200':
+          description: Devuelve una ubicación de la protectora.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/LocationOutDTO'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
     put:
+      tags:
+        - locations
     delete:
+      tags:
+        - locations
+  /location/{locationId}/animal/{animalId}:
+    parameters:
+      - $ref: '#/components/parameters/AnimalId'
+      - $ref: '#/components/parameters/LocationId'
+    get:
+      tags:
+        - locations
+    put:
+      tags:
+        - locations
+    delete:
+      tags:
+        - locations
   /users:
     get:
       tags:
         - users
-      summary: Listar los usuarios
+      summary: Listar los usuarios.
       description: |
         Esta operación permite consultar todos los usuarios del sistema.
       parameters:
@@ -215,12 +318,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/UserOutDTO'
-        '400':
-          description: Bad Request (Error de validación en los datos de entrada)
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BadRequest'
         '500':
           description: Internal Server Error
           content:
@@ -230,7 +327,7 @@ paths:
     post:
       tags:
         - users
-      summary: Añadir un nuevo usuario
+      summary: Añadir un nuevo usuario.
       description: |
         Esta operación permite registrar un nuevo usuario.
       requestBody:
@@ -248,7 +345,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/UserOutDTO'
         '400':
-          description: Bad Request (Error de validación en los datos de entrada)
+          description: Bad Request (Error de validación en los datos de entrada).
           content:
             application/json:
               schema:
@@ -260,23 +357,69 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerError'
   /user/{userId}:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
     get:
+      tags:
+        - users
+      summary: Obtiene los datos de un usuario.
+      description: |
+        Esta operación permite consultar los usuarios de la protectora.
+      responses:
+        '200':
+          description: Devuelve a un usuario de la protectora.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/UserOutDTO'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
     put:
+      tags:
+        - users
     delete:
+      tags:
+        - users
   /user/{userId}/adoptions:
     get:
+      tags:
+        - users
     post:
+      tags:
+        - users
   /user/{userId}/adoption/{adoptionId}:
     get:
+      tags:
+        - users
     delete:
+      tags:
+        - users
     put:
+      tags:
+        - users
   /user/{userId}/donations:
     get:
+      tags:
+        - users
     post:
+      tags:
+        - users
   /user/{userId}/donation/{donationId}:
     get:
+      tags:
+        - users
     delete:
+      tags:
+        - users
     put:
+      tags:
+        - users
 
 components:
   schemas:
@@ -286,35 +429,35 @@ components:
         name:
           type: string
           example: Coco
-          description: El nombre del animal
+          description: El nombre del animal.
         species:
           type: string
           example: Perro
-          description: La especie del animal
+          description: La especie del animal.
         age:
           type: number
           format: int32
           example: 4
-          description: La edad del animal
+          description: La edad del animal.
         breed:
           type: string
           example: Chihuahua
-          description: La raza del animal
+          description: La raza del animal.
         size:
           type: string
           example: Pequeño
-          description: El tamaño del animal
+          description: El tamaño del animal.
         neutered:
           type: boolean
-          description: Si el animal está esterilizado o no
+          description: Si el animal está esterilizado o no.
         price:
           type: number
           format: float
           example: 148.95
-          description: El precio del animal
+          description: El precio del animal.
         description:
           type: string
-          description: La descripción del animal (carácter, historia, necesidades especiales, etc.)
+          description: La descripción del animal (carácter, historia, necesidades especiales, etc.).
     AnimalOutDTO:
       type: object
       properties:
@@ -322,11 +465,11 @@ components:
           type: number
           format: int32
           example: 1
-          description: El identificador del animal
+          description: El identificador del animal.
         incorporationDate:
           type: string
           format: date
-          description: La fecha de incorporación del animal a la protectora
+          description: La fecha de incorporación del animal a la protectora.
       allOf:
         - $ref: '#/components/schemas/AnimalInDTO'
     LocationInDTO:
@@ -334,23 +477,23 @@ components:
       properties:
         mainSite:
           type: boolean
-          description: Si el lugar es la sede principal de la protectora o no
+          description: Si el lugar es la sede principal de la protectora o no.
         address:
           type: string
           example: Avenida de Murcia, 75, 2.º G
-          description: Dirección del sitio
+          description: Dirección del sitio.
         zipCode:
           type: number
           format: int32
           example: 17260
-          description: Código postal del lugar
+          description: Código postal del lugar.
         city:
           type: string
           example: Gijón
-          description: Ciudad del sitio
+          description: Ciudad del sitio.
         description:
           type: string
-          description: Descripción libre del lugar para expandir información
+          description: Descripción libre del lugar para expandir información.
     LocationOutDTO:
       type: object
       properties:
@@ -358,7 +501,7 @@ components:
           type: number
           format: int32
           example: 12
-          description: El identificador de la localización
+          description: El identificador de la localización.
       allOf:
         - $ref: '#/components/schemas/LocationInDTO'
     UserInDTO:
@@ -367,27 +510,24 @@ components:
         username:
           type: string
           example: PedroPicapiedra3
-          description: Nombre de usuario
-        password:
-          type: string
-          description: Contraseña del usuario
+          description: Nombre de usuario.
         name:
           type: string
           example: Pedro
-          description: Nombre real del usuario
+          description: Nombre real del usuario.
         surname:
           type: string
           example: Roca
-          description: Apellidos del usuario
+          description: Apellidos del usuario.
         dateOfBirth:
           type: string
           format: date
           example: 1989-04-21
-          description: Fecha de nacimiento del usuario
+          description: Fecha de nacimiento del usuario.
         email:
           type: string
           example: pedroPicapiedra@ejemplo.com
-          description: Dirección de email del usuario
+          description: Dirección de email del usuario.
     UserOutDTO:
       type: object
       properties:
@@ -395,7 +535,7 @@ components:
           type: number
           format: int32
           example: 8
-          description: El identificador del usuario
+          description: El identificador del usuario.
       allOf:
         - $ref: '#/components/schemas/UserOutDTO'
     Adoption:
@@ -422,6 +562,13 @@ components:
         errors:
           - El nombre es obligatorio.
           - El precio debe ser mayor que cero.
+    ResourceNotFound:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+      example:
+        code: 404
+        message: Product Not Found
     InternalServerError:
       type: object
       allOf:
@@ -429,3 +576,29 @@ components:
       example:
         code: 500
         message: Internal Server Error
+
+  parameters:
+    AnimalId:
+      name: AnimalId
+      in: path
+      description: ID del animal.
+      required: true
+      schema:
+        type: number
+        format: int64
+    LocationId:
+      name: LocationId
+      in: path
+      description: ID de la ubicación.
+      required: true
+      schema:
+        type: number
+        format: int64
+    UserId:
+      name: UserId
+      in: path
+      description: ID del usuario.
+      required: true
+      schema:
+        type: number
+        format: int64

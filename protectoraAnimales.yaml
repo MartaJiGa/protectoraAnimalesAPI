@@ -490,14 +490,86 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerError'
   /user/{userId}/adoptions:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
     get:
       tags:
         - users
         - adoptions
+      summary: Listar las adopciones de un usuario.
+      description: |
+        Esta operación permite consultar todas las adopciones que ha hecho un usuario.
+        - Poner el ID del usuario.
+        - Introducir el ID de un animal.
+      parameters:
+        - name: animalId
+          in: query
+          description: ID del animal
+          example: 37
+          required: false
+          schema:
+            type: number
+            format: int64
+      responses:
+        '200':
+          description: Devuelve la lista completa de adopciones del usuario.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdoptionOutDTO'
+        '404':
+          description: No se ha podido encontrar al usuario.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
     post:
       tags:
         - users
         - adoptions
+      summary: Añade una nueva adopción
+      description: |
+        Esta operación permite registrar una adopción de un usuario.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdoptionInDTO'
+      responses:
+        '201':
+          description: La adopción ha sido registrada correctamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdoptionOutDTO'
+        '400':
+          description: Bad Request (Error de validación en los datos de entrada).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '404':
+          description: No se ha podido encontrar al usuario.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
   /user/{userId}/adoption/{adoptionId}:
     get:
       tags:
@@ -512,14 +584,93 @@ paths:
         - users
         - adoptions
   /user/{userId}/donations:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
     get:
       tags:
         - users
         - donations
+      summary: Listar las donaciones de un usuario.
+      description: |
+        Esta operación permite consultar todas las donaciones que ha hecho un usuario.
+        - Poner el ID del usuario.
+        - Introducir el ID de un animal.
+      parameters:
+        - name: donationDate
+          in: query
+          description: Fecha en la que se efectúa una donación.
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: quantity
+          in: query
+          description: Cantidad ofrecida en la donación.
+          example: 208.35
+          required: false
+          schema:
+            type: number
+            format: float
+      responses:
+        '200':
+          description: Devuelve la lista completa de donaciones del usuario.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DonationOutDTO'
+        '404':
+          description: No se ha podido encontrar al usuario.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
     post:
       tags:
         - users
         - donations
+      summary: Añade una nueva donación
+      description: |
+        Esta operación permite registrar una donación de un usuario.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DonationInDTO'
+      responses:
+        '201':
+          description: La donación ha sido registrada correctamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DonationOutDTO'
+        '400':
+          description: Bad Request (Error de validación en los datos de entrada).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '404':
+          description: No se ha podido encontrar al usuario.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
   /user/{userId}/donation/{donationId}:
     get:
       tags:
@@ -758,6 +909,7 @@ components:
       name: AnimalId
       in: path
       description: ID del animal.
+      example: 35
       required: true
       schema:
         type: number
@@ -766,6 +918,7 @@ components:
       name: LocationId
       in: path
       description: ID de la ubicación.
+      example: 3
       required: true
       schema:
         type: number
@@ -774,6 +927,7 @@ components:
       name: UserId
       in: path
       description: ID del usuario.
+      example: 79
       required: true
       schema:
         type: number
@@ -782,6 +936,7 @@ components:
       name: AdoptionId
       in: path
       description: ID de la adopción.
+      example: 108
       required: true
       schema:
         type: number
@@ -790,6 +945,7 @@ components:
       name: DonationId
       in: path
       description: ID de la donación.
+      example: 64
       required: true
       schema:
         type: number

@@ -664,6 +664,10 @@ components:
           format: date
           example: 05/03/2024
           description: Fecha en la que vas a recoger el animal.
+        pickUpTime:
+          type: string
+          example: Tarde
+          description: Momento del día de recogida del animal. Mañana (8:00-12:00), Mediodía (12:00-16:00) o Tarde (16:00-20:00).
     AdoptionOutDTO:
       type: object
       properties:
@@ -693,6 +697,11 @@ components:
         splitPayment:
           type: boolean
           description: Si el pago está fraccionado o no.
+        splitPaymentQuantity:
+          type: number
+          format: int32
+          example: 6
+          description: De ser el caso, cantidad de cuotas del pago fraccionado.
     DonationOutDTO:
       type: object
       properties:

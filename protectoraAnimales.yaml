@@ -13,6 +13,10 @@ tags:
     description: Operaciones para las ubicaciones importantes de la protectora.
   - name: users
     description: Operaciones para gestionar a los usuarios.
+  - name: adoptions
+    description: Operaciones para gestionar las adopciones.
+  - name: donations
+    description: Operaciones para gestionar las donaciones.
 
 paths:
   /animals:
@@ -273,9 +277,57 @@ paths:
     put:
       tags:
         - locations
+      summary: Modifica una ubicación.
+      description: |
+        Esta operación permite modificar una ubicación de la protectora en la base de datos.
+      responses:
+        '200':
+          description: La ubicación ha sido modificada correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/LocationOutDTO'
+        '404':
+          description: No se ha podido encontrar la ubicación.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
     delete:
       tags:
         - locations
+      summary: Elimina una ubicación.
+      description: |
+        Esta operación permite eliminar una ubicación de la protectora en la base de datos.
+      responses:
+        '200':
+          description: La ubicación ha sido eliminada correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/LocationOutDTO'
+        '404':
+          description: No se ha podido encontrar la ubicación de la protectora.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
   /location/{locationId}/animal/{animalId}:
     parameters:
       - $ref: '#/components/parameters/AnimalId'
@@ -283,12 +335,15 @@ paths:
     get:
       tags:
         - locations
+        - animals
     put:
       tags:
         - locations
+        - animals
     delete:
       tags:
         - locations
+        - animals
   /users:
     get:
       tags:
@@ -383,43 +438,101 @@ paths:
     put:
       tags:
         - users
+      summary: Modifica un usuario.
+      description: |
+        Esta operación permite modificar un usuario.
+      responses:
+        '200':
+          description: El usuario ha sido modificado correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/UserOutDTO'
+        '404':
+          description: No se ha podido encontrar al usuario.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
     delete:
       tags:
         - users
+      summary: Elimina un usuario.
+      description: |
+        Esta operación permite eliminar a un usuario.
+      responses:
+        '200':
+          description: El usuario ha sido eliminado correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/UserOutDTO'
+        '404':
+          description: No se ha podido encontrar el usuario.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
   /user/{userId}/adoptions:
     get:
       tags:
         - users
+        - adoptions
     post:
       tags:
         - users
+        - adoptions
   /user/{userId}/adoption/{adoptionId}:
     get:
       tags:
         - users
+        - adoptions
     delete:
       tags:
         - users
+        - adoptions
     put:
       tags:
         - users
+        - adoptions
   /user/{userId}/donations:
     get:
       tags:
         - users
+        - donations
     post:
       tags:
         - users
+        - donations
   /user/{userId}/donation/{donationId}:
     get:
       tags:
         - users
+        - donations
     delete:
       tags:
         - users
+        - donations
     put:
       tags:
         - users
+        - donations
 
 components:
   schemas:
@@ -538,8 +651,62 @@ components:
           description: El identificador del usuario.
       allOf:
         - $ref: '#/components/schemas/UserOutDTO'
-    Adoption:
-    Donation:
+    AdoptionInDTO:
+      type: object
+      properties:
+        animalId:
+          $ref: '#/components/parameters/AnimalId'
+        takeAccesories:
+          type: boolean
+          description: Si quieres llevarte sus accesorios (cama, comedero, etc.) o prefieres dejarlos en la protectora para que otro animal los pueda aprovechar.
+        pickUpDate:
+          type: string
+          format: date
+          example: 05/03/2024
+          description: Fecha en la que vas a recoger el animal.
+    AdoptionOutDTO:
+      type: object
+      properties:
+        id:
+          type: number
+          format: int32
+          example: 75
+          description: El identificador de la adopción.
+        adoptionDate:
+          type: string
+          format: date
+          description: La fecha de solicitud de una adopción.
+      allOf:
+        - $ref: '#/components/schemas/AdoptionInDTO'
+    DonationInDTO:
+      type: object
+      properties:
+        quantity:
+          type: number
+          format: float
+          example: 125.50
+          description: Cantidad de dinero a donar.
+        paymentType:
+          type: string
+          example: Tarjeta de Crédito
+          description: Medio con el que se va a hacer el pago.
+        splitPayment:
+          type: boolean
+          description: Si el pago está fraccionado o no.
+    DonationOutDTO:
+      type: object
+      properties:
+        id:
+          type: number
+          format: int32
+          example: 32
+          description: El identificador de la donación.
+        donationDate:
+          type: string
+          format: date
+          description: Fecha en la que se efectúa una donación.
+      allOf:
+        - $ref: '#/components/schemas/DonationInDTO'
     ErrorResponse:
       type: object
       properties:
@@ -598,6 +765,22 @@ components:
       name: UserId
       in: path
       description: ID del usuario.
+      required: true
+      schema:
+        type: number
+        format: int64
+    AdoptionId:
+      name: AdoptionId
+      in: path
+      description: ID de la adopción.
+      required: true
+      schema:
+        type: number
+        format: int64
+    DonationId:
+      name: DonationId
+      in: path
+      description: ID de la donación.
       required: true
       schema:
         type: number

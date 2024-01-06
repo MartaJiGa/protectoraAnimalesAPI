@@ -1,0 +1,1293 @@
+openapi: 3.0.3
+info:
+  title: Refugio Bastet
+  description: API para gestionar una protectora de animales llamada "Refugio Bastet".
+  version: 1.0.0
+servers:
+  - url: 'https://api.refugiobastet.com'
+
+tags:
+  - name: animals
+    description: Operaciones a realizar sobre animales.
+  - name: locations
+    description: Operaciones para las ubicaciones importantes de la protectora.
+  - name: users
+    description: Operaciones para gestionar a los usuarios.
+
+paths:
+  /animals:
+    get:
+      tags:
+        - animals
+      summary: Listar los animales.
+      description: |
+        Esta operación permite consultar todos los animales que hay en el refugio.
+        - Poner la especie.
+        - Introducir la edad en el caso de que te interesen los años del animal.
+        - Escribir el tamaño del animal.
+      parameters:
+        - $ref: '#/components/parameters/Especie'
+        - $ref: '#/components/parameters/Edad'
+        - $ref: '#/components/parameters/Tamaño'
+      responses:
+        '200':
+          description: Devuelve la lista completa de animales de la protectora.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AnimalOutDTO'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+    post:
+      tags:
+        - animals
+      summary: Añade un nuevo animal.
+      description: |
+        Esta operación permite registrar un nuevo animal al refugio.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnimalInDTO'
+      responses:
+        '201':
+          description: El animal ha sido registrado correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  - $ref: '#/components/schemas/AnimalOutDTO'
+        '400':
+          description: Bad Request (Error de validación en los datos de entrada).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+  /animal/{animalId}:
+    parameters:
+      - $ref: '#/components/parameters/AnimalId'
+    get:
+      tags:
+        - animals
+      summary: Obtiene los datos de un animal.
+      description: |
+        Esta operación permite consultar la información de un animal.
+      responses:
+        '200':
+          description: El animal ha sido encontrado correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/AnimalOutDTO'
+        '404':
+          description: No se ha podido encontrar al animal.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+    put:
+      tags:
+        - animals
+      summary: Modifica un animal.
+      description: |
+        Esta operación permite modificar a un animal de la base de datos.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnimalInDTO'
+      responses:
+        '200':
+          description: El animal ha sido modificado correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/AnimalOutDTO'
+        '404':
+          description: No se ha podido encontrar al animal.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+    delete:
+      tags:
+        - animals
+      summary: Elimina un animal.
+      description: |
+        Esta operación permite eliminar a un animal de la base de datos.
+      responses:
+        '200':
+          description: El animal ha sido eliminado correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/AnimalOutDTO'
+        '404':
+          description: No se ha podido encontrar al animal.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+  /locations:
+    get:
+      tags:
+        - locations
+      summary: Listar las ubicaciones.
+      description: |
+        Esta operación permite consultar todas las ubicaciones en las que pueden estar los animales de la protectora.
+        - Ciudad por la que queramos filtrar.
+        - Código postal que nos resulte de interés.
+      parameters:
+        - name: city
+          in: query
+          description: Ciudad
+          required: false
+          schema:
+            type: string
+        - name: zipCode
+          in: query
+          description: Código postal
+          required: false
+          schema:
+            type: number
+            format: int32
+      responses:
+        '200':
+          description: Devuelve una lista de lugares.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LocationOutDTO'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+    post:
+      tags:
+        - locations
+      summary: Añadir una nueva ubicación.
+      description: |
+        Esta operación permite registrar una nueva ubicación vinculada a la protectora.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LocationInDTO'
+      responses:
+        '201':
+          description: El sitio ha sido registrado correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/LocationOutDTO'
+        '400':
+          description: Bad Request (Error de validación en los datos de entrada).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+  /location/{locationId}:
+    parameters:
+      - $ref: '#/components/parameters/LocationId'
+    get:
+      tags:
+        - locations
+      summary: Obtiene los datos de una localización.
+      description: |
+        Esta operación permite consultar las ubicaciones de los animales del refugio.
+      responses:
+        '200':
+          description: Devuelve una ubicación de la protectora.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/LocationOutDTO'
+        '404':
+          description: No se ha podido encontrar la ubicación.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+    put:
+      tags:
+        - locations
+      summary: Modifica una ubicación.
+      description: |
+        Esta operación permite modificar una ubicación de la protectora en la base de datos.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LocationInDTO'
+      responses:
+        '200':
+          description: La ubicación ha sido modificada correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/LocationOutDTO'
+        '404':
+          description: No se ha podido encontrar la ubicación.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+    delete:
+      tags:
+        - locations
+      summary: Elimina una ubicación.
+      description: |
+        Esta operación permite eliminar una ubicación de la protectora en la base de datos.
+      responses:
+        '200':
+          description: La ubicación ha sido eliminada correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/LocationOutDTO'
+        '404':
+          description: No se ha podido encontrar la ubicación de la protectora.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+  /location/{locationId}/animals:
+    parameters:
+      - $ref: '#/components/parameters/LocationId'
+    get:
+      tags:
+        - locations
+      summary: Listar los animales de una localización.
+      description: |
+        Esta operación permite consultar todos los animales ubicados en una localización concreta.
+        - Poner la especie.
+        - Introducir la edad en el caso de que te interesen los años del animal.
+        - Escribir el tamaño del animal.
+      parameters:
+        - $ref: '#/components/parameters/Especie'
+        - $ref: '#/components/parameters/Edad'
+        - $ref: '#/components/parameters/Tamaño'
+      responses:
+        '200':
+          description: Devuelve la lista completa de animales de una localización.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AnimalOutDTO'
+        '404':
+          description: No se ha podido encontrar la localización.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+    post:
+      tags:
+        - locations
+      summary: Añade un animal en la localización.
+      description: |
+        Esta operación permite registrar un animal en una localización concreta.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/parameters/AnimalId'
+      responses:
+        '201':
+          description: El animal ha sido registrado correctamente en esta localización.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  - $ref: '#/components/schemas/AnimalOutDTO'
+        '400':
+          description: Bad Request (Error de validación en los datos de entrada).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '404':
+          description: No se ha podido encontrar al usuario.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+
+  /location/{locationId}/animal/{animalId}:
+    parameters:
+      - $ref: '#/components/parameters/LocationId'
+      - $ref: '#/components/parameters/AnimalId'
+    get:
+      tags:
+        - locations
+      summary: Obtiene los datos de un animal que está en una localización.
+      description: |
+        Esta operación permite consultar los datos de un animal de una localización concreta.
+      responses:
+        '200':
+          description: Devuelve los datos de un animal de una localización de la protectora.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/AnimalOutDTO'
+        '404':
+          description: No se ha podido encontrar el animal o la localización.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+    delete:
+      tags:
+        - locations
+      summary: Elimina un animal de una localización.
+      description: |
+        Esta operación permite eliminar un animal de una localización concreta.
+      responses:
+        '200':
+          description: El animal ha sido eliminado correctamente de esta localización.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/AnimalOutDTO'
+        '404':
+          description: No se ha podido encontrar el animal o la localización.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+    put:
+      tags:
+        - locations
+      summary: Modifica un animal de una localización.
+      description: |
+        Esta operación permite modificar un animal de una localización concreta.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/parameters/AnimalId'
+      responses:
+        '200':
+          description: El animal ha sido modificado correctamente en esta localización.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/AnimalOutDTO'
+        '404':
+          description: No se ha podido encontrar el animal o la localización.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+  /users:
+    get:
+      tags:
+        - users
+      summary: Listar los usuarios.
+      description: |
+        Esta operación permite consultar todos los usuarios del sistema.
+      parameters:
+        - name: name
+          in: query
+          description: Nombre real
+          required: false
+          schema:
+            type: string
+        - name: surname
+          in: query
+          description: Apellido
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Devuelve la lista completa de usuarios de la protectora.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserOutDTO'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+    post:
+      tags:
+        - users
+      summary: Añadir un nuevo usuario.
+      description: |
+        Esta operación permite registrar un nuevo usuario.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInDTO'
+      responses:
+        '201':
+          description: El usuario ha sido registrado correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/UserOutDTO'
+        '400':
+          description: Bad Request (Error de validación en los datos de entrada).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+  /user/{userId}:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
+    get:
+      tags:
+        - users
+      summary: Obtiene los datos de un usuario.
+      description: |
+        Esta operación permite consultar a un usuario de la protectora.
+      responses:
+        '200':
+          description: Devuelve a un usuario de la protectora.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/UserOutDTO'
+        '404':
+          description: No se ha podido encontrar el usuario.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+    put:
+      tags:
+        - users
+      summary: Modifica un usuario.
+      description: |
+        Esta operación permite modificar un usuario.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInDTO'
+      responses:
+        '200':
+          description: El usuario ha sido modificado correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/UserOutDTO'
+        '404':
+          description: No se ha podido encontrar el usuario.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+    delete:
+      tags:
+        - users
+      summary: Elimina un usuario.
+      description: |
+        Esta operación permite eliminar a un usuario.
+      responses:
+        '200':
+          description: El usuario ha sido eliminado correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/UserOutDTO'
+        '404':
+          description: No se ha podido encontrar el usuario.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+  /user/{userId}/adoptions:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
+    get:
+      tags:
+        - users
+      summary: Listar las adopciones de un usuario.
+      description: |
+        Esta operación permite consultar todas las adopciones que ha hecho un usuario.
+        - Poner el ID del usuario.
+        - Introducir el ID de un animal.
+      parameters:
+        - name: animalId
+          in: query
+          description: ID del animal
+          example: 37
+          required: false
+          schema:
+            type: number
+            format: int64
+      responses:
+        '200':
+          description: Devuelve la lista completa de adopciones del usuario.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdoptionOutDTO'
+        '404':
+          description: No se ha podido encontrar al usuario.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+    post:
+      tags:
+        - users
+      summary: Añade una nueva adopción.
+      description: |
+        Esta operación permite registrar una adopción de un usuario.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdoptionInDTO'
+      responses:
+        '201':
+          description: La adopción ha sido registrada correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/AdoptionOutDTO'
+        '400':
+          description: Bad Request (Error de validación en los datos de entrada).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '404':
+          description: No se ha podido encontrar al usuario.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+  /user/{userId}/adoption/{adoptionId}:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
+      - $ref: '#/components/parameters/AdoptionId'
+    get:
+      tags:
+        - users
+      summary: Obtiene los datos de una adopción de un usuario.
+      description: |
+        Esta operación permite consultar una adopción de un usuario concreto.
+      responses:
+        '200':
+          description: Devuelve una adopción de un usuario de la protectora.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/AdoptionOutDTO'
+        '404':
+          description: No se ha podido encontrar el usuario o la adopción.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+    delete:
+      tags:
+        - users
+      summary: Elimina una adopción de un usuario.
+      description: |
+        Esta operación permite eliminar una adopción de un usuario concreto.
+      responses:
+        '200':
+          description: La adopción ha sido eliminada correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/AdoptionOutDTO'
+        '404':
+          description: No se ha podido encontrar el usuario o la adopción.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+    put:
+      tags:
+        - users
+      summary: Modifica una adopción de un usuario.
+      description: |
+        Esta operación permite modificar una adopción de un usuario concreto.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdoptionInDTO'
+      responses:
+        '200':
+          description: La adopción ha sido modificada correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/AdoptionOutDTO'
+        '404':
+          description: No se ha podido encontrar el usuario o la adopción.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+  /user/{userId}/donations:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
+    get:
+      tags:
+        - users
+      summary: Listar las donaciones de un usuario.
+      description: |
+        Esta operación permite consultar todas las donaciones que ha hecho un usuario.
+        - Poner el ID del usuario.
+        - Introducir el ID de un animal.
+      parameters:
+        - name: donationDate
+          in: query
+          description: Fecha en la que se efectúa una donación.
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: quantity
+          in: query
+          description: Cantidad ofrecida en la donación.
+          example: 208.35
+          required: false
+          schema:
+            type: number
+            format: float
+      responses:
+        '200':
+          description: Devuelve la lista completa de donaciones del usuario.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DonationOutDTO'
+        '404':
+          description: No se ha podido encontrar al usuario.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+    post:
+      tags:
+        - users
+      summary: Añade una nueva donación.
+      description: |
+        Esta operación permite registrar una donación de un usuario.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DonationInDTO'
+      responses:
+        '201':
+          description: La donación ha sido registrada correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/DonationOutDTO'
+        '400':
+          description: Bad Request (Error de validación en los datos de entrada).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '404':
+          description: No se ha podido encontrar al usuario.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+  /user/{userId}/donation/{donationId}:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
+      - $ref: '#/components/parameters/DonationId'
+    get:
+      tags:
+        - users
+      summary: Obtiene los datos de una donación de un usuario.
+      description: |
+        Esta operación permite consultar una donación de un usuario concreto.
+      responses:
+        '200':
+          description: Devuelve una donación de un usuario de la protectora.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/DonationOutDTO'
+        '404':
+          description: No se ha podido encontrar el usuario o la donación.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+    delete:
+      tags:
+        - users
+      summary: Elimina una donación de un usuario.
+      description: |
+        Esta operación permite eliminar una donación de un usuario concreto.
+      responses:
+        '200':
+          description: La donación ha sido eliminada correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/DonationOutDTO'
+        '404':
+          description: No se ha podido encontrar el usuario o la donación.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+    put:
+      tags:
+        - users
+      summary: Modifica una donación de un usuario.
+      description: |
+        Esta operación permite modificar una donación de un usuario concreto.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DonationInDTO'
+      responses:
+        '200':
+          description: La donación ha sido modificada correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/DonationOutDTO'
+        '404':
+          description: No se ha podido encontrar el usuario o la donación.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+
+components:
+  schemas:
+    AnimalInDTO:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Coco
+          description: El nombre del animal.
+        species:
+          type: string
+          example: Perro
+          description: La especie del animal.
+        age:
+          type: number
+          format: int32
+          example: 4
+          description: La edad del animal.
+        breed:
+          type: string
+          example: Chihuahua
+          description: La raza del animal.
+        size:
+          type: string
+          example: Pequeño
+          description: El tamaño del animal.
+        neutered:
+          type: boolean
+          example: true
+          description: Si el animal está esterilizado o no.
+        price:
+          type: number
+          format: float
+          example: 148.95
+          description: El precio del animal.
+        description:
+          type: string
+          example: Esto es una descripción para el animal.
+          description: La descripción del animal (carácter, historia, necesidades especiales, etc.).
+    AnimalOutDTO:
+      type: object
+      properties:
+        id:
+          type: number
+          format: int32
+          example: 1
+          description: El identificador del animal.
+        incorporationDate:
+          type: string
+          format: date
+          example: 2023-11-10
+          description: La fecha de incorporación del animal a la protectora.
+      allOf:
+        - $ref: '#/components/schemas/AnimalInDTO'
+    LocationInDTO:
+      type: object
+      properties:
+        mainSite:
+          type: boolean
+          example: true
+          description: Si el lugar es la sede principal de la protectora o no.
+        address:
+          type: string
+          example: Avenida de Murcia, 75, 2.º G
+          description: Dirección del sitio.
+        zipCode:
+          type: number
+          format: int32
+          example: 17260
+          description: Código postal del lugar.
+        city:
+          type: string
+          example: Gijón
+          description: Ciudad del sitio.
+        description:
+          type: string
+          example: Esto es una descripción para esta localización.
+          description: Descripción libre del lugar para expandir información.
+    LocationOutDTO:
+      type: object
+      properties:
+        id:
+          type: number
+          format: int32
+          example: 12
+          description: El identificador de la localización.
+      allOf:
+        - $ref: '#/components/schemas/LocationInDTO'
+    UserInDTO:
+      type: object
+      properties:
+        username:
+          type: string
+          example: PedroPicapiedra3
+          description: Nombre de usuario.
+        name:
+          type: string
+          example: Pedro
+          description: Nombre real del usuario.
+        surname:
+          type: string
+          example: Roca
+          description: Apellidos del usuario.
+        dateOfBirth:
+          type: string
+          format: date
+          example: 1989-04-21
+          description: Fecha de nacimiento del usuario.
+        email:
+          type: string
+          example: pedroPicapiedra@ejemplo.com
+          description: Dirección de email del usuario.
+    UserOutDTO:
+      type: object
+      properties:
+        id:
+          type: number
+          format: int32
+          example: 8
+          description: El identificador del usuario.
+      allOf:
+        - $ref: '#/components/schemas/UserOutDTO'
+    AdoptionInDTO:
+      type: object
+      properties:
+        animalId:
+          $ref: '#/components/parameters/AnimalId'
+        takeAccesories:
+          type: boolean
+          example: false
+          description: Si quieres llevarte sus accesorios (cama, comedero, etc.) o prefieres dejarlos en la protectora para que otro animal los pueda aprovechar.
+        pickUpDate:
+          type: string
+          format: date
+          example: 2023-03-12
+          description: Fecha en la que vas a recoger el animal.
+        pickUpTime:
+          type: string
+          example: Tarde
+          description: Momento del día de recogida del animal. Mañana (8:00-12:00), Mediodía (12:00-16:00) o Tarde (16:00-20:00).
+    AdoptionOutDTO:
+      type: object
+      properties:
+        id:
+          type: number
+          format: int32
+          example: 75
+          description: El identificador de la adopción.
+        adoptionDate:
+          type: string
+          format: date
+          example: 2022-01-24
+          description: La fecha de solicitud de una adopción.
+      allOf:
+        - $ref: '#/components/schemas/AdoptionInDTO'
+    DonationInDTO:
+      type: object
+      properties:
+        quantity:
+          type: number
+          format: float
+          example: 125.50
+          description: Cantidad de dinero a donar.
+        paymentType:
+          type: string
+          example: Tarjeta de Crédito
+          description: Medio con el que se va a hacer el pago.
+        splitPayment:
+          type: boolean
+          example: true
+          description: Si el pago está fraccionado o no.
+        splitPaymentQuantity:
+          type: number
+          format: int32
+          example: 6
+          description: De ser el caso, cantidad de cuotas del pago fraccionado.
+    DonationOutDTO:
+      type: object
+      properties:
+        id:
+          type: number
+          format: int32
+          example: 32
+          description: El identificador de la donación.
+        donationDate:
+          type: string
+          format: date
+          example: 2023-08-01
+          description: Fecha en la que se efectúa una donación.
+      allOf:
+        - $ref: '#/components/schemas/DonationInDTO'
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: number
+          format: int32
+        message:
+          type: string
+        errors:
+          type: array
+          items:
+            type: string
+    BadRequest:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+      example:
+        code: 400
+        message: Validation Error
+        errors:
+          - El nombre es obligatorio.
+          - El precio debe ser mayor que cero.
+    ResourceNotFound:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+      example:
+        code: 404
+        message: Product Not Found
+    InternalServerError:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+      example:
+        code: 500
+        message: Internal Server Error
+
+  parameters:
+    AnimalId:
+      name: AnimalId
+      in: path
+      description: ID del animal.
+      example: 35
+      required: true
+      schema:
+        type: number
+        format: int64
+    LocationId:
+      name: LocationId
+      in: path
+      description: ID de la ubicación.
+      example: 3
+      required: true
+      schema:
+        type: number
+        format: int64
+    UserId:
+      name: UserId
+      in: path
+      description: ID del usuario.
+      example: 79
+      required: true
+      schema:
+        type: number
+        format: int64
+    AdoptionId:
+      name: AdoptionId
+      in: path
+      description: ID de la adopción.
+      example: 108
+      required: true
+      schema:
+        type: number
+        format: int64
+    DonationId:
+      name: DonationId
+      in: path
+      description: ID de la donación.
+      example: 64
+      required: true
+      schema:
+        type: number
+        format: int64
+    Especie:
+      name: Especie
+      in: query
+      description: Tipo de animal (perro, gato, hurón, etc.)
+      example: Perro
+      required: false
+      schema:
+        type: string
+    Edad:
+      name: Edad
+      in: query
+      description: Edad del animal
+      example: 7
+      required: false
+      schema:
+        type: number
+        format: int32
+    Tamaño:
+      name: Tamaño
+      in: query
+      description: Escribir el tamaño (Pequeño/Mediano/Grande)
+      example: Pequeño
+      required: false
+      schema:
+        type: string

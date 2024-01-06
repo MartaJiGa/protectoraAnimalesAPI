@@ -47,7 +47,7 @@ paths:
     post:
       tags:
         - animals
-      summary: Añade un nuevo animal
+      summary: Añade un nuevo animal.
       description: |
         Esta operación permite registrar un nuevo animal al refugio.
       requestBody:
@@ -364,7 +364,7 @@ paths:
     post:
       tags:
         - locations
-      summary: Añade un animal en la localización
+      summary: Añade un animal en la localización.
       description: |
         Esta operación permite registrar un animal en una localización concreta.
       requestBody:
@@ -407,7 +407,7 @@ paths:
     get:
       tags:
         - locations
-      summary: Obtiene los datos de un animal que está en una localización
+      summary: Obtiene los datos de un animal que está en una localización.
       description: |
         Esta operación permite consultar los datos de un animal de una localización concreta.
       responses:
@@ -690,7 +690,7 @@ paths:
     post:
       tags:
         - users
-      summary: Añade una nueva adopción
+      summary: Añade una nueva adopción.
       description: |
         Esta operación permite registrar una adopción de un usuario.
       requestBody:
@@ -732,7 +732,7 @@ paths:
     get:
       tags:
         - users
-      summary: Obtiene los datos de una adopción de un usuario
+      summary: Obtiene los datos de una adopción de un usuario.
       description: |
         Esta operación permite consultar una adopción de un usuario concreto.
       responses:
@@ -866,7 +866,7 @@ paths:
     post:
       tags:
         - users
-      summary: Añade una nueva donación
+      summary: Añade una nueva donación.
       description: |
         Esta operación permite registrar una donación de un usuario.
       requestBody:
@@ -908,7 +908,7 @@ paths:
     get:
       tags:
         - users
-      summary: Obtiene los datos de una donación de un usuario
+      summary: Obtiene los datos de una donación de un usuario.
       description: |
         Esta operación permite consultar una donación de un usuario concreto.
       responses:
@@ -1020,6 +1020,7 @@ components:
           description: El tamaño del animal.
         neutered:
           type: boolean
+          example: true
           description: Si el animal está esterilizado o no.
         price:
           type: number
@@ -1028,6 +1029,7 @@ components:
           description: El precio del animal.
         description:
           type: string
+          example: Esto es una descripción para el animal.
           description: La descripción del animal (carácter, historia, necesidades especiales, etc.).
     AnimalOutDTO:
       type: object
@@ -1040,6 +1042,7 @@ components:
         incorporationDate:
           type: string
           format: date
+          example: 2023-11-10
           description: La fecha de incorporación del animal a la protectora.
       allOf:
         - $ref: '#/components/schemas/AnimalInDTO'
@@ -1048,6 +1051,7 @@ components:
       properties:
         mainSite:
           type: boolean
+          example: true
           description: Si el lugar es la sede principal de la protectora o no.
         address:
           type: string
@@ -1064,6 +1068,7 @@ components:
           description: Ciudad del sitio.
         description:
           type: string
+          example: Esto es una descripción para esta localización.
           description: Descripción libre del lugar para expandir información.
     LocationOutDTO:
       type: object
@@ -1116,11 +1121,12 @@ components:
           $ref: '#/components/parameters/AnimalId'
         takeAccesories:
           type: boolean
+          example: false
           description: Si quieres llevarte sus accesorios (cama, comedero, etc.) o prefieres dejarlos en la protectora para que otro animal los pueda aprovechar.
         pickUpDate:
           type: string
           format: date
-          example: 05/03/2024
+          example: 2023-03-12
           description: Fecha en la que vas a recoger el animal.
         pickUpTime:
           type: string
@@ -1137,6 +1143,7 @@ components:
         adoptionDate:
           type: string
           format: date
+          example: 2022-01-24
           description: La fecha de solicitud de una adopción.
       allOf:
         - $ref: '#/components/schemas/AdoptionInDTO'
@@ -1154,6 +1161,7 @@ components:
           description: Medio con el que se va a hacer el pago.
         splitPayment:
           type: boolean
+          example: true
           description: Si el pago está fraccionado o no.
         splitPaymentQuantity:
           type: number
@@ -1171,6 +1179,7 @@ components:
         donationDate:
           type: string
           format: date
+          example: 2023-08-01
           description: Fecha en la que se efectúa una donación.
       allOf:
         - $ref: '#/components/schemas/DonationInDTO'

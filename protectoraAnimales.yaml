@@ -384,9 +384,8 @@ paths:
           content:
             application/json:
               schema:
-                type: array
+                type: object
                 items:
-                  - $ref: '#/components/schemas/LocationOutDTO'
                   - $ref: '#/components/schemas/AnimalOutDTO'
         '400':
           description: Bad Request (Error de validación en los datos de entrada).
@@ -415,14 +414,91 @@ paths:
       tags:
         - locations
         - animals
-    put:
-      tags:
-        - locations
-        - animals
+      summary: Obtiene los datos de un animal que está en una localización
+      description: |
+        Esta operación permite consultar los datos de un animal de una localización concreta.
+      responses:
+        '200':
+          description: Devuelve los datos de un animal de una localización de la protectora.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/AnimalOutDTO'
+        '404':
+          description: No se ha podido encontrar el animal o la localización.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
     delete:
       tags:
         - locations
         - animals
+      summary: Elimina un animal de una localización.
+      description: |
+        Esta operación permite eliminar un animal de una localización concreta.
+      responses:
+        '200':
+          description: El animal ha sido eliminado correctamente de esta localización.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/AnimalOutDTO'
+        '404':
+          description: No se ha podido encontrar el animal o la localización.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+    put:
+      tags:
+        - locations
+        - animals
+      summary: Modifica un animal de una localización.
+      description: |
+        Esta operación permite modificar un animal de una localización concreta.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/parameters/AnimalId'
+      responses:
+        '200':
+          description: El animal ha sido modificado correctamente en esta localización.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/AnimalOutDTO'
+        '404':
+          description: No se ha podido encontrar el animal o la localización.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
   /users:
     get:
       tags:

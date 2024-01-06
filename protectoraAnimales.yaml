@@ -1119,7 +1119,7 @@ components:
       properties:
         animalId:
           $ref: '#/components/parameters/AnimalId'
-        takeAccesories:
+        takeAccessories:
           type: boolean
           example: false
           description: Si quieres llevarte sus accesorios (cama, comedero, etc.) o prefieres dejarlos en la protectora para que otro animal los pueda aprovechar.

@@ -13,10 +13,6 @@ tags:
     description: Operaciones para las ubicaciones importantes de la protectora.
   - name: users
     description: Operaciones para gestionar a los usuarios.
-  - name: adoptions
-    description: Operaciones para gestionar las adopciones.
-  - name: donations
-    description: Operaciones para gestionar las donaciones.
 
 paths:
   /animals:
@@ -334,7 +330,6 @@ paths:
     get:
       tags:
         - locations
-        - animals
       summary: Listar los animales de una localización.
       description: |
         Esta operación permite consultar todos los animales ubicados en una localización concreta.
@@ -369,7 +364,6 @@ paths:
     post:
       tags:
         - locations
-        - animals
       summary: Añade un animal en la localización
       description: |
         Esta operación permite registrar un animal en una localización concreta.
@@ -413,7 +407,6 @@ paths:
     get:
       tags:
         - locations
-        - animals
       summary: Obtiene los datos de un animal que está en una localización
       description: |
         Esta operación permite consultar los datos de un animal de una localización concreta.
@@ -441,7 +434,6 @@ paths:
     delete:
       tags:
         - locations
-        - animals
       summary: Elimina un animal de una localización.
       description: |
         Esta operación permite eliminar un animal de una localización concreta.
@@ -469,7 +461,6 @@ paths:
     put:
       tags:
         - locations
-        - animals
       summary: Modifica un animal de una localización.
       description: |
         Esta operación permite modificar un animal de una localización concreta.
@@ -661,7 +652,6 @@ paths:
     get:
       tags:
         - users
-        - adoptions
       summary: Listar las adopciones de un usuario.
       description: |
         Esta operación permite consultar todas las adopciones que ha hecho un usuario.
@@ -700,7 +690,6 @@ paths:
     post:
       tags:
         - users
-        - adoptions
       summary: Añade una nueva adopción
       description: |
         Esta operación permite registrar una adopción de un usuario.
@@ -743,7 +732,6 @@ paths:
     get:
       tags:
         - users
-        - adoptions
       summary: Obtiene los datos de una adopción de un usuario
       description: |
         Esta operación permite consultar una adopción de un usuario concreto.
@@ -771,7 +759,6 @@ paths:
     delete:
       tags:
         - users
-        - adoptions
       summary: Elimina una adopción de un usuario.
       description: |
         Esta operación permite eliminar una adopción de un usuario concreto.
@@ -799,7 +786,6 @@ paths:
     put:
       tags:
         - users
-        - adoptions
       summary: Modifica una adopción de un usuario.
       description: |
         Esta operación permite modificar una adopción de un usuario concreto.
@@ -835,7 +821,6 @@ paths:
     get:
       tags:
         - users
-        - donations
       summary: Listar las donaciones de un usuario.
       description: |
         Esta operación permite consultar todas las donaciones que ha hecho un usuario.
@@ -881,7 +866,6 @@ paths:
     post:
       tags:
         - users
-        - donations
       summary: Añade una nueva donación
       description: |
         Esta operación permite registrar una donación de un usuario.
@@ -924,7 +908,6 @@ paths:
     get:
       tags:
         - users
-        - donations
       summary: Obtiene los datos de una donación de un usuario
       description: |
         Esta operación permite consultar una donación de un usuario concreto.
@@ -952,7 +935,6 @@ paths:
     delete:
       tags:
         - users
-        - donations
       summary: Elimina una donación de un usuario.
       description: |
         Esta operación permite eliminar una donación de un usuario concreto.
@@ -980,7 +962,6 @@ paths:
     put:
       tags:
         - users
-        - donations
       summary: Modifica una donación de un usuario.
       description: |
         Esta operación permite modificar una donación de un usuario concreto.

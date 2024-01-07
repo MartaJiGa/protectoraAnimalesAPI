@@ -1,8 +1,12 @@
 package com.svalero.protectoraAnimales.controller;
 
+import com.svalero.protectoraAnimales.domain.ErrorResponse;
 import com.svalero.protectoraAnimales.domain.User;
+import com.svalero.protectoraAnimales.exception.ResourceNotFoundException;
 import com.svalero.protectoraAnimales.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,12 +20,9 @@ public class UserController {
 
     // region GET requests
     @GetMapping("/user/{userId}")
-    public User getUser(@PathVariable long userId){
+    public User getUser(@PathVariable long userId) throws ResourceNotFoundException {
         Optional<User> optionalUser = userService.findById(userId);
-        if(optionalUser.isPresent()){
-            return optionalUser.get();
-        }
-        return null;
+        return optionalUser.orElseThrow(()->new ResourceNotFoundException(userId));
     }
     @GetMapping("/users")
     public List<User> findAll(@RequestParam(defaultValue = "") String name, @RequestParam(defaultValue = "") String surname){
@@ -56,6 +57,14 @@ public class UserController {
     @PutMapping("/user/{userId}")
     public void modifyUser(@RequestBody User user, @PathVariable long userId){
         userService.modifyUser(user, userId);
+    }
+    // endregion
+
+    //region EXCEPTION HANDLER
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponse> resourceNotFoundException(ResourceNotFoundException resNotFoundEx){
+        ErrorResponse errorResponse = new ErrorResponse(404, resNotFoundEx.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
     // endregion
 }

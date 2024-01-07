@@ -1,8 +1,12 @@
 package com.svalero.protectoraAnimales.controller;
 
 import com.svalero.protectoraAnimales.domain.Animal;
+import com.svalero.protectoraAnimales.domain.ErrorResponse;
+import com.svalero.protectoraAnimales.exception.ResourceNotFoundException;
 import com.svalero.protectoraAnimales.service.AnimalService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,12 +20,9 @@ public class AnimalController {
 
     // region GET requests
     @GetMapping("/animal/{animalId}")
-    public Animal getAnimal(@PathVariable long animalId){
+    public Animal getAnimal(@PathVariable long animalId) throws ResourceNotFoundException {
         Optional<Animal> optionalAnimal = animalService.findById(animalId);
-        if(optionalAnimal.isPresent()){
-            return optionalAnimal.get();
-        }
-        return null;
+        return optionalAnimal.orElseThrow(()->new ResourceNotFoundException(animalId));
     }
     @GetMapping("/animals")
     public List<Animal> findAll(@RequestParam(defaultValue = "") String species, @RequestParam(defaultValue = "0") int age, @RequestParam(defaultValue = "") String size){
@@ -70,4 +71,12 @@ public class AnimalController {
         animalService.modifyAnimal(animal, animalId);
     }
     //endregion
+
+    //region EXCEPTION HANDLER
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponse> resourceNotFoundException(ResourceNotFoundException resNotFoundEx){
+        ErrorResponse errorResponse = new ErrorResponse(404, resNotFoundEx.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+    // endregion
 }

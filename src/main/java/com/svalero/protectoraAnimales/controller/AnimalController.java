@@ -15,7 +15,28 @@ public class AnimalController {
 
     // region GET requests
     @GetMapping("/animals")
-    public List<Animal> findAll(){
+    public List<Animal> findAll(@RequestParam(defaultValue = "") String species, @RequestParam(defaultValue = "0") int age, @RequestParam(defaultValue = "") String size){
+        if(!species.isEmpty() && age == 0 && size.isEmpty()){
+            animalService.getAnimalBySpecies(species);
+        }
+        else if(species.isEmpty() && age != 0 && size.isEmpty()){
+            animalService.getAnimalByAge(age);
+        }
+        else if(species.isEmpty() && age == 0 && !size.isEmpty()){
+            animalService.getAnimalBySize(size);
+        }
+        else if(!species.isEmpty() && age != 0 && size.isEmpty()){
+            animalService.getAnimalBySpeciesAndAge(species, age);
+        }
+        else if(!species.isEmpty() && age == 0 && !size.isEmpty()){
+            animalService.getAnimalBySpeciesAndSize(species, size);
+        }
+        else if(species.isEmpty() && age != 0 && !size.isEmpty()){
+            animalService.getAnimalByAgeAndSize(age, size);
+        }
+        else if(!species.isEmpty() && age != 0 && !size.isEmpty()){
+            animalService.getAnimalBySpeciesAndAgeAndSize(species, age, size);
+        }
         return animalService.getAnimals();
     }
     // endregion

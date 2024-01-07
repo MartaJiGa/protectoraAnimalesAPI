@@ -23,7 +23,7 @@ public class AnimalService {
         return animalRepository.findBySpecies(species);
     }
 
-    public List<Animal> findByAge(int age){
+    public List<Animal> getAnimalByAge(int age){
         return animalRepository.findByAge(age);
     }
 
@@ -70,6 +70,7 @@ public class AnimalService {
 
         if(animal.isPresent()){
             Animal existingAnimal = animal.get();
+
             existingAnimal.setName(newAnimal.getName());
             existingAnimal.setSpecies(newAnimal.getSpecies());
             existingAnimal.setAge(newAnimal.getAge());

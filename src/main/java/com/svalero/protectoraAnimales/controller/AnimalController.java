@@ -3,10 +3,7 @@ package com.svalero.protectoraAnimales.controller;
 import com.svalero.protectoraAnimales.domain.Animal;
 import com.svalero.protectoraAnimales.service.AnimalService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,13 +13,31 @@ public class AnimalController {
     @Autowired
     private AnimalService animalService;
 
+    // region GET requests
     @GetMapping("/animals")
     public List<Animal> findAll(){
         return animalService.getAnimals();
     }
+    // endregion
 
+    //region POST request
     @PostMapping("/animals")
     public void saveAnimal(@RequestBody Animal animal){
         animalService.saveAnimal(animal);
     }
+    //endregion
+
+    //region DELETE request
+    @DeleteMapping("/animal/{animalId}")
+    public void removeProduct(@PathVariable long animalId){
+        animalService.removeAnimal(animalId);
+    }
+    //endregion
+
+    //region PUT request
+    @PutMapping("/animal/{animalId}")
+    public void modifyAnimal(@RequestBody Animal animal, @PathVariable long animalId){
+        animalService.modifyAnimal(animal, animalId);
+    }
+    //endregion
 }

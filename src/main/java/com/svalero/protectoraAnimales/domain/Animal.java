@@ -17,6 +17,7 @@ public class Animal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     @Column(name = "incorporation_Date")
     private LocalDate incorporationDate;
 

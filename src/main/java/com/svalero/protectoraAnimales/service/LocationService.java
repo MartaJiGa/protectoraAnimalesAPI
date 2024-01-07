@@ -19,19 +19,19 @@ public class LocationService {
         return locationRepository.findAll();
     }
 
-    public List<Location> getLocationByCity(String city){
+    public List<Location> findByCity(String city){
         return locationRepository.findByCity(city);
     }
 
-    public List<Location> getLocationByZipCode(int zipCode){
+    public List<Location> findByZipCode(int zipCode){
         return locationRepository.findByZipCode(zipCode);
     }
 
-    public List<Location> getLocationByCityAndZipCode(String city, int zipCode){
+    public List<Location> findByCityAndZipCode(String city, int zipCode){
         return locationRepository.findByCityAndZipCode(city, zipCode);
     }
 
-    public Optional<Location> getLocationById(long locationId){
+    public Optional<Location> findById(long locationId){
         return locationRepository.findById(locationId);
     }
     // endregion

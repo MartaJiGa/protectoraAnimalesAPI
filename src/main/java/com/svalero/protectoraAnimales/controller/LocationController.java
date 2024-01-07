@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class LocationController {
@@ -14,16 +15,24 @@ public class LocationController {
     private LocationService locationService;
 
     // region GET requests
+    @GetMapping("/location/{locationId}")
+    public Location getLocation(@PathVariable long locationId){
+        Optional<Location> optionalLocation = locationService.findById(locationId);
+        if(optionalLocation.isPresent()){
+            return optionalLocation.get();
+        }
+        return null;
+    }
     @GetMapping("/locations")
     public List<Location> findAll(@RequestParam(defaultValue = "") String city, @RequestParam(defaultValue = "0") int zipCode){
         if(!city.isEmpty() && zipCode == 0){
-            locationService.getLocationByCity(city);
+            return locationService.findByCity(city);
         }
         else if(city.isEmpty() && zipCode != 0){
-            locationService.getLocationByZipCode(zipCode);
+            return locationService.findByZipCode(zipCode);
         }
         else if(!city.isEmpty() && zipCode != 0){
-            locationService.getLocationByCityAndZipCode(city, zipCode);
+            return locationService.findByCityAndZipCode(city, zipCode);
         }
         return locationService.getLocations();
     }

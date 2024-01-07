@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class AnimalController {
@@ -14,28 +15,36 @@ public class AnimalController {
     private AnimalService animalService;
 
     // region GET requests
+    @GetMapping("/animal/{animalId}")
+    public Animal getAnimal(@PathVariable long animalId){
+        Optional<Animal> optionalAnimal = animalService.findById(animalId);
+        if(optionalAnimal.isPresent()){
+            return optionalAnimal.get();
+        }
+        return null;
+    }
     @GetMapping("/animals")
     public List<Animal> findAll(@RequestParam(defaultValue = "") String species, @RequestParam(defaultValue = "0") int age, @RequestParam(defaultValue = "") String size){
         if(!species.isEmpty() && age == 0 && size.isEmpty()){
-            animalService.getAnimalBySpecies(species);
+            return animalService.findBySpecies(species);
         }
         else if(species.isEmpty() && age != 0 && size.isEmpty()){
-            animalService.getAnimalByAge(age);
+            return animalService.findByAge(age);
         }
         else if(species.isEmpty() && age == 0 && !size.isEmpty()){
-            animalService.getAnimalBySize(size);
+            return animalService.findBySize(size);
         }
         else if(!species.isEmpty() && age != 0 && size.isEmpty()){
-            animalService.getAnimalBySpeciesAndAge(species, age);
+            return animalService.findBySpeciesAndAge(species, age);
         }
         else if(!species.isEmpty() && age == 0 && !size.isEmpty()){
-            animalService.getAnimalBySpeciesAndSize(species, size);
+            return animalService.findBySpeciesAndSize(species, size);
         }
         else if(species.isEmpty() && age != 0 && !size.isEmpty()){
-            animalService.getAnimalByAgeAndSize(age, size);
+            return animalService.findByAgeAndSize(age, size);
         }
         else if(!species.isEmpty() && age != 0 && !size.isEmpty()){
-            animalService.getAnimalBySpeciesAndAgeAndSize(species, age, size);
+            return animalService.findBySpeciesAndAgeAndSize(species, age, size);
         }
         return animalService.getAnimals();
     }

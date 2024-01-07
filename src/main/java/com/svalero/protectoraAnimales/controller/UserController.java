@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class UserController {
@@ -14,16 +15,24 @@ public class UserController {
     private UserService userService;
 
     // region GET requests
+    @GetMapping("/user/{userId}")
+    public User getUser(@PathVariable long userId){
+        Optional<User> optionalUser = userService.findById(userId);
+        if(optionalUser.isPresent()){
+            return optionalUser.get();
+        }
+        return null;
+    }
     @GetMapping("/users")
     public List<User> findAll(@RequestParam(defaultValue = "") String name, @RequestParam(defaultValue = "") String surname){
         if(!name.isEmpty() && surname.isEmpty()){
-            userService.getUserByName(name);
+            return userService.findByName(name);
         }
         else if(name.isEmpty() && !surname.isEmpty()){
-            userService.getUserBySurname(surname);
+            return userService.findBySurname(surname);
         }
         else if(!name.isEmpty() && !surname.isEmpty()){
-            userService.getUserByNameAndSurname(name, surname);
+            return userService.findByNameAndSurname(name, surname);
         }
         return userService.getUsers();
     }

@@ -19,35 +19,35 @@ public class AnimalService {
         return animalRepository.findAll();
     }
 
-    public List<Animal> getAnimalBySpecies(String species){
+    public List<Animal> findBySpecies(String species){
         return animalRepository.findBySpecies(species);
     }
 
-    public List<Animal> getAnimalByAge(int age){
+    public List<Animal> findByAge(int age){
         return animalRepository.findByAge(age);
     }
 
-    public List<Animal> getAnimalBySize(String size){
+    public List<Animal> findBySize(String size){
         return animalRepository.findBySize(size);
     }
 
-    public List<Animal> getAnimalBySpeciesAndAge(String species, int age){
+    public List<Animal> findBySpeciesAndAge(String species, int age){
         return animalRepository.findBySpeciesAndAge(species, age);
     }
 
-    public List<Animal> getAnimalBySpeciesAndSize(String species, String size){
+    public List<Animal> findBySpeciesAndSize(String species, String size){
         return animalRepository.findBySpeciesAndSize(species, size);
     }
 
-    public List<Animal> getAnimalByAgeAndSize(int age, String species){
+    public List<Animal> findByAgeAndSize(int age, String species){
         return animalRepository.findByAgeAndSize(age, species);
     }
 
-    public List<Animal> getAnimalBySpeciesAndAgeAndSize(String species, int age, String size){
+    public List<Animal> findBySpeciesAndAgeAndSize(String species, int age, String size){
         return animalRepository.findBySpeciesAndAgeAndSize(species, age, size);
     }
 
-    public Optional<Animal> getAnimalById(long animalId){
+    public Optional<Animal> findById(long animalId){
         return animalRepository.findById(animalId);
     }
     // endregion

@@ -18,19 +18,19 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public List<User> getUserByName(String name){
+    public List<User> findByName(String name){
         return userRepository.findByName(name);
     }
 
-    public List<User> getUserBySurname(String surname){
+    public List<User> findBySurname(String surname){
         return userRepository.findBySurname(surname);
     }
 
-    public List<User> getUserByNameAndSurname(String name, String surname){
+    public List<User> findByNameAndSurname(String name, String surname){
         return userRepository.findByNameAndSurname(name, surname);
     }
 
-    public Optional<User> getUserById(long userId){
+    public Optional<User> findById(long userId){
         return userRepository.findById(userId);
     }
     // endregion

@@ -1,5 +1,6 @@
 package com.svalero.protectoraAnimales.controller;
 
+import com.svalero.protectoraAnimales.domain.Animal;
 import com.svalero.protectoraAnimales.domain.ErrorResponse;
 import com.svalero.protectoraAnimales.domain.Location;
 import com.svalero.protectoraAnimales.exception.ResourceNotFoundException;
@@ -36,6 +37,31 @@ public class LocationController {
             return locationService.findByCityAndZipCode(city, zipCode);
         }
         return locationService.getLocations();
+    }
+    @GetMapping("/location/{locationId}/animals")
+    public List<Animal> getLocationAnimals(@PathVariable long locationId, @RequestParam(defaultValue = "") String species, @RequestParam(defaultValue = "0") int age, @RequestParam(defaultValue = "") String size) throws ResourceNotFoundException {
+        if(!species.isEmpty() && age == 0 && size.isEmpty()){
+            return locationService.findAnimalsBySpecies(locationId, species);
+        }
+        else if(species.isEmpty() && age != 0 && size.isEmpty()){
+            return locationService.findAnimalsByAge(locationId, age);
+        }
+        else if(species.isEmpty() && age == 0 && !size.isEmpty()){
+            return locationService.findAnimalsBySize(locationId, size);
+        }
+        else if(!species.isEmpty() && age != 0 && size.isEmpty()){
+            return locationService.findAnimalsBySpeciesAndAge(locationId, species, age);
+        }
+        else if(!species.isEmpty() && age == 0 && !size.isEmpty()){
+            return locationService.findAnimalsBySpeciesAndSize(locationId, species, size);
+        }
+        else if(species.isEmpty() && age != 0 && !size.isEmpty()){
+            return locationService.findAnimalsByAgeAndSize(locationId, age, size);
+        }
+        else if(!species.isEmpty() && age != 0 && !size.isEmpty()){
+            return locationService.findAnimalsBySpeciesAndAgeAndSize(locationId, species, age, size);
+        }
+        return locationService.getAnimalsByLocation(locationId);
     }
     // endregion
 

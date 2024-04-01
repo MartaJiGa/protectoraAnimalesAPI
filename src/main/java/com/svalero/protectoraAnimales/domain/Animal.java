@@ -44,4 +44,9 @@ public class Animal {
 
     @Column
     private String description;
+
+    private Location location;
+    @ManyToOne
+    @JoinColumn(name="location_id")
+    public Location getLocation() { return location; }
 }

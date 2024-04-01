@@ -70,6 +70,10 @@ public class LocationController {
     public void saveLocation(@RequestBody Location location){
         locationService.saveLocation(location);
     }
+    @PostMapping("/location/{locationId}/animals")
+    public void saveAnimalByLocation(@RequestBody Animal animal, @PathVariable long locationId){
+        locationService.saveAnimalByLocation(animal, locationId);
+    }
     // endregion
 
     // region DELETE request

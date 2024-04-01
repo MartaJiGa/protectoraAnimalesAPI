@@ -2,6 +2,7 @@ package com.svalero.protectoraAnimales.service;
 
 import com.svalero.protectoraAnimales.domain.Animal;
 import com.svalero.protectoraAnimales.domain.Location;
+import com.svalero.protectoraAnimales.repository.AnimalRepository;
 import com.svalero.protectoraAnimales.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,8 @@ public class LocationService {
 
     @Autowired
     private LocationRepository locationRepository;
+    @Autowired
+    private AnimalRepository animalRepository;
 
     // region GET requests
     public List<Location> getLocations(){
@@ -66,12 +69,20 @@ public class LocationService {
     public void saveLocation(Location location){
         locationRepository.save(location);
     }
+    public void saveAnimalByLocation(Animal animal, long locationId){
+        Optional<Location> location = findById(locationId);
+        if(location.isPresent()){
+            animal.setLocation(location.get());
+            animalRepository.save(animal);
+        }
+    }
     // endregion
 
     // region DELETE request
     public void removeLocation(long locationId){
         locationRepository.deleteById(locationId);
     }
+
     // endregion
 
     // region PUT request

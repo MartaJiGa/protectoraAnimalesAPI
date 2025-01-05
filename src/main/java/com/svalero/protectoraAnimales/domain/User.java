@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
+import java.util.List;
 
 
 @Data
@@ -32,4 +34,10 @@ public class User {
 
     @Column
     private String email;
+
+    @OneToMany(mappedBy = "user")
+    private List<Adoption> adoptions;
+
+    @OneToMany(mappedBy = "user")
+    private List<Donation> donations;
 }

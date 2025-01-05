@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class LocationController {
@@ -22,8 +21,7 @@ public class LocationController {
     // region GET requests
     @GetMapping("/location/{locationId}")
     public Location getLocation(@PathVariable long locationId) throws ResourceNotFoundException {
-        Optional<Location> optionalLocation = locationService.findById(locationId);
-        return optionalLocation.orElseThrow(()->new ResourceNotFoundException(locationId));
+        return locationService.findById(locationId).orElseThrow(() -> new ResourceNotFoundException(locationId));
     }
     @GetMapping("/locations")
     public List<Location> findAll(@RequestParam(defaultValue = "") String city, @RequestParam(defaultValue = "0") int zipCode){
@@ -39,29 +37,8 @@ public class LocationController {
         return locationService.getLocations();
     }
     @GetMapping("/location/{locationId}/animals")
-    public List<Animal> getLocationAnimals(@PathVariable long locationId, @RequestParam(defaultValue = "") String species, @RequestParam(defaultValue = "0") int age, @RequestParam(defaultValue = "") String size) throws ResourceNotFoundException {
-        if(!species.isEmpty() && age == 0 && size.isEmpty()){
-            return locationService.findAnimalsBySpecies(locationId, species);
-        }
-        else if(species.isEmpty() && age != 0 && size.isEmpty()){
-            return locationService.findAnimalsByAge(locationId, age);
-        }
-        else if(species.isEmpty() && age == 0 && !size.isEmpty()){
-            return locationService.findAnimalsBySize(locationId, size);
-        }
-        else if(!species.isEmpty() && age != 0 && size.isEmpty()){
-            return locationService.findAnimalsBySpeciesAndAge(locationId, species, age);
-        }
-        else if(!species.isEmpty() && age == 0 && !size.isEmpty()){
-            return locationService.findAnimalsBySpeciesAndSize(locationId, species, size);
-        }
-        else if(species.isEmpty() && age != 0 && !size.isEmpty()){
-            return locationService.findAnimalsByAgeAndSize(locationId, age, size);
-        }
-        else if(!species.isEmpty() && age != 0 && !size.isEmpty()){
-            return locationService.findAnimalsBySpeciesAndAgeAndSize(locationId, species, age, size);
-        }
-        return locationService.getAnimalsByLocation(locationId);
+    public List<Animal> getAnimalsInLocation(@PathVariable long id) {
+        return locationService.getAnimalsInLocation(id);
     }
     // endregion
 

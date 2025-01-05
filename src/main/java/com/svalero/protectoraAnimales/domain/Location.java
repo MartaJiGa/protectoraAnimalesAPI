@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,7 +16,7 @@ import java.util.List;
 public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private long locationId;
 
     @Column(name = "main_site")
     private boolean mainSite;
@@ -33,4 +32,7 @@ public class Location {
 
     @Column
     private String description;
+
+    @OneToMany(mappedBy = "location")
+    private List<Animal> animals;
 }

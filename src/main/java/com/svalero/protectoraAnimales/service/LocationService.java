@@ -2,6 +2,7 @@ package com.svalero.protectoraAnimales.service;
 
 import com.svalero.protectoraAnimales.domain.Animal;
 import com.svalero.protectoraAnimales.domain.Location;
+import com.svalero.protectoraAnimales.exception.ResourceNotFoundException;
 import com.svalero.protectoraAnimales.repository.AnimalRepository;
 import com.svalero.protectoraAnimales.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,29 +40,9 @@ public class LocationService {
     }
 
     // Para "/location/{locationId}/animals":
-    public List<Animal> getAnimalsByLocation(long locationId){
-        return locationRepository.findByLocation(locationId);
-    }
-    public List<Animal> findAnimalsBySpecies(long locationId, String species){
-        return locationRepository.findByLocationAndSpecies(locationId, species);
-    }
-    public List<Animal> findAnimalsByAge(long locationId, int age){
-        return locationRepository.findByLocationAndAge(locationId, age);
-    }
-    public List<Animal> findAnimalsBySize(long locationId, String size){
-        return locationRepository.findByLocationAndSize(locationId, size);
-    }
-    public List<Animal> findAnimalsBySpeciesAndAge(long locationId, String species, int age){
-        return locationRepository.findByLocationAndSpeciesAndAge(locationId, species, age);
-    }
-    public List<Animal> findAnimalsBySpeciesAndSize(long locationId, String species, String size){
-        return locationRepository.findByLocationAndSpeciesAndSize(locationId, species, size);
-    }
-    public List<Animal> findAnimalsByAgeAndSize(long locationId, int age, String size){
-        return locationRepository.findByLocationAndAgeAndSize(locationId, age, size);
-    }
-    public List<Animal> findAnimalsBySpeciesAndAgeAndSize(long locationId, String species, int age, String size){
-        return locationRepository.findByLocationAndSpeciesAndAgeAndSize(locationId, species, age, size);
+    public List<Animal> getAnimalsInLocation(long locationId) {
+        Location location = locationRepository.findById(locationId).orElseThrow(() -> new ResourceNotFoundException("Location not found"));
+        return location.getAnimals();
     }
     // endregion
 

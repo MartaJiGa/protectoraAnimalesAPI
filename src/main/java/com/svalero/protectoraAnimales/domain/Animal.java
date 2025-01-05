@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
+import java.util.List;
 
 
 @Data
@@ -18,7 +20,7 @@ public class Animal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "incorporation_Date")
+    @Column(name = "incorporation_date")
     private LocalDate incorporationDate;
 
     @Column
@@ -45,8 +47,10 @@ public class Animal {
     @Column
     private String description;
 
-    private Location location;
     @ManyToOne
-    @JoinColumn(name="location_id")
-    public Location getLocation() { return location; }
+    @JoinColumn(name = "location_id")
+    private Location location;
+
+    @OneToMany(mappedBy = "animal")
+    private List<Adoption> adoptions;
 }

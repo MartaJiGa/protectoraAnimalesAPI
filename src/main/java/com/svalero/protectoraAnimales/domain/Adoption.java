@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 
 
@@ -21,9 +22,6 @@ public class Adoption {
     @Column(name = "adoption_date")
     private LocalDate adoptionDate;
 
-    @Column(name = "animal_id")
-    private long animalId;
-
     @Column(name = "take_accessories")
     private boolean takeAccessories;
 
@@ -32,4 +30,12 @@ public class Adoption {
 
     @Column(name = "pick_up_time")
     private String pickUpTime;
+
+    @ManyToOne
+    @JoinColumn(name = "animal_id", referencedColumnName = "id", nullable = false)
+    private Animal animal;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    private User user;
 }

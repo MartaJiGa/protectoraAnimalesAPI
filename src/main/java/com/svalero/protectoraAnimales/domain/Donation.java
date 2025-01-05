@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 
 
@@ -32,4 +33,8 @@ public class Donation {
 
     @Column(name = "split_payment_quantity")
     private int splitPaymentQuantity;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    private User user;
 }

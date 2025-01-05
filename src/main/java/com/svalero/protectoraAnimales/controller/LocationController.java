@@ -70,7 +70,7 @@ public class LocationController {
     //region EXCEPTION HANDLER
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> resourceNotFoundException(ResourceNotFoundException resNotFoundEx){
-        ErrorResponse errorResponse = new ErrorResponse(404, resNotFoundEx.getMessage());
+        ErrorResponse errorResponse = new ErrorResponse(404, resNotFoundEx.getMessage(), null);
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
     // endregion

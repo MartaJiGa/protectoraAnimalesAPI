@@ -1,9 +1,11 @@
 package com.svalero.protectoraAnimales.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 import com.svalero.protectoraAnimales.domain.Animal;
+import com.svalero.protectoraAnimales.exception.ResourceNotFoundException;
 import com.svalero.protectoraAnimales.repository.AnimalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,14 +49,18 @@ public class AnimalService {
         return animalRepository.findBySpeciesAndAgeAndSize(species, age, size);
     }
 
-    public Optional<Animal> findById(long animalId){
-        return animalRepository.findById(animalId);
+    public Animal findById(long animalId){
+        return animalRepository.findById(animalId)
+                .orElseThrow(() -> new ResourceNotFoundException("Animal con id " + animalId + " no encontrado."));
     }
     // endregion
 
     // region POST request
-    public void saveAnimal(Animal animal){
-        animalRepository.save(animal);
+    public Animal saveAnimal(Animal animal){
+        if (animal.getIncorporationDate() == null) {
+            animal.setIncorporationDate(LocalDate.now());
+        }
+        return animalRepository.save(animal);
     }
     // endregion
 
@@ -65,23 +71,20 @@ public class AnimalService {
     // endregion
 
     // region PUT request
-    public void modifyAnimal(Animal newAnimal, long animalId){
-        Optional<Animal> animal = animalRepository.findById(animalId);
+    public Animal modifyAnimal(Animal newAnimal, long animalId) {
+        Animal existingAnimal = animalRepository.findById(animalId)
+                .orElseThrow(() -> new ResourceNotFoundException("Animal con id " + animalId + " no encontrado."));
 
-        if(animal.isPresent()){
-            Animal existingAnimal = animal.get();
+        existingAnimal.setName(newAnimal.getName());
+        existingAnimal.setSpecies(newAnimal.getSpecies());
+        existingAnimal.setAge(newAnimal.getAge());
+        existingAnimal.setBreed(newAnimal.getBreed());
+        existingAnimal.setSize(newAnimal.getSize());
+        existingAnimal.setNeutered(newAnimal.isNeutered());
+        existingAnimal.setPrice(newAnimal.getPrice());
+        existingAnimal.setDescription(newAnimal.getDescription());
 
-            existingAnimal.setName(newAnimal.getName());
-            existingAnimal.setSpecies(newAnimal.getSpecies());
-            existingAnimal.setAge(newAnimal.getAge());
-            existingAnimal.setBreed(newAnimal.getBreed());
-            existingAnimal.setSize(newAnimal.getSize());
-            existingAnimal.setNeutered(newAnimal.isNeutered());
-            existingAnimal.setPrice(newAnimal.getPrice());
-            existingAnimal.setDescription(newAnimal.getDescription());
-
-            animalRepository.save(existingAnimal);
-        }
+        return animalRepository.save(existingAnimal);
     }
     // endregion
 }

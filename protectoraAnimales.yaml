@@ -186,8 +186,7 @@ paths:
           description: Código postal
           required: false
           schema:
-            type: number
-            format: int32
+            type: string
       responses:
         '200':
           description: Devuelve una lista de lugares.
@@ -787,8 +786,7 @@ components:
           example: Avenida de Murcia, 75, 2.º G
           description: Dirección del sitio.
         zipCode:
-          type: number
-          format: int32
+          type: string
           example: 17260
           description: Código postal del lugar.
         city:

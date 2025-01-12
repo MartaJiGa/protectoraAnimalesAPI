@@ -1,9 +1,7 @@
 package com.svalero.protectoraAnimales.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,11 +25,14 @@ public class Animal {
     private LocalDate incorporationDate;
 
     @Column
-    @NotBlank(message = "El campo no puede estar vacío")
+    @Size(min = 3, max = 50, message = "El nombre debe tener entre 2 y 20 caracteres")
+    @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$", message = "El nombre solo puede estar compuesto por letras y espacios")
+    @NotBlank(message = "El nombre no puede estar vacío")
     private String name;
 
     @Column
-    @NotBlank(message = "El campo no puede estar vacío")
+    @Pattern(regexp = "Perro|Gato|Hurón|Conejo", message = "La especie debe ser: Perro, Gato, Hurón o Conejo")
+    @NotBlank(message = "La especie no puede estar vacía")
     private String species;
 
     @Column

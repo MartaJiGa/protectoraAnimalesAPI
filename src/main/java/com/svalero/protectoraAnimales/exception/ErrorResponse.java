@@ -1,4 +1,4 @@
-package com.svalero.protectoraAnimales.domain;
+package com.svalero.protectoraAnimales.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,13 +1,10 @@
 package com.svalero.protectoraAnimales.controller;
 
 import com.svalero.protectoraAnimales.domain.Animal;
-import com.svalero.protectoraAnimales.domain.ErrorResponse;
 import com.svalero.protectoraAnimales.domain.Location;
 import com.svalero.protectoraAnimales.exception.ResourceNotFoundException;
 import com.svalero.protectoraAnimales.service.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,14 +21,14 @@ public class LocationController {
         return locationService.findById(locationId).orElseThrow(() -> new ResourceNotFoundException(locationId));
     }
     @GetMapping("/locations")
-    public List<Location> findAll(@RequestParam(defaultValue = "") String city, @RequestParam(defaultValue = "0") int zipCode){
-        if(!city.isEmpty() && zipCode == 0){
+    public List<Location> findAll(@RequestParam(defaultValue = "") String city, @RequestParam(defaultValue = "0") String zipCode){
+        if(!city.isEmpty() && zipCode.isEmpty()){
             return locationService.findByCity(city);
         }
-        else if(city.isEmpty() && zipCode != 0){
+        else if(city.isEmpty() && !zipCode.isEmpty()){
             return locationService.findByZipCode(zipCode);
         }
-        else if(!city.isEmpty() && zipCode != 0){
+        else if(!city.isEmpty() && !zipCode.isEmpty()){
             return locationService.findByCityAndZipCode(city, zipCode);
         }
         return locationService.getLocations();
@@ -64,14 +61,6 @@ public class LocationController {
     @PutMapping("/location/{locationId}")
     public void modifyLocation(@RequestBody Location location, @PathVariable long locationId){
         locationService.modifyLocation(location, locationId);
-    }
-    // endregion
-
-    //region EXCEPTION HANDLER
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponse> resourceNotFoundException(ResourceNotFoundException resNotFoundEx){
-        ErrorResponse errorResponse = new ErrorResponse(404, resNotFoundEx.getMessage(), null);
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
     // endregion
 }

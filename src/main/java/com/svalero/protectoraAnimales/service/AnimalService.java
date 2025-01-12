@@ -2,7 +2,6 @@ package com.svalero.protectoraAnimales.service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import com.svalero.protectoraAnimales.domain.Animal;
 import com.svalero.protectoraAnimales.exception.ResourceNotFoundException;
@@ -17,6 +16,11 @@ public class AnimalService {
     private AnimalRepository animalRepository;
 
     // region GET requests
+    public Animal findById(long animalId){
+        return animalRepository.findById(animalId)
+                .orElseThrow(() -> new ResourceNotFoundException("Animal con id " + animalId + " no encontrado."));
+    }
+
     public List<Animal> getAnimals(){
         return animalRepository.findAll();
     }
@@ -47,11 +51,6 @@ public class AnimalService {
 
     public List<Animal> findBySpeciesAndAgeAndSize(String species, int age, String size){
         return animalRepository.findBySpeciesAndAgeAndSize(species, age, size);
-    }
-
-    public Animal findById(long animalId){
-        return animalRepository.findById(animalId)
-                .orElseThrow(() -> new ResourceNotFoundException("Animal con id " + animalId + " no encontrado."));
     }
     // endregion
 

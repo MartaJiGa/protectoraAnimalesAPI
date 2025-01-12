@@ -32,10 +32,10 @@ public class LocationService {
         return locationRepository.findByCity(city);
     }
 
-    public List<Location> findByZipCode(int zipCode){
+    public List<Location> findByZipCode(String zipCode){
         return locationRepository.findByZipCode(zipCode);
     }
-    public List<Location> findByCityAndZipCode(String city, int zipCode){
+    public List<Location> findByCityAndZipCode(String city, String zipCode){
         return locationRepository.findByCityAndZipCode(city, zipCode);
     }
 

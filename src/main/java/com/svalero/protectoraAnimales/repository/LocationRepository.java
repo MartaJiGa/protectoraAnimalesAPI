@@ -13,8 +13,8 @@ public interface LocationRepository extends CrudRepository<Location, Long> {
 
     // Para "/locations":
     List<Location> findByCity(String city);
-    List<Location> findByZipCode(int zipCode);
-    List<Location> findByCityAndZipCode(String city, int zipCode);
+    List<Location> findByZipCode(String zipCode);
+    List<Location> findByCityAndZipCode(String city, String zipCode);
 
     // Para "/location/{locationId}/animals":
     List<Animal> findByLocationId(long locationId);

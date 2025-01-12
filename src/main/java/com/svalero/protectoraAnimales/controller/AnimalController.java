@@ -1,21 +1,14 @@
 package com.svalero.protectoraAnimales.controller;
 
 import com.svalero.protectoraAnimales.domain.Animal;
-import com.svalero.protectoraAnimales.domain.ErrorResponse;
-import com.svalero.protectoraAnimales.exception.ResourceNotFoundException;
 import com.svalero.protectoraAnimales.service.AnimalService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @RestController
 public class AnimalController {
@@ -25,9 +18,8 @@ public class AnimalController {
 
     // region GET requests
     @GetMapping("/animal/{animalId}")
-    public Animal getAnimal(@PathVariable long animalId) throws ResourceNotFoundException {
-        Optional<Animal> optionalAnimal = Optional.ofNullable(animalService.findById(animalId));
-        return optionalAnimal.orElseThrow(() -> new ResourceNotFoundException(animalId));
+    public Animal getAnimal(@PathVariable long animalId) {
+        return animalService.findById(animalId);
     }
     @GetMapping("/animals")
     public ResponseEntity<List<Animal>> findAll(@RequestParam(defaultValue = "") String species, @RequestParam(defaultValue = "0") int age, @RequestParam(defaultValue = "") String size){
@@ -67,7 +59,7 @@ public class AnimalController {
         Animal savedAnimal = animalService.saveAnimal(animal);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedAnimal);
     }
-    //endregion
+    // endregion
 
     //region DELETE request
     @DeleteMapping("/animal/{animalId}")
@@ -75,44 +67,13 @@ public class AnimalController {
         animalService.removeAnimal(animalId);
         return ResponseEntity.noContent().build();
     }
-    //endregion
+    // endregion
 
     //region PUT request
     @PutMapping("/animal/{animalId}")
     public ResponseEntity<Animal> modifyAnimal(@Valid @RequestBody Animal animal, @PathVariable long animalId){
         animalService.modifyAnimal(animal, animalId);
         return ResponseEntity.ok(animal);
-    }
-    //endregion
-
-    //region EXCEPTION HANDLER
-
-    // 400
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> validationExceptions(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach(error -> {
-            String fieldName = ((FieldError) error).getField();
-            String message = error.getDefaultMessage();
-            errors.put(fieldName, message);
-        });
-
-        ErrorResponse errorResponse = new ErrorResponse(400, "Errores de validación", errors);
-        return ResponseEntity.badRequest().body(errorResponse);
-    }
-
-    // 404
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponse> resourceNotFoundException(ResourceNotFoundException resNotFoundEx){
-        ErrorResponse errorResponse = new ErrorResponse(404, resNotFoundEx.getMessage(), null);
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
-    }
-
-    // 500
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> generalException(Exception ex) {
-        ErrorResponse errorResponse = new ErrorResponse(500, "Error interno del servidor. Inténtalo más tarde.", null);
-        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
     // endregion
 }

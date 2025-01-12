@@ -186,8 +186,7 @@ paths:
           description: Código postal
           required: false
           schema:
-            type: number
-            format: int32
+            type: string
       responses:
         '200':
           description: Devuelve una lista de lugares.
@@ -389,97 +388,6 @@ paths:
                 $ref: '#/components/schemas/BadRequest'
         '404':
           description: No se ha podido encontrar al usuario.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFound'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerError'
-
-  /location/{locationId}/animal/{animalId}:
-    parameters:
-      - $ref: '#/components/parameters/LocationId'
-      - $ref: '#/components/parameters/AnimalId'
-    get:
-      tags:
-        - locations
-      summary: Obtiene los datos de un animal que está en una localización.
-      description: |
-        Esta operación permite consultar los datos de un animal de una localización concreta.
-      responses:
-        '200':
-          description: Devuelve los datos de un animal de una localización de la protectora.
-          content:
-            application/json:
-              schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/AnimalOutDTO'
-        '404':
-          description: No se ha podido encontrar el animal o la localización.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFound'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerError'
-    delete:
-      tags:
-        - locations
-      summary: Elimina un animal de una localización.
-      description: |
-        Esta operación permite eliminar un animal de una localización concreta.
-      responses:
-        '200':
-          description: El animal ha sido eliminado correctamente de esta localización.
-          content:
-            application/json:
-              schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/AnimalOutDTO'
-        '404':
-          description: No se ha podido encontrar el animal o la localización.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFound'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerError'
-    put:
-      tags:
-        - locations
-      summary: Modifica un animal de una localización.
-      description: |
-        Esta operación permite modificar un animal de una localización concreta.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/parameters/AnimalId'
-      responses:
-        '200':
-          description: El animal ha sido modificado correctamente en esta localización.
-          content:
-            application/json:
-              schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/AnimalOutDTO'
-        '404':
-          description: No se ha podido encontrar el animal o la localización.
           content:
             application/json:
               schema:
@@ -725,96 +633,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerError'
-  /user/{userId}/adoption/{adoptionId}:
-    parameters:
-      - $ref: '#/components/parameters/UserId'
-      - $ref: '#/components/parameters/AdoptionId'
-    get:
-      tags:
-        - users
-      summary: Obtiene los datos de una adopción de un usuario.
-      description: |
-        Esta operación permite consultar una adopción de un usuario concreto.
-      responses:
-        '200':
-          description: Devuelve una adopción de un usuario de la protectora.
-          content:
-            application/json:
-              schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/AdoptionOutDTO'
-        '404':
-          description: No se ha podido encontrar el usuario o la adopción.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFound'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerError'
-    delete:
-      tags:
-        - users
-      summary: Elimina una adopción de un usuario.
-      description: |
-        Esta operación permite eliminar una adopción de un usuario concreto.
-      responses:
-        '200':
-          description: La adopción ha sido eliminada correctamente.
-          content:
-            application/json:
-              schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/AdoptionOutDTO'
-        '404':
-          description: No se ha podido encontrar el usuario o la adopción.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFound'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerError'
-    put:
-      tags:
-        - users
-      summary: Modifica una adopción de un usuario.
-      description: |
-        Esta operación permite modificar una adopción de un usuario concreto.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AdoptionInDTO'
-      responses:
-        '200':
-          description: La adopción ha sido modificada correctamente.
-          content:
-            application/json:
-              schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/AdoptionOutDTO'
-        '404':
-          description: No se ha podido encontrar el usuario o la adopción.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFound'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerError'
   /user/{userId}/donations:
     parameters:
       - $ref: '#/components/parameters/UserId'
@@ -901,96 +719,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerError'
-  /user/{userId}/donation/{donationId}:
-    parameters:
-      - $ref: '#/components/parameters/UserId'
-      - $ref: '#/components/parameters/DonationId'
-    get:
-      tags:
-        - users
-      summary: Obtiene los datos de una donación de un usuario.
-      description: |
-        Esta operación permite consultar una donación de un usuario concreto.
-      responses:
-        '200':
-          description: Devuelve una donación de un usuario de la protectora.
-          content:
-            application/json:
-              schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/DonationOutDTO'
-        '404':
-          description: No se ha podido encontrar el usuario o la donación.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFound'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerError'
-    delete:
-      tags:
-        - users
-      summary: Elimina una donación de un usuario.
-      description: |
-        Esta operación permite eliminar una donación de un usuario concreto.
-      responses:
-        '200':
-          description: La donación ha sido eliminada correctamente.
-          content:
-            application/json:
-              schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/DonationOutDTO'
-        '404':
-          description: No se ha podido encontrar el usuario o la donación.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFound'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerError'
-    put:
-      tags:
-        - users
-      summary: Modifica una donación de un usuario.
-      description: |
-        Esta operación permite modificar una donación de un usuario concreto.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DonationInDTO'
-      responses:
-        '200':
-          description: La donación ha sido modificada correctamente.
-          content:
-            application/json:
-              schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/DonationOutDTO'
-        '404':
-          description: No se ha podido encontrar el usuario o la donación.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFound'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerError'
 
 components:
   schemas:
@@ -1058,8 +786,7 @@ components:
           example: Avenida de Murcia, 75, 2.º G
           description: Dirección del sitio.
         zipCode:
-          type: number
-          format: int32
+          type: string
           example: 17260
           description: Código postal del lugar.
         city:
@@ -1119,7 +846,7 @@ components:
       properties:
         animalId:
           $ref: '#/components/parameters/AnimalId'
-        takeAccesories:
+        takeAccessories:
           type: boolean
           example: false
           description: Si quieres llevarte sus accesorios (cama, comedero, etc.) o prefieres dejarlos en la protectora para que otro animal los pueda aprovechar.

@@ -4,7 +4,10 @@ import com.svalero.protectoraAnimales.domain.Animal;
 import com.svalero.protectoraAnimales.domain.Location;
 import com.svalero.protectoraAnimales.exception.ResourceNotFoundException;
 import com.svalero.protectoraAnimales.service.LocationService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,50 +20,51 @@ public class LocationController {
 
     // region GET requests
     @GetMapping("/location/{locationId}")
-    public Location getLocation(@PathVariable long locationId) throws ResourceNotFoundException {
-        return locationService.findById(locationId).orElseThrow(() -> new ResourceNotFoundException(locationId));
+    public Location getLocation(@PathVariable long locationId) {
+        return locationService.findById(locationId);
     }
     @GetMapping("/locations")
-    public List<Location> findAll(@RequestParam(defaultValue = "") String city, @RequestParam(defaultValue = "0") String zipCode){
+    public ResponseEntity<List<Location>> findAll(@RequestParam(defaultValue = "") String city, @RequestParam(defaultValue = "") String zipCode){
+        List<Location> locations;
+
         if(!city.isEmpty() && zipCode.isEmpty()){
-            return locationService.findByCity(city);
+            locations = locationService.findByCity(city);
         }
         else if(city.isEmpty() && !zipCode.isEmpty()){
-            return locationService.findByZipCode(zipCode);
+            locations = locationService.findByZipCode(zipCode);
         }
         else if(!city.isEmpty() && !zipCode.isEmpty()){
-            return locationService.findByCityAndZipCode(city, zipCode);
+            locations = locationService.findByCityAndZipCode(city, zipCode);
         }
-        return locationService.getLocations();
-    }
-    @GetMapping("/location/{locationId}/animals")
-    public List<Animal> getAnimalsInLocation(@PathVariable long id) {
-        return locationService.getAnimalsInLocation(id);
+        else{
+            locations = locationService.getLocations();
+        }
+
+        return ResponseEntity.ok(locations);
     }
     // endregion
 
     // region POST request
     @PostMapping("/locations")
-    public void saveLocation(@RequestBody Location location){
-        locationService.saveLocation(location);
-    }
-    @PostMapping("/location/{locationId}/animals")
-    public void saveAnimalByLocation(@RequestBody Animal animal, @PathVariable long locationId){
-        locationService.saveAnimalByLocation(animal, locationId);
+    public ResponseEntity<Location> saveLocation(@Valid @RequestBody Location location){
+        Location savedLocation = locationService.saveLocation(location);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedLocation);
     }
     // endregion
 
     // region DELETE request
     @DeleteMapping("/location/{locationId}")
-    public void removeLocation(@PathVariable long locationId){
+    public ResponseEntity<Void> removeLocation(@PathVariable long locationId){
         locationService.removeLocation(locationId);
+        return ResponseEntity.noContent().build();
     }
     // endregion
 
     // region PUT request
     @PutMapping("/location/{locationId}")
-    public void modifyLocation(@RequestBody Location location, @PathVariable long locationId){
+    public ResponseEntity<Location> modifyLocation(@Valid @RequestBody Location location, @PathVariable long locationId){
         locationService.modifyLocation(location, locationId);
+        return ResponseEntity.ok(location);
     }
     // endregion
 }

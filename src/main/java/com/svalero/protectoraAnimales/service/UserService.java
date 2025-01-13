@@ -18,21 +18,33 @@ public class UserService {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario con id " + userId + " no encontrado."));
     }
-
-    public List<User> getUsers(){
-        return userRepository.findAll();
+    public List<User> getUsers() {
+        List<User> users = userRepository.findAll();
+        if (users.isEmpty()) {
+            throw new ResourceNotFoundException("No se encontraron usuarios.");
+        }
+        return users;
     }
-
-    public List<User> findByName(String name){
-        return userRepository.findByName(name);
+    public List<User> findByName(String name) {
+        List<User> users = userRepository.findByName(name);
+        if (users.isEmpty()) {
+            throw new ResourceNotFoundException("No se encontraron usuarios con el nombre " + name);
+        }
+        return users;
     }
-
-    public List<User> findBySurname(String surname){
-        return userRepository.findBySurname(surname);
+    public List<User> findBySurname(String surname) {
+        List<User> users = userRepository.findBySurname(surname);
+        if (users.isEmpty()) {
+            throw new ResourceNotFoundException("No se encontraron usuarios de apellido " + surname);
+        }
+        return users;
     }
-
-    public List<User> findByNameAndSurname(String name, String surname){
-        return userRepository.findByNameAndSurname(name, surname);
+    public List<User> findByNameAndSurname(String name, String surname) {
+        List<User> users = userRepository.findByNameAndSurname(name, surname);
+        if (users.isEmpty()) {
+            throw new ResourceNotFoundException("No se encontraron usuarios con el nombre " + name + " y apellido " + surname);
+        }
+        return users;
     }
     // endregion
 
@@ -44,6 +56,9 @@ public class UserService {
 
     // region DELETE request
     public void removeUser(long userId){
+        if (!userRepository.existsById(userId)) {
+            throw new ResourceNotFoundException("Usuario con id " + userId + " no encontrado.");
+        }
         userRepository.deleteById(userId);
     }
     // endregion

@@ -42,6 +42,10 @@ public class LocationController {
 
         return ResponseEntity.ok(locations);
     }
+    @GetMapping("/location/{locationId}/animals")
+    public List<Animal> getAnimalsInLocation(@PathVariable long locationId) {
+        return locationService.findAnimalsByLocationId(locationId);
+    }
     // endregion
 
     // region POST request

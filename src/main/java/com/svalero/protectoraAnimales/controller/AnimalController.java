@@ -1,6 +1,9 @@
 package com.svalero.protectoraAnimales.controller;
 
 import com.svalero.protectoraAnimales.domain.Animal;
+import com.svalero.protectoraAnimales.domain.Location;
+import com.svalero.protectoraAnimales.domain.dto.AnimalInDTO;
+import com.svalero.protectoraAnimales.domain.dto.AnimalOutDTO;
 import com.svalero.protectoraAnimales.service.AnimalService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +25,8 @@ public class AnimalController {
         return animalService.findById(animalId);
     }
     @GetMapping("/animals")
-    public ResponseEntity<List<Animal>> findAll(@RequestParam(defaultValue = "") String species, @RequestParam(defaultValue = "0") int age, @RequestParam(defaultValue = "") String size){
-        List<Animal> animals;
+    public ResponseEntity<List<AnimalOutDTO>> findAll(@RequestParam(defaultValue = "") String species, @RequestParam(defaultValue = "0") int age, @RequestParam(defaultValue = "") String size){
+        List<AnimalOutDTO> animals;
 
         if (!species.isEmpty() && age == 0 && size.isEmpty()) {
             animals = animalService.findBySpecies(species);
@@ -54,10 +57,10 @@ public class AnimalController {
     // endregion
 
     //region POST request
-    @PostMapping("/animals")
-    public ResponseEntity<Animal> saveAnimal(@Valid @RequestBody Animal animal){
-        Animal savedAnimal = animalService.saveAnimal(animal);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedAnimal);
+    @PostMapping("/location/{locationId}/animals")
+    public ResponseEntity<AnimalOutDTO> saveAnimal(@PathVariable long locationId, @Valid @RequestBody AnimalInDTO animal) {
+        AnimalOutDTO savedAnimal = animalService.saveAnimal(locationId, animal);
+        return new ResponseEntity<>(savedAnimal, HttpStatus.CREATED);
     }
     // endregion
 
@@ -74,6 +77,11 @@ public class AnimalController {
     public ResponseEntity<Animal> modifyAnimal(@Valid @RequestBody Animal animal, @PathVariable long animalId){
         animalService.modifyAnimal(animal, animalId);
         return ResponseEntity.ok(animal);
+    }
+    @PutMapping("/location/{locationId}/animal/{animalId}")
+    public ResponseEntity<Animal> modifyAnimalLocation(@PathVariable long locationId, @PathVariable long animalId) {
+        Animal modifiedAnimal = animalService.modifyAnimalLocation(animalId, locationId);
+        return ResponseEntity.ok(modifiedAnimal);
     }
     // endregion
 }

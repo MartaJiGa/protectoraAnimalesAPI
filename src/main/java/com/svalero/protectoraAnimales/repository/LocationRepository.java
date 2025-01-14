@@ -10,8 +10,6 @@ import java.util.List;
 @Repository
 public interface LocationRepository extends CrudRepository<Location, Long> {
     List<Location> findAll();
-
-    // Para "/locations":
     List<Location> findByCity(String city);
     List<Location> findByZipCode(String zipCode);
     List<Location> findByCityAndZipCode(String city, String zipCode);

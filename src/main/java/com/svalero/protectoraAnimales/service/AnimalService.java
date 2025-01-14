@@ -4,8 +4,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.svalero.protectoraAnimales.domain.Animal;
+import com.svalero.protectoraAnimales.domain.Location;
+import com.svalero.protectoraAnimales.domain.dto.AnimalInDTO;
+import com.svalero.protectoraAnimales.domain.dto.AnimalOutDTO;
 import com.svalero.protectoraAnimales.exception.ResourceNotFoundException;
 import com.svalero.protectoraAnimales.repository.AnimalRepository;
+import com.svalero.protectoraAnimales.repository.LocationRepository;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,76 +20,109 @@ public class AnimalService {
 
     @Autowired
     private AnimalRepository animalRepository;
+    @Autowired
+    private LocationRepository locationRepository;
+    @Autowired
+    private ModelMapper modelMapper;
 
     // region GET requests
     public Animal findById(long animalId){
         return animalRepository.findById(animalId)
                 .orElseThrow(() -> new ResourceNotFoundException("Animal con id " + animalId + " no encontrado."));
     }
-    public List<Animal> getAnimals(){
+    public List<AnimalOutDTO> getAnimals(){
         List<Animal> animals = animalRepository.findAll();
         if (animals.isEmpty()) {
             throw new ResourceNotFoundException("No se encontraron animales.");
         }
-        return animals;
+
+        List<AnimalOutDTO> animalOutDTOS = modelMapper.map(animals, new TypeToken<List<AnimalOutDTO>>(){}.getType());
+        return animalOutDTOS;
     }
-    public List<Animal> findBySpecies(String species){
+    public List<AnimalOutDTO> findBySpecies(String species){
         List<Animal> animals = animalRepository.findBySpecies(species);
         if (animals.isEmpty()) {
             throw new ResourceNotFoundException("No se encontraron animales de la especie " + species);
         }
-        return animals;
+
+        List<AnimalOutDTO> animalOutDTOS = modelMapper.map(animals, new TypeToken<List<AnimalOutDTO>>(){}.getType());
+        return animalOutDTOS;
     }
-    public List<Animal> findByAge(int age){
+    public List<AnimalOutDTO> findByAge(int age){
         List<Animal> animals = animalRepository.findByAge(age);
         if (animals.isEmpty()) {
             throw new ResourceNotFoundException("No se encontraron animales de edad " + age);
         }
-        return animals;
+
+        List<AnimalOutDTO> animalOutDTOS = modelMapper.map(animals, new TypeToken<List<AnimalOutDTO>>(){}.getType());
+        return animalOutDTOS;
     }
-    public List<Animal> findBySize(String size) {
+    public List<AnimalOutDTO> findBySize(String size) {
         List<Animal> animals = animalRepository.findBySize(size);
         if (animals.isEmpty()) {
             throw new ResourceNotFoundException("No se encontraron animales de tamaño " + size);
         }
-        return animals;
+
+        List<AnimalOutDTO> animalOutDTOS = modelMapper.map(animals, new TypeToken<List<AnimalOutDTO>>(){}.getType());
+        return animalOutDTOS;
     }
-    public List<Animal> findBySpeciesAndAge(String species, int age) {
+    public List<AnimalOutDTO> findBySpeciesAndAge(String species, int age) {
         List<Animal> animals = animalRepository.findBySpeciesAndAge(species, age);
         if (animals.isEmpty()) {
             throw new ResourceNotFoundException("No se encontraron animales de la especie " + species + " de edad " + age);
         }
-        return animals;
+
+        List<AnimalOutDTO> animalOutDTOS = modelMapper.map(animals, new TypeToken<List<AnimalOutDTO>>(){}.getType());
+        return animalOutDTOS;
     }
-    public List<Animal> findBySpeciesAndSize(String species, String size) {
+    public List<AnimalOutDTO> findBySpeciesAndSize(String species, String size) {
         List<Animal> animals = animalRepository.findBySpeciesAndSize(species, size);
         if (animals.isEmpty()) {
             throw new ResourceNotFoundException("No se encontraron animales de la especie " + species + " y tamaño " + size);
         }
-        return animals;
+
+        List<AnimalOutDTO> animalOutDTOS = modelMapper.map(animals, new TypeToken<List<AnimalOutDTO>>(){}.getType());
+        return animalOutDTOS;
     }
-    public List<Animal> findByAgeAndSize(int age, String size) {
+    public List<AnimalOutDTO> findByAgeAndSize(int age, String size) {
         List<Animal> animals = animalRepository.findByAgeAndSize(age, size);
         if (animals.isEmpty()) {
             throw new ResourceNotFoundException("No se encontraron animales de edad " + age + " y tamaño " + size);
         }
-        return animals;
+
+        List<AnimalOutDTO> animalOutDTOS = modelMapper.map(animals, new TypeToken<List<AnimalOutDTO>>(){}.getType());
+        return animalOutDTOS;
     }
-    public List<Animal> findBySpeciesAndAgeAndSize(String species, int age, String size) {
+    public List<AnimalOutDTO> findBySpeciesAndAgeAndSize(String species, int age, String size) {
         List<Animal> animals = animalRepository.findBySpeciesAndAgeAndSize(species, age, size);
         if (animals.isEmpty()) {
             throw new ResourceNotFoundException("No se encontraron animales de la especie " + species + ", edad " + age + " y tamaño " + size);
         }
-        return animals;
+
+        List<AnimalOutDTO> animalOutDTOS = modelMapper.map(animals, new TypeToken<List<AnimalOutDTO>>(){}.getType());
+        return animalOutDTOS;
     }
     // endregion
 
     // region POST request
-    public Animal saveAnimal(Animal animal){
-        if (animal.getIncorporationDate() == null) {
+    public AnimalOutDTO saveAnimal(long locationId, AnimalInDTO animalInDTO){
+
+        try {
+            Location location = locationRepository.findById(locationId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Ubicación con id " + locationId + " no encontrada."));
+
+            Animal animal = modelMapper.map(animalInDTO, Animal.class);
+            animal.setLocation(location);
             animal.setIncorporationDate(LocalDate.now());
+            animalRepository.save(animal);
+
+            AnimalOutDTO animalOutDTO = modelMapper.map(animal, AnimalOutDTO.class);
+            return animalOutDTO;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
         }
-        return animalRepository.save(animal);
     }
     // endregion
 
@@ -111,6 +150,16 @@ public class AnimalService {
         existingAnimal.setDescription(newAnimal.getDescription());
 
         return animalRepository.save(existingAnimal);
+    }
+    public Animal modifyAnimalLocation(long animalId, long locationId) {
+        Animal animal = animalRepository.findById(animalId)
+                .orElseThrow(() -> new ResourceNotFoundException("Animal con id " + animalId + " no encontrado."));
+
+        Location location = locationRepository.findById(locationId)
+                .orElseThrow(() -> new ResourceNotFoundException("Ubicación con id " + locationId + " no encontrada."));
+
+        animal.setLocation(location);
+        return animalRepository.save(animal);
     }
     // endregion
 }

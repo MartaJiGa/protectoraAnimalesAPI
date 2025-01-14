@@ -1,7 +1,9 @@
 package com.svalero.protectoraAnimales.service;
 
+import com.svalero.protectoraAnimales.domain.Animal;
 import com.svalero.protectoraAnimales.domain.Location;
 import com.svalero.protectoraAnimales.exception.ResourceNotFoundException;
+import com.svalero.protectoraAnimales.repository.AnimalRepository;
 import com.svalero.protectoraAnimales.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,8 @@ public class LocationService {
 
     @Autowired
     private LocationRepository locationRepository;
+    @Autowired
+    private AnimalRepository animalRepository;
 
     // region GET requests
     public Location findById(long locationId){
@@ -46,6 +50,13 @@ public class LocationService {
             throw new ResourceNotFoundException("No se encontraron ubicaciones en la ciudad " + city + " con código postal " + zipCode);
         }
         return locations;
+    }
+    public List<Animal> findAnimalsByLocationId(long locationId){
+        List<Animal> animals = animalRepository.findByLocationId(locationId);
+        if (animals.isEmpty()) {
+            throw new ResourceNotFoundException("No se encontraron animales para esa ubicación.");
+        }
+        return animals;
     }
     // endregion
 

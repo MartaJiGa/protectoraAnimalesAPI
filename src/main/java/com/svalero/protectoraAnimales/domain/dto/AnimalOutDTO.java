@@ -21,6 +21,8 @@ public class AnimalOutDTO {
     private boolean neutered;
     private float price;
     private String description;
+
+    // From location relationship:
     private long locationId;
     private String locationCity;
 }

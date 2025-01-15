@@ -73,13 +73,13 @@ public class AnimalController {
 
     //region PUT request
     @PutMapping("/animal/{animalId}")
-    public ResponseEntity<Animal> modifyAnimal(@Valid @RequestBody Animal animal, @PathVariable long animalId){
-        animalService.modifyAnimal(animal, animalId);
-        return ResponseEntity.ok(animal);
+    public ResponseEntity<AnimalOutDTO> modifyAnimal(@Valid @RequestBody Animal animal, @PathVariable long animalId){
+        AnimalOutDTO modifiedAnimal = animalService.modifyAnimal(animal, animalId);
+        return ResponseEntity.ok(modifiedAnimal);
     }
     @PutMapping("/location/{locationId}/animal/{animalId}")
-    public ResponseEntity<Animal> modifyAnimalLocation(@PathVariable long locationId, @PathVariable long animalId) {
-        Animal modifiedAnimal = animalService.modifyAnimalLocation(animalId, locationId);
+    public ResponseEntity<AnimalOutDTO> modifyAnimalLocation(@PathVariable long locationId, @PathVariable long animalId) {
+        AnimalOutDTO modifiedAnimal = animalService.modifyAnimalLocation(animalId, locationId);
         return ResponseEntity.ok(modifiedAnimal);
     }
     // endregion

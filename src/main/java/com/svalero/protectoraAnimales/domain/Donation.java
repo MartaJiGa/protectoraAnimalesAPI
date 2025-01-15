@@ -21,8 +21,6 @@ public class Donation {
     private long id;
 
     @Column(name = "donation_date")
-    @PastOrPresent(message = "La fecha de donación debe ser en el pasado o la de hoy")
-    @NotNull(message = "La fecha de donación no puede estar vacía")
     private LocalDate donationDate;
 
     @Column

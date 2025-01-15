@@ -1,5 +1,6 @@
 package com.svalero.protectoraAnimales.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -61,5 +62,6 @@ public class Animal {
     private Location location;
 
     @OneToMany(mappedBy = "animal")
+    @JsonBackReference(value = "animal_adoptions")
     private List<Adoption> adoptions;
 }

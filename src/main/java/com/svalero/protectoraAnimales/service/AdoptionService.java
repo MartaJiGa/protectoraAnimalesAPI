@@ -3,10 +3,13 @@ package com.svalero.protectoraAnimales.service;
 import com.svalero.protectoraAnimales.domain.Adoption;
 import com.svalero.protectoraAnimales.domain.Animal;
 import com.svalero.protectoraAnimales.domain.User;
+import com.svalero.protectoraAnimales.domain.dto.AdoptionOutDTO;
 import com.svalero.protectoraAnimales.exception.ResourceNotFoundException;
 import com.svalero.protectoraAnimales.repository.AdoptionRepository;
 import com.svalero.protectoraAnimales.repository.AnimalRepository;
 import com.svalero.protectoraAnimales.repository.UserRepository;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,72 +24,90 @@ public class AdoptionService {
     private UserRepository userRepository;
     @Autowired
     private AnimalRepository animalRepository;
+    @Autowired
+    private ModelMapper modelMapper;
 
     // region GET requests
     public Adoption findById(long adoptionId){
         return adoptionRepository.findById(adoptionId)
                 .orElseThrow(() -> new ResourceNotFoundException("Adopción con id " + adoptionId + " no encontrada."));
     }
-    public List<Adoption> getAdoptions(){
+    public List<AdoptionOutDTO> getAdoptions(){
         List<Adoption> adoptions = adoptionRepository.findAll();
         if (adoptions.isEmpty()) {
             throw new ResourceNotFoundException("No se encontraron adopciones.");
         }
-        return adoptions;
+
+        List<AdoptionOutDTO> adoptionOutDTOS = modelMapper.map(adoptions, new TypeToken<List<AdoptionOutDTO>>(){}.getType());
+        return adoptionOutDTOS;
     }
-    public List<Adoption> findByAdoptionDate(LocalDate adoptionDate){
+    public List<AdoptionOutDTO> findByAdoptionDate(LocalDate adoptionDate){
         List<Adoption> adoptions = adoptionRepository.findByAdoptionDate(adoptionDate);
         if (adoptions.isEmpty()) {
             throw new ResourceNotFoundException("No se encontraron adopciones en la fecha " + adoptionDate);
         }
-        return adoptions;
+
+        List<AdoptionOutDTO> adoptionOutDTOS = modelMapper.map(adoptions, new TypeToken<List<AdoptionOutDTO>>(){}.getType());
+        return adoptionOutDTOS;
     }
-    public List<Adoption> findByUserId(long userId){
+    public List<AdoptionOutDTO> findByUserId(long userId){
         List<Adoption> adoptions = adoptionRepository.findByUserId(userId);
         if (adoptions.isEmpty()) {
             throw new ResourceNotFoundException("No se encontraron adopciones con ID de usuario " + userId);
         }
-        return adoptions;
+
+        List<AdoptionOutDTO> adoptionOutDTOS = modelMapper.map(adoptions, new TypeToken<List<AdoptionOutDTO>>(){}.getType());
+        return adoptionOutDTOS;
     }
-    public List<Adoption> findByAnimalId(long animalId) {
+    public List<AdoptionOutDTO> findByAnimalId(long animalId) {
         List<Adoption> adoptions = adoptionRepository.findByAnimalId(animalId);
         if (adoptions.isEmpty()) {
             throw new ResourceNotFoundException("No se encontraron adopciones con ID de animal " + animalId);
         }
-        return adoptions;
+
+        List<AdoptionOutDTO> adoptionOutDTOS = modelMapper.map(adoptions, new TypeToken<List<AdoptionOutDTO>>(){}.getType());
+        return adoptionOutDTOS;
     }
-    public List<Adoption> findByAdoptionDateAndUserId(LocalDate adoptionDate, long userId) {
+    public List<AdoptionOutDTO> findByAdoptionDateAndUserId(LocalDate adoptionDate, long userId) {
         List<Adoption> adoptions = adoptionRepository.findByAdoptionDateAndUserId(adoptionDate, userId);
         if (adoptions.isEmpty()) {
             throw new ResourceNotFoundException("No se encontraron adopciones con fecha " + adoptionDate + " e ID de usuario " + userId);
         }
-        return adoptions;
+
+        List<AdoptionOutDTO> adoptionOutDTOS = modelMapper.map(adoptions, new TypeToken<List<AdoptionOutDTO>>(){}.getType());
+        return adoptionOutDTOS;
     }
-    public List<Adoption> findByAdoptionDateAndAnimalId(LocalDate adoptionDate, long animalId) {
+    public List<AdoptionOutDTO> findByAdoptionDateAndAnimalId(LocalDate adoptionDate, long animalId) {
         List<Adoption> adoptions = adoptionRepository.findByAdoptionDateAndAnimalId(adoptionDate, animalId);
         if (adoptions.isEmpty()) {
             throw new ResourceNotFoundException("No se encontraron adopciones con fecha " + adoptionDate + " e ID de animal " + animalId);
         }
-        return adoptions;
+
+        List<AdoptionOutDTO> adoptionOutDTOS = modelMapper.map(adoptions, new TypeToken<List<AdoptionOutDTO>>(){}.getType());
+        return adoptionOutDTOS;
     }
-    public List<Adoption> findByAnimalIdAndUserId(long animalId, long userId) {
+    public List<AdoptionOutDTO> findByAnimalIdAndUserId(long animalId, long userId) {
         List<Adoption> adoptions = adoptionRepository.findByAnimalIdAndUserId(animalId, userId);
         if (adoptions.isEmpty()) {
             throw new ResourceNotFoundException("No se encontraron adopciones de ID de animal " + animalId + " e ID de usuario " + userId);
         }
-        return adoptions;
+
+        List<AdoptionOutDTO> adoptionOutDTOS = modelMapper.map(adoptions, new TypeToken<List<AdoptionOutDTO>>(){}.getType());
+        return adoptionOutDTOS;
     }
-    public List<Adoption> findByAdoptionDateAndAnimalIdAndUserId(LocalDate adoptionDate, long animalId, long userId) {
+    public List<AdoptionOutDTO> findByAdoptionDateAndAnimalIdAndUserId(LocalDate adoptionDate, long animalId, long userId) {
         List<Adoption> adoptions = adoptionRepository.findByAdoptionDateAndAnimalIdAndUserId(adoptionDate, animalId, userId);
         if (adoptions.isEmpty()) {
             throw new ResourceNotFoundException("No se encontraron adopciones con fecha " + adoptionDate + ", ID de animal " + animalId + " e ID de usuario " + userId);
         }
-        return adoptions;
+
+        List<AdoptionOutDTO> adoptionOutDTOS = modelMapper.map(adoptions, new TypeToken<List<AdoptionOutDTO>>(){}.getType());
+        return adoptionOutDTOS;
     }
     // endregion
 
     // region POST request
-    public Adoption saveAdoption(long userId, long animalId, Adoption adoption){
+    public AdoptionOutDTO saveAdoption(long userId, long animalId, Adoption adoption){
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario con id " + userId + " no encontrado."));
@@ -96,8 +117,10 @@ public class AdoptionService {
         adoption.setUser(user);
         adoption.setAnimal(animal);
         adoption.setAdoptionDate(LocalDate.now());
+        adoptionRepository.save(adoption);
 
-        return adoptionRepository.save(adoption);
+        AdoptionOutDTO adoptionOutDTO = modelMapper.map(adoption, AdoptionOutDTO.class);
+        return adoptionOutDTO;
     }
     // endregion
 
@@ -111,35 +134,26 @@ public class AdoptionService {
     // endregion
 
     // region PUT request
-    public Adoption modifyAdoption(long adoptionId, Adoption newAdoption) {
+    public AdoptionOutDTO modifyAdoption(long adoptionId, long animalId, long userId, Adoption newAdoption) {
         Adoption existingAdoption = adoptionRepository.findById(adoptionId)
                 .orElseThrow(() -> new ResourceNotFoundException("Adopción con id " + adoptionId + " no encontrada."));
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario con id " + userId + " no encontrado."));
+
+        Animal animal = animalRepository.findById(animalId)
+                .orElseThrow(() -> new ResourceNotFoundException("Animal con id " + animalId + " no encontrado."));
 
         existingAdoption.setTakeAccessories(newAdoption.isTakeAccessories());
         existingAdoption.setPickUpDate(newAdoption.getPickUpDate());
         existingAdoption.setPickUpTime(newAdoption.getPickUpTime());
+        existingAdoption.setUser(user);
+        existingAdoption.setAnimal(animal);
 
-        return adoptionRepository.save(existingAdoption);
-    }
-    public Adoption modifyAdoptionAnimal(long adoptionId, long animalId) {
-        Animal animal = animalRepository.findById(animalId)
-                .orElseThrow(() -> new ResourceNotFoundException("Animal con id " + animalId + " no encontrado."));
+        adoptionRepository.save(existingAdoption);
 
-        Adoption adoption = adoptionRepository.findById(adoptionId)
-                .orElseThrow(() -> new ResourceNotFoundException("Adopción con id " + adoptionId + " no encontrada."));
-
-        adoption.setAnimal(animal);
-        return adoptionRepository.save(adoption);
-    }
-    public Adoption modifyAdoptionUser(long adoptionId, long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario con id " + userId + " no encontrado."));
-
-        Adoption adoption = adoptionRepository.findById(adoptionId)
-                .orElseThrow(() -> new ResourceNotFoundException("Adopción con id " + adoptionId + " no encontrada."));
-
-        adoption.setUser(user);
-        return adoptionRepository.save(adoption);
+        AdoptionOutDTO adoptionOutDTO = modelMapper.map(existingAdoption, AdoptionOutDTO.class);
+        return adoptionOutDTO;
     }
     // endregion
 }

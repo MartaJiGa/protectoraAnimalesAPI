@@ -42,6 +42,6 @@ public class Location {
     private String description;
 
     @OneToMany(mappedBy = "location")
-    @JsonBackReference(value = "locations_cars")
+    @JsonBackReference(value = "locations_animals")
     private List<Animal> animals;
 }

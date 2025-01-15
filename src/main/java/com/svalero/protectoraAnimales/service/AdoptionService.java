@@ -2,15 +2,11 @@ package com.svalero.protectoraAnimales.service;
 
 import com.svalero.protectoraAnimales.domain.Adoption;
 import com.svalero.protectoraAnimales.domain.Animal;
-import com.svalero.protectoraAnimales.domain.Location;
 import com.svalero.protectoraAnimales.domain.User;
-import com.svalero.protectoraAnimales.domain.dto.AnimalInDTO;
-import com.svalero.protectoraAnimales.domain.dto.AnimalOutDTO;
 import com.svalero.protectoraAnimales.exception.ResourceNotFoundException;
 import com.svalero.protectoraAnimales.repository.AdoptionRepository;
 import com.svalero.protectoraAnimales.repository.AnimalRepository;
 import com.svalero.protectoraAnimales.repository.UserRepository;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -90,7 +86,7 @@ public class AdoptionService {
     // endregion
 
     // region POST request
-    public Adoption saveAnimal(long userId, long animalId, Adoption adoption){
+    public Adoption saveAdoption(long userId, long animalId, Adoption adoption){
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario con id " + userId + " no encontrado."));
@@ -115,17 +111,17 @@ public class AdoptionService {
     // endregion
 
     // region PUT request
-    public Adoption modifyAdoption(Adoption newAdoption, long adoptionId) {
+    public Adoption modifyAdoption(long adoptionId, Adoption newAdoption) {
         Adoption existingAdoption = adoptionRepository.findById(adoptionId)
                 .orElseThrow(() -> new ResourceNotFoundException("Adopción con id " + adoptionId + " no encontrada."));
 
-        existingAdoption.setTakeAccessories(newAdoption.getTakeAccessories());
+        existingAdoption.setTakeAccessories(newAdoption.isTakeAccessories());
         existingAdoption.setPickUpDate(newAdoption.getPickUpDate());
         existingAdoption.setPickUpTime(newAdoption.getPickUpTime());
 
         return adoptionRepository.save(existingAdoption);
     }
-    public Adoption modifyAdoptionAnimal(long animalId, long adoptionId) {
+    public Adoption modifyAdoptionAnimal(long adoptionId, long animalId) {
         Animal animal = animalRepository.findById(animalId)
                 .orElseThrow(() -> new ResourceNotFoundException("Animal con id " + animalId + " no encontrado."));
 
@@ -135,7 +131,7 @@ public class AdoptionService {
         adoption.setAnimal(animal);
         return adoptionRepository.save(adoption);
     }
-    public Adoption modifyAdoptionUser(long userId, long adoptionId) {
+    public Adoption modifyAdoptionUser(long adoptionId, long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario con id " + userId + " no encontrado."));
 

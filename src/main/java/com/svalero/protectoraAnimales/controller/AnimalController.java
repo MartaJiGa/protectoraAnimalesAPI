@@ -1,7 +1,6 @@
 package com.svalero.protectoraAnimales.controller;
 
 import com.svalero.protectoraAnimales.domain.Animal;
-import com.svalero.protectoraAnimales.domain.Location;
 import com.svalero.protectoraAnimales.domain.dto.AnimalInDTO;
 import com.svalero.protectoraAnimales.domain.dto.AnimalOutDTO;
 import com.svalero.protectoraAnimales.service.AnimalService;
@@ -66,7 +65,7 @@ public class AnimalController {
 
     //region DELETE request
     @DeleteMapping("/animal/{animalId}")
-    public ResponseEntity<Void> removeProduct(@PathVariable long animalId){
+    public ResponseEntity<Void> removeAnimal(@PathVariable long animalId){
         animalService.removeAnimal(animalId);
         return ResponseEntity.noContent().build();
     }

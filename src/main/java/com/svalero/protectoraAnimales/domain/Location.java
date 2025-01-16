@@ -1,5 +1,6 @@
 package com.svalero.protectoraAnimales.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -18,7 +19,7 @@ import java.util.List;
 public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long locationId;
+    private long id;
 
     @Column(name = "main_site")
     private boolean mainSite;
@@ -41,5 +42,6 @@ public class Location {
     private String description;
 
     @OneToMany(mappedBy = "location")
+    @JsonBackReference(value = "locations_animals")
     private List<Animal> animals;
 }

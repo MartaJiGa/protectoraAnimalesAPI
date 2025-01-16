@@ -1,5 +1,6 @@
 package com.svalero.protectoraAnimales.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -47,8 +48,10 @@ public class User {
     private String email;
 
     @OneToMany(mappedBy = "user")
+    @JsonBackReference(value = "user_adoptions")
     private List<Adoption> adoptions;
 
     @OneToMany(mappedBy = "user")
+    @JsonBackReference(value = "user_donations")
     private List<Donation> donations;
 }

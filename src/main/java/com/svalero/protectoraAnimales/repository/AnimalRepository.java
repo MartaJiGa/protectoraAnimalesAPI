@@ -16,4 +16,5 @@ public interface AnimalRepository extends CrudRepository<Animal, Long> {
     List<Animal> findBySpeciesAndSize(String species, String size);
     List<Animal> findByAgeAndSize(int age, String species);
     List<Animal> findBySpeciesAndAgeAndSize(String species, int age, String size);
+    List<Animal> findByLocationId(long locationId);
 }

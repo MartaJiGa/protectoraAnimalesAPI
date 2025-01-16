@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class LocationService {
@@ -20,67 +19,74 @@ public class LocationService {
     private AnimalRepository animalRepository;
 
     // region GET requests
+    public Location findById(long locationId){
+        return locationRepository.findById(locationId)
+                .orElseThrow(() -> new ResourceNotFoundException("Ubicación con id " + locationId + " no encontrada."));
+    }
     public List<Location> getLocations(){
-        return locationRepository.findAll();
+        List<Location> locations = locationRepository.findAll();
+        if (locations.isEmpty()) {
+            throw new ResourceNotFoundException("No se encontraron ubicaciones.");
+        }
+        return locations;
     }
-    public Optional<Location> findById(long locationId){
-        return locationRepository.findById(locationId);
-    }
-
-    // Para "/locations":
     public List<Location> findByCity(String city){
-        return locationRepository.findByCity(city);
+        List<Location> locations = locationRepository.findByCity(city);
+        if (locations.isEmpty()) {
+            throw new ResourceNotFoundException("No se encontraron ubicaciones en " + city);
+        }
+        return locations;
     }
-
     public List<Location> findByZipCode(String zipCode){
-        return locationRepository.findByZipCode(zipCode);
+        List<Location> locations = locationRepository.findByZipCode(zipCode);
+        if (locations.isEmpty()) {
+            throw new ResourceNotFoundException("No se encontraron ubicaciones con el código postal " + zipCode);
+        }
+        return locations;
     }
     public List<Location> findByCityAndZipCode(String city, String zipCode){
-        return locationRepository.findByCityAndZipCode(city, zipCode);
+        List<Location> locations = locationRepository.findByCityAndZipCode(city, zipCode);
+        if (locations.isEmpty()) {
+            throw new ResourceNotFoundException("No se encontraron ubicaciones en la ciudad " + city + " con código postal " + zipCode);
+        }
+        return locations;
     }
-
-    // Para "/location/{locationId}/animals":
-    public List<Animal> getAnimalsInLocation(long locationId) {
-        Location location = locationRepository.findById(locationId).orElseThrow(() -> new ResourceNotFoundException("Location not found"));
-        return location.getAnimals();
+    public List<Animal> findAnimalsByLocationId(long locationId){
+        List<Animal> animals = animalRepository.findByLocationId(locationId);
+        if (animals.isEmpty()) {
+            throw new ResourceNotFoundException("No se encontraron animales para esa ubicación.");
+        }
+        return animals;
     }
     // endregion
 
     // region POST request
-    public void saveLocation(Location location){
-        locationRepository.save(location);
-    }
-    public void saveAnimalByLocation(Animal animal, long locationId){
-        Optional<Location> location = findById(locationId);
-        if(location.isPresent()){
-            animal.setLocation(location.get());
-            animalRepository.save(animal);
-        }
+    public Location saveLocation(Location location){
+        return locationRepository.save(location);
     }
     // endregion
 
     // region DELETE request
     public void removeLocation(long locationId){
+        if (!locationRepository.existsById(locationId)) {
+            throw new ResourceNotFoundException("Ubicación con id " + locationId + " no encontrada.");
+        }
         locationRepository.deleteById(locationId);
     }
-
     // endregion
 
     // region PUT request
-    public void modifyLocation(Location newLocation, long locationId){
-        Optional<Location> location = locationRepository.findById(locationId);
+    public Location modifyLocation(Location newLocation, long locationId){
+        Location existingLocation = locationRepository.findById(locationId)
+                .orElseThrow(() -> new ResourceNotFoundException("Ubicación con id " + locationId + " no encontrada."));
 
-        if(location.isPresent()){
-            Location existingLocation = location.get();
+        existingLocation.setMainSite(newLocation.isMainSite());
+        existingLocation.setAddress(newLocation.getAddress());
+        existingLocation.setZipCode(newLocation.getZipCode());
+        existingLocation.setCity(newLocation.getCity());
+        existingLocation.setDescription(newLocation.getDescription());
 
-            existingLocation.setMainSite(newLocation.isMainSite());
-            existingLocation.setAddress(newLocation.getAddress());
-            existingLocation.setZipCode(newLocation.getZipCode());
-            existingLocation.setCity(newLocation.getCity());
-            existingLocation.setDescription(newLocation.getDescription());
-
-            locationRepository.save(existingLocation);
-        }
+        return locationRepository.save(existingLocation);
     }
     // endregion
 }

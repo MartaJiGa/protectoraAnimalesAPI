@@ -51,6 +51,9 @@ public class Animal {
     private boolean neutered;
 
     @Column
+    private boolean adopted;
+
+    @Column
     @Min(value = 0, message = "El precio no puede ser negativo")
     private float price;
 

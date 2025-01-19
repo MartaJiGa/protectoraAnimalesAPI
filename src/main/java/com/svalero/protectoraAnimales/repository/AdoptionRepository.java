@@ -1,6 +1,7 @@
 package com.svalero.protectoraAnimales.repository;
 
 import com.svalero.protectoraAnimales.domain.Adoption;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,4 +18,7 @@ public interface AdoptionRepository extends CrudRepository<Adoption, Long> {
     List<Adoption> findByAdoptionDateAndAnimalId(LocalDate adoptionDate, long animalId);
     List<Adoption> findByAnimalIdAndUserId(long animalId, long userId);
     List<Adoption> findByAdoptionDateAndAnimalIdAndUserId(LocalDate adoptionDate, long animalId, long userId);
+
+//    @Query("SELECT a FROM Adoption a WHERE a.pickUpDate > CURRENT_DATE AND a.pickUpDate <= CURRENT_DATE + 14")
+//    List<Adoption> findPickUpsInNextTwoWeeks();
 }

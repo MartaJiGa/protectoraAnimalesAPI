@@ -79,7 +79,7 @@ public class AdoptionController {
     }
     // endregion
 
-    //region POST request
+    // region POST request
     @PostMapping("/adoptions/user/{userId}/animal/{animalId}")
     public ResponseEntity<AdoptionOutDTO> saveAdoption(@PathVariable long userId, @PathVariable long animalId, @Valid @RequestBody Adoption adoption) {
         logger.info("BEGIN saveAdoption()");
@@ -89,7 +89,7 @@ public class AdoptionController {
     }
     // endregion
 
-    //region DELETE request
+    // region DELETE request
     @DeleteMapping("/adoption/{adoptionId}")
     public ResponseEntity<Void> removeAdoption(@PathVariable long adoptionId){
         logger.info("BEGIN removeAdoption()");
@@ -99,7 +99,7 @@ public class AdoptionController {
     }
     // endregion
 
-    //region PUT request
+    // region PUT request
     @PutMapping("/adoption/{adoptionId}/user/{userId}/animal/{animalId}")
     public ResponseEntity<AdoptionOutDTO> modifyAdoption(@PathVariable long adoptionId, @PathVariable long animalId, @PathVariable long userId, @Valid @RequestBody Adoption adoption){
         logger.info("BEGIN modifyAdoption()");

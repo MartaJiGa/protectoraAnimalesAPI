@@ -1,6 +1,9 @@
 package com.svalero.protectoraAnimales.exception;
 
 import com.svalero.protectoraAnimales.controller.AdoptionController;
+import com.svalero.protectoraAnimales.exception.adoption.AnimalAlreadyAdoptedException;
+import com.svalero.protectoraAnimales.exception.adoption.AnimalNotAdoptedException;
+import com.svalero.protectoraAnimales.exception.resource.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -16,6 +19,8 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     private final Logger logger = LoggerFactory.getLogger(AdoptionController.class);
+
+    // region excepciones generales
 
     // 400
     @org.springframework.web.bind.annotation.ExceptionHandler(MethodArgumentNotValidException.class)
@@ -50,4 +55,26 @@ public class GlobalExceptionHandler {
         logger.error(ex.getMessage(), ex);
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+    // endregion
+
+    // region excepciones específicas:
+
+    // 400: Animal ya adoptado
+    @org.springframework.web.bind.annotation.ExceptionHandler(AnimalAlreadyAdoptedException.class)
+    public ResponseEntity<ErrorResponse> animalAlreadyAdoptedException(AnimalAlreadyAdoptedException animalAlreadyAdoptedEx){
+        ErrorResponse errorResponse = new ErrorResponse(400, animalAlreadyAdoptedEx.getMessage(), null);
+
+        logger.error(animalAlreadyAdoptedEx.getMessage(), animalAlreadyAdoptedEx);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+    // 400: Animal no adoptado
+    @org.springframework.web.bind.annotation.ExceptionHandler(AnimalNotAdoptedException.class)
+    public ResponseEntity<ErrorResponse> animalNotAdoptedException(AnimalNotAdoptedException animalNotAdoptedEx){
+        ErrorResponse errorResponse = new ErrorResponse(400, animalNotAdoptedEx.getMessage(), null);
+
+        logger.error(animalNotAdoptedEx.getMessage(), animalNotAdoptedEx);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+    // endregion
 }

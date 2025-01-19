@@ -7,7 +7,8 @@ import com.svalero.protectoraAnimales.domain.Animal;
 import com.svalero.protectoraAnimales.domain.Location;
 import com.svalero.protectoraAnimales.domain.dto.AnimalInDTO;
 import com.svalero.protectoraAnimales.domain.dto.AnimalOutDTO;
-import com.svalero.protectoraAnimales.exception.ResourceNotFoundException;
+import com.svalero.protectoraAnimales.exception.adoption.AnimalNotAdoptedException;
+import com.svalero.protectoraAnimales.exception.resource.ResourceNotFoundException;
 import com.svalero.protectoraAnimales.repository.AnimalRepository;
 import com.svalero.protectoraAnimales.repository.LocationRepository;
 import org.modelmapper.ModelMapper;
@@ -102,6 +103,15 @@ public class AnimalService {
         List<AnimalOutDTO> animalOutDTOS = modelMapper.map(animals, new TypeToken<List<AnimalOutDTO>>(){}.getType());
         return animalOutDTOS;
     }
+    public List<AnimalOutDTO> findUnadoptedAnimalsByLocation(long locationId) {
+        List<Animal> animals = animalRepository.findUnadoptedAnimalsByLocation(locationId);
+        if (animals.isEmpty()) {
+            throw new ResourceNotFoundException("No se encontraron animales en adopción en la ubicación " + locationId);
+        }
+
+        List<AnimalOutDTO> animalOutDTOS = modelMapper.map(animals, new TypeToken<List<AnimalOutDTO>>(){}.getType());
+        return animalOutDTOS;
+    }
     // endregion
 
     // region POST request
@@ -162,6 +172,23 @@ public class AnimalService {
                 .orElseThrow(() -> new ResourceNotFoundException("Ubicación con id " + locationId + " no encontrada."));
 
         existingAnimal.setLocation(location);
+        animalRepository.save(existingAnimal);
+
+        AnimalOutDTO animalOutDTO = modelMapper.map(existingAnimal, AnimalOutDTO.class);
+        return animalOutDTO;
+    }
+    // endregion
+
+    // region PATCH request
+    public AnimalOutDTO returnAnimal(long animalId) {
+        Animal existingAnimal = animalRepository.findById(animalId)
+                .orElseThrow(() -> new ResourceNotFoundException("Animal con id " + animalId + " no encontrado."));
+
+        if (!existingAnimal.isAdopted()) {
+            throw new AnimalNotAdoptedException("Este animal todavía está en adopción, no es posible devolverlo.");
+        }
+
+        existingAnimal.setAdopted(false);
         animalRepository.save(existingAnimal);
 
         AnimalOutDTO animalOutDTO = modelMapper.map(existingAnimal, AnimalOutDTO.class);

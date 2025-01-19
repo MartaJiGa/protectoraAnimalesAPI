@@ -58,7 +58,7 @@ public class DonationController {
     }
     // endregion
 
-    //region POST request
+    // region POST request
     @PostMapping("/donations/user/{userId}")
     public ResponseEntity<DonationOutDTO> saveDonation(@PathVariable long userId, @Valid @RequestBody Donation donation) {
         logger.info("BEGIN saveDonation()");
@@ -68,7 +68,7 @@ public class DonationController {
     }
     // endregion
 
-    //region DELETE request
+    // region DELETE request
     @DeleteMapping("/donation/{donationId}")
     public ResponseEntity<Void> removeDonation(@PathVariable long donationId){
         logger.info("BEGIN removeDonation()");
@@ -78,7 +78,7 @@ public class DonationController {
     }
     // endregion
 
-    //region PUT request
+    // region PUT request
     @PutMapping("/donation/{donationId}/user/{userId}")
     public ResponseEntity<DonationOutDTO> modifyAdoption(@PathVariable long donationId, @PathVariable long userId, @Valid @RequestBody Donation donation){
         logger.info("BEGIN modifyAdoption()");

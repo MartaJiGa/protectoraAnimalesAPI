@@ -19,6 +19,7 @@ public class AnimalOutDTO {
     private String breed;
     private String size;
     private boolean neutered;
+    private boolean adopted;
     private float price;
     private String description;
 

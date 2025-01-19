@@ -3,7 +3,7 @@ package com.svalero.protectoraAnimales.service;
 import com.svalero.protectoraAnimales.domain.Donation;
 import com.svalero.protectoraAnimales.domain.User;
 import com.svalero.protectoraAnimales.domain.dto.DonationOutDTO;
-import com.svalero.protectoraAnimales.exception.ResourceNotFoundException;
+import com.svalero.protectoraAnimales.exception.resource.ResourceNotFoundException;
 import com.svalero.protectoraAnimales.repository.DonationRepository;
 import com.svalero.protectoraAnimales.repository.UserRepository;
 import org.modelmapper.ModelMapper;

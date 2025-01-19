@@ -4,7 +4,7 @@ import com.svalero.protectoraAnimales.domain.Adoption;
 import com.svalero.protectoraAnimales.domain.Animal;
 import com.svalero.protectoraAnimales.domain.User;
 import com.svalero.protectoraAnimales.domain.dto.AdoptionOutDTO;
-import com.svalero.protectoraAnimales.exception.ResourceNotFoundException;
+import com.svalero.protectoraAnimales.exception.resource.ResourceNotFoundException;
 import com.svalero.protectoraAnimales.repository.AdoptionRepository;
 import com.svalero.protectoraAnimales.repository.AnimalRepository;
 import com.svalero.protectoraAnimales.repository.UserRepository;
@@ -114,10 +114,17 @@ public class AdoptionService {
         Animal animal = animalRepository.findById(animalId)
                 .orElseThrow(() -> new ResourceNotFoundException("Animal con id " + animalId + " no encontrado."));
 
+        if (animal.isAdopted()) {
+            throw new IllegalStateException("Este animal ya ha sido adoptado.");
+        }
+
         adoption.setUser(user);
         adoption.setAnimal(animal);
         adoption.setAdoptionDate(LocalDate.now());
         adoptionRepository.save(adoption);
+
+        animal.setAdopted(true);
+        animalRepository.save(animal);
 
         AdoptionOutDTO adoptionOutDTO = modelMapper.map(adoption, AdoptionOutDTO.class);
         return adoptionOutDTO;

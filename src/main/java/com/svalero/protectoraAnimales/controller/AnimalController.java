@@ -75,9 +75,19 @@ public class AnimalController {
 
         return ResponseEntity.ok(animals);
     }
+    @GetMapping("/animals/{locationId}")
+    public ResponseEntity<List<AnimalOutDTO>> findUnadoptedAnimalsByLocation(@PathVariable long locationId){
+        List<AnimalOutDTO> animals;
+
+        logger.info("BEGIN findUnadoptedAnimalsByLocation()");
+        animals = animalService.findUnadoptedAnimalsByLocation(locationId);
+        logger.info("END findUnadoptedAnimalsByLocation()");
+
+        return ResponseEntity.ok(animals);
+    }
     // endregion
 
-    //region POST request
+    // region POST request
     @PostMapping("/location/{locationId}/animals")
     public ResponseEntity<AnimalOutDTO> saveAnimal(@PathVariable long locationId, @Valid @RequestBody AnimalInDTO animal) {
         logger.info("BEGIN saveAnimal()");
@@ -87,7 +97,7 @@ public class AnimalController {
     }
     // endregion
 
-    //region DELETE request
+    // region DELETE request
     @DeleteMapping("/animal/{animalId}")
     public ResponseEntity<Void> removeAnimal(@PathVariable long animalId){
         logger.info("BEGIN removeAnimal()");
@@ -97,7 +107,7 @@ public class AnimalController {
     }
     // endregion
 
-    //region PUT request
+    // region PUT request
     @PutMapping("/animal/{animalId}")
     public ResponseEntity<AnimalOutDTO> modifyAnimal(@Valid @RequestBody Animal animal, @PathVariable long animalId){
         logger.info("BEGIN modifyAnimal()");
@@ -111,6 +121,16 @@ public class AnimalController {
         AnimalOutDTO modifiedAnimal = animalService.modifyAnimalLocation(animalId, locationId);
         logger.info("END modifyAnimalLocation()");
         return ResponseEntity.ok(modifiedAnimal);
+    }
+    // endregion
+
+    // region PATCH request
+    @PatchMapping("/animal/{animalId}/return")
+    public ResponseEntity<AnimalOutDTO> returnAnimal(@PathVariable long animalId){
+        logger.info("BEGIN returnAnimal()");
+        AnimalOutDTO returnedAnimal = animalService.returnAnimal(animalId);
+        logger.info("END returnAnimal()");
+        return ResponseEntity.ok(returnedAnimal);
     }
     // endregion
 }

@@ -104,6 +104,16 @@ public class AdoptionService {
         List<AdoptionOutDTO> adoptionOutDTOS = modelMapper.map(adoptions, new TypeToken<List<AdoptionOutDTO>>(){}.getType());
         return adoptionOutDTOS;
     }
+    public List<AdoptionOutDTO> findPickUpsInNextTwoWeeks(){
+        LocalDate twoWeeksFromNow = LocalDate.now().plusWeeks(2);
+        List<Adoption> adoptions = adoptionRepository.findPickUpsInNextTwoWeeks(LocalDate.now(), twoWeeksFromNow);
+        if (adoptions.isEmpty()) {
+            throw new ResourceNotFoundException("No se encontraron fechas de recogida de adopciones en las dos próximas semanas.");
+        }
+
+        List<AdoptionOutDTO> adoptionOutDTOS = modelMapper.map(adoptions, new TypeToken<List<AdoptionOutDTO>>(){}.getType());
+        return adoptionOutDTOS;
+    }
     // endregion
 
     // region POST request

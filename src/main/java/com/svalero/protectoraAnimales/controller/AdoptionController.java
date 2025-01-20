@@ -31,7 +31,9 @@ public class AdoptionController {
         return adoption;
     }
     @GetMapping("/adoptions")
-    public ResponseEntity<List<AdoptionOutDTO>> findAllAdoptions(@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate adoptionDate, @RequestParam(defaultValue = "0") long userId, @RequestParam(defaultValue = "0") long animalId){
+    public ResponseEntity<List<AdoptionOutDTO>> findAllAdoptions(@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate adoptionDate,
+                                                                 @RequestParam(defaultValue = "0") long userId,
+                                                                 @RequestParam(defaultValue = "0") long animalId){
         List<AdoptionOutDTO> adoptions;
 
         if (adoptionDate != null && userId == 0 && animalId == 0) {
@@ -77,11 +79,23 @@ public class AdoptionController {
 
         return ResponseEntity.ok(adoptions);
     }
+    @GetMapping("/adoptions/pickups-next-two-weeks")
+    public ResponseEntity<List<AdoptionOutDTO>> findPickUpsInNextTwoWeeks(){
+        List<AdoptionOutDTO> adoptions;
+
+        logger.info("BEGIN findPickUpsInNextTwoWeeks()");
+        adoptions = adoptionService.findPickUpsInNextTwoWeeks();
+        logger.info("END findPickUpsInNextTwoWeeks()");
+
+        return ResponseEntity.ok(adoptions);
+    }
     // endregion
 
     // region POST request
     @PostMapping("/adoptions/user/{userId}/animal/{animalId}")
-    public ResponseEntity<AdoptionOutDTO> saveAdoption(@PathVariable long userId, @PathVariable long animalId, @Valid @RequestBody Adoption adoption) {
+    public ResponseEntity<AdoptionOutDTO> saveAdoption(@PathVariable long userId,
+                                                       @PathVariable long animalId,
+                                                       @Valid @RequestBody Adoption adoption) {
         logger.info("BEGIN saveAdoption()");
         AdoptionOutDTO savedAdoption = adoptionService.saveAdoption(userId, animalId, adoption);
         logger.info("END saveAdoption()");
@@ -101,7 +115,10 @@ public class AdoptionController {
 
     // region PUT request
     @PutMapping("/adoption/{adoptionId}/user/{userId}/animal/{animalId}")
-    public ResponseEntity<AdoptionOutDTO> modifyAdoption(@PathVariable long adoptionId, @PathVariable long animalId, @PathVariable long userId, @Valid @RequestBody Adoption adoption){
+    public ResponseEntity<AdoptionOutDTO> modifyAdoption(@PathVariable long adoptionId,
+                                                         @PathVariable long animalId,
+                                                         @PathVariable long userId,
+                                                         @Valid @RequestBody Adoption adoption){
         logger.info("BEGIN modifyAdoption()");
         AdoptionOutDTO updatedAdoption = adoptionService.modifyAdoption(adoptionId, animalId, userId, adoption);
         logger.info("END modifyAdoption()");

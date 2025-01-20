@@ -20,6 +20,6 @@ public interface AnimalRepository extends CrudRepository<Animal, Long> {
     List<Animal> findBySpeciesAndAgeAndSize(String species, int age, String size);
     List<Animal> findByLocationId(long locationId);
 
-    @Query("SELECT a FROM Animal a WHERE a.adopted = false AND a.location.id = :locationId")
+    @Query("SELECT a FROM animals a WHERE a.adopted = false AND a.location.id = :locationId")
     List<Animal> findUnadoptedAnimalsByLocation(@Param("locationId") long locationId);
 }

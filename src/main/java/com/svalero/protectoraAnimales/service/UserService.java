@@ -46,6 +46,13 @@ public class UserService {
         }
         return users;
     }
+    public List<User> findUsersWithAdoptionsAndDonations() {
+        List<User> users = userRepository.findUsersWithAdoptionsAndDonations();
+        if (users.isEmpty()) {
+            throw new ResourceNotFoundException("No se encontraron usuarios que hayan hecho adopciones y donaciones.");
+        }
+        return users;
+    }
     // endregion
 
     // region POST request

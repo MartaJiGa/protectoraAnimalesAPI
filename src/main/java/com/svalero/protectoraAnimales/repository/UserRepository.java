@@ -14,6 +14,6 @@ public interface UserRepository extends CrudRepository<User, Long> {
     List<User> findBySurname(String surname);
     List<User> findByNameAndSurname(String name, String surname);
 
-//    @Query("SELECT DISTINCT u FROM User u JOIN u.adoptions a JOIN u.donations d")
-//    List<User> findUsersWithAdoptionsAndDonations();
+    @Query("SELECT DISTINCT u FROM users u JOIN u.adoptions a JOIN u.donations d")
+    List<User> findUsersWithAdoptionsAndDonations();
 }

@@ -29,7 +29,8 @@ public class LocationController {
         return location;
     }
     @GetMapping("/locations")
-    public ResponseEntity<List<Location>> findAllLocations(@RequestParam(defaultValue = "") String city, @RequestParam(defaultValue = "") String zipCode){
+    public ResponseEntity<List<Location>> findAllLocations(@RequestParam(defaultValue = "") String city,
+                                                           @RequestParam(defaultValue = "") String zipCode){
         List<Location> locations;
 
         if(!city.isEmpty() && zipCode.isEmpty()){
@@ -86,7 +87,8 @@ public class LocationController {
 
     // region PUT request
     @PutMapping("/location/{locationId}")
-    public ResponseEntity<Location> modifyLocation(@Valid @RequestBody Location location, @PathVariable long locationId){
+    public ResponseEntity<Location> modifyLocation(@Valid @RequestBody Location location,
+                                                   @PathVariable long locationId){
         logger.info("BEGIN modifyLocation()");
         locationService.modifyLocation(location, locationId);
         logger.info("END modifyLocation()");

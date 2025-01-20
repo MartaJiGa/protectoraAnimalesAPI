@@ -28,8 +28,14 @@ public class UserController {
         return user;
     }
     @GetMapping("/users")
-    public ResponseEntity<List<User>> findAllUsers(@RequestParam(defaultValue = "") String name, @RequestParam(defaultValue = "") String surname){
+    public ResponseEntity<List<User>> findAllUsers(@RequestParam(defaultValue = "") String name,
+                                                   @RequestParam(defaultValue = "") String surname,
+                                                   @RequestParam(required = false) Boolean includeAdoptionsAndDonations){
         List<User> users;
+
+        if (includeAdoptionsAndDonations == null) {
+            includeAdoptionsAndDonations = false;
+        }
 
         if(!name.isEmpty() && surname.isEmpty()){
             logger.info("BEGIN findAllUsers() -> ByName");
@@ -45,6 +51,11 @@ public class UserController {
             logger.info("BEGIN findAllUsers() -> ByNameAndSurname");
             users = userService.findByNameAndSurname(name, surname);
             logger.info("END findAllUsers() -> ByNameAndSurname");
+        }
+        else if (includeAdoptionsAndDonations) {
+            logger.info("BEGIN findAllUsers() -> WithAdoptionsAndDonations");
+            users = userService.findUsersWithAdoptionsAndDonations();
+            logger.info("END findAllUsers() -> WithAdoptionsAndDonations");
         }
         else{
             logger.info("BEGIN findAllUsers()");
@@ -78,7 +89,8 @@ public class UserController {
 
     // region PUT request
     @PutMapping("/user/{userId}")
-    public ResponseEntity<User> modifyUser(@Valid @RequestBody User user, @PathVariable long userId){
+    public ResponseEntity<User> modifyUser(@Valid @RequestBody User user,
+                                           @PathVariable long userId){
         logger.info("BEGIN modifyUser()");
         userService.modifyUser(user, userId);
         logger.info("END modifyUser()");

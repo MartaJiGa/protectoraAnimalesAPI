@@ -30,7 +30,9 @@ public class AnimalController {
         return animal;
     }
     @GetMapping("/animals")
-    public ResponseEntity<List<AnimalOutDTO>> findAllAnimals(@RequestParam(defaultValue = "") String species, @RequestParam(defaultValue = "0") int age, @RequestParam(defaultValue = "") String size){
+    public ResponseEntity<List<AnimalOutDTO>> findAllAnimals(@RequestParam(defaultValue = "") String species,
+                                                             @RequestParam(defaultValue = "0") int age,
+                                                             @RequestParam(defaultValue = "") String size){
         List<AnimalOutDTO> animals;
 
         if (!species.isEmpty() && age == 0 && size.isEmpty()) {
@@ -89,7 +91,8 @@ public class AnimalController {
 
     // region POST request
     @PostMapping("/location/{locationId}/animals")
-    public ResponseEntity<AnimalOutDTO> saveAnimal(@PathVariable long locationId, @Valid @RequestBody AnimalInDTO animal) {
+    public ResponseEntity<AnimalOutDTO> saveAnimal(@PathVariable long locationId,
+                                                   @Valid @RequestBody AnimalInDTO animal) {
         logger.info("BEGIN saveAnimal()");
         AnimalOutDTO savedAnimal = animalService.saveAnimal(locationId, animal);
         logger.info("END saveAnimal()");
@@ -109,14 +112,16 @@ public class AnimalController {
 
     // region PUT request
     @PutMapping("/animal/{animalId}")
-    public ResponseEntity<AnimalOutDTO> modifyAnimal(@Valid @RequestBody Animal animal, @PathVariable long animalId){
+    public ResponseEntity<AnimalOutDTO> modifyAnimal(@Valid @RequestBody Animal animal,
+                                                     @PathVariable long animalId){
         logger.info("BEGIN modifyAnimal()");
         AnimalOutDTO modifiedAnimal = animalService.modifyAnimal(animal, animalId);
         logger.info("END modifyAnimal()");
         return ResponseEntity.ok(modifiedAnimal);
     }
     @PutMapping("/location/{locationId}/animal/{animalId}")
-    public ResponseEntity<AnimalOutDTO> modifyAnimalLocation(@PathVariable long locationId, @PathVariable long animalId) {
+    public ResponseEntity<AnimalOutDTO> modifyAnimalLocation(@PathVariable long locationId,
+                                                             @PathVariable long animalId) {
         logger.info("BEGIN modifyAnimalLocation()");
         AnimalOutDTO modifiedAnimal = animalService.modifyAnimalLocation(animalId, locationId);
         logger.info("END modifyAnimalLocation()");

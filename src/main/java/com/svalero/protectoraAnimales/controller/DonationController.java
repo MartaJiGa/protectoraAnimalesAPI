@@ -30,7 +30,8 @@ public class DonationController {
         return donation;
     }
     @GetMapping("/donations")
-    public ResponseEntity<List<DonationOutDTO>> findAllDonations(@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate donationDate, @RequestParam(defaultValue = "0") long userId){
+    public ResponseEntity<List<DonationOutDTO>> findAllDonations(@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate donationDate,
+                                                                 @RequestParam(defaultValue = "0") long userId){
         List<DonationOutDTO> donations;
 
         if (donationDate != null && userId == 0) {
@@ -60,7 +61,8 @@ public class DonationController {
 
     // region POST request
     @PostMapping("/donations/user/{userId}")
-    public ResponseEntity<DonationOutDTO> saveDonation(@PathVariable long userId, @Valid @RequestBody Donation donation) {
+    public ResponseEntity<DonationOutDTO> saveDonation(@PathVariable long userId,
+                                                       @Valid @RequestBody Donation donation) {
         logger.info("BEGIN saveDonation()");
         DonationOutDTO savedDonation = donationService.saveDonation(userId, donation);
         logger.info("END saveDonation()");
@@ -80,7 +82,9 @@ public class DonationController {
 
     // region PUT request
     @PutMapping("/donation/{donationId}/user/{userId}")
-    public ResponseEntity<DonationOutDTO> modifyAdoption(@PathVariable long donationId, @PathVariable long userId, @Valid @RequestBody Donation donation){
+    public ResponseEntity<DonationOutDTO> modifyAdoption(@PathVariable long donationId,
+                                                         @PathVariable long userId,
+                                                         @Valid @RequestBody Donation donation){
         logger.info("BEGIN modifyAdoption()");
         DonationOutDTO updatedDonation = donationService.modifyDonation(donationId, userId, donation);
         logger.info("END modifyAdoption()");

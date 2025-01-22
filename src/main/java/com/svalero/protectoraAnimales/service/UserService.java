@@ -1,8 +1,11 @@
 package com.svalero.protectoraAnimales.service;
 
 import com.svalero.protectoraAnimales.domain.User;
-import com.svalero.protectoraAnimales.exception.ResourceNotFoundException;
+import com.svalero.protectoraAnimales.domain.dto.user.UserChangeEmailInDTO;
+import com.svalero.protectoraAnimales.domain.dto.user.UserInDTO;
+import com.svalero.protectoraAnimales.exception.runtime.ResourceNotFoundException;
 import com.svalero.protectoraAnimales.repository.UserRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +15,8 @@ import java.util.List;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ModelMapper modelMapper;
 
     // region GET requests
     public User findById(long userId){
@@ -46,10 +51,19 @@ public class UserService {
         }
         return users;
     }
+    public List<User> findUsersWithAdoptionsAndDonations() {
+        List<User> users = userRepository.findUsersWithAdoptionsAndDonations();
+        if (users.isEmpty()) {
+            throw new ResourceNotFoundException("No se encontraron usuarios que hayan hecho adopciones y donaciones.");
+        }
+        return users;
+    }
     // endregion
 
     // region POST request
-    public User saveUser(User user){
+    public User saveUser(UserInDTO userInDTO){
+        User user = modelMapper.map(userInDTO, User.class);
+
         return userRepository.save(user);
     }
     // endregion
@@ -64,17 +78,30 @@ public class UserService {
     // endregion
 
     // region PUT request
-    public User modifyUser(User newUser, long userId){
+    public User modifyUser(UserInDTO userInDTO, long userId){
         User existingUser = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario con id " + userId + " no encontrado."));
 
-        existingUser.setUsername(newUser.getUsername());
-        existingUser.setName(newUser.getName());
-        existingUser.setSurname(newUser.getSurname());
-        existingUser.setDateOfBirth(newUser.getDateOfBirth());
-        existingUser.setEmail(newUser.getEmail());
+        User user = modelMapper.map(userInDTO, User.class);
+
+        existingUser.setUsername(user.getUsername());
+        existingUser.setName(user.getName());
+        existingUser.setSurname(user.getSurname());
+        existingUser.setDateOfBirth(user.getDateOfBirth());
+        existingUser.setEmail(user.getEmail());
 
         return userRepository.save(existingUser);
     }
     // endregion
+
+    // region PATCH request
+    public User changeUserEmail(long userId, UserChangeEmailInDTO userChangeEmail) {
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario con id " + userId + " no encontrado."));
+
+        existingUser.setEmail(userChangeEmail.getEmail());
+        userRepository.save(existingUser);
+
+        return existingUser;
+    }
 }

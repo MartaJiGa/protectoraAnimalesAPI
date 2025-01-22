@@ -1,6 +1,8 @@
 package com.svalero.protectoraAnimales.exception;
 
 import com.svalero.protectoraAnimales.controller.AdoptionController;
+import com.svalero.protectoraAnimales.exception.runtime.NoChangeException;
+import com.svalero.protectoraAnimales.exception.runtime.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,8 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     private final Logger logger = LoggerFactory.getLogger(AdoptionController.class);
+
+    // region excepciones generales
 
     // 400
     @org.springframework.web.bind.annotation.ExceptionHandler(MethodArgumentNotValidException.class)
@@ -50,4 +54,17 @@ public class GlobalExceptionHandler {
         logger.error(ex.getMessage(), ex);
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+    // endregion
+
+    // region excepciones específicas:
+
+    // 400: Comprobaciones de datos que no necesitan/deben cambiar
+    @org.springframework.web.bind.annotation.ExceptionHandler(NoChangeException.class)
+    public ResponseEntity<ErrorResponse> NoChangeException(NoChangeException noChangeEx){
+        ErrorResponse errorResponse = new ErrorResponse(400, noChangeEx.getMessage(), null);
+
+        logger.error(noChangeEx.getMessage(), noChangeEx);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+    // endregion
 }

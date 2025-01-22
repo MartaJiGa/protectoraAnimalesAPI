@@ -5,9 +5,10 @@ import java.util.List;
 
 import com.svalero.protectoraAnimales.domain.Animal;
 import com.svalero.protectoraAnimales.domain.Location;
-import com.svalero.protectoraAnimales.domain.dto.AnimalInDTO;
-import com.svalero.protectoraAnimales.domain.dto.AnimalOutDTO;
-import com.svalero.protectoraAnimales.exception.ResourceNotFoundException;
+import com.svalero.protectoraAnimales.domain.dto.animal.AnimalInDTO;
+import com.svalero.protectoraAnimales.domain.dto.animal.AnimalOutDTO;
+import com.svalero.protectoraAnimales.exception.runtime.NoChangeException;
+import com.svalero.protectoraAnimales.exception.runtime.ResourceNotFoundException;
 import com.svalero.protectoraAnimales.repository.AnimalRepository;
 import com.svalero.protectoraAnimales.repository.LocationRepository;
 import org.modelmapper.ModelMapper;
@@ -102,6 +103,15 @@ public class AnimalService {
         List<AnimalOutDTO> animalOutDTOS = modelMapper.map(animals, new TypeToken<List<AnimalOutDTO>>(){}.getType());
         return animalOutDTOS;
     }
+    public List<AnimalOutDTO> findUnadoptedAnimalsByLocation(long locationId) {
+        List<Animal> animals = animalRepository.findUnadoptedAnimalsByLocation(locationId);
+        if (animals.isEmpty()) {
+            throw new ResourceNotFoundException("No se encontraron animales en adopción en la ubicación " + locationId);
+        }
+
+        List<AnimalOutDTO> animalOutDTOS = modelMapper.map(animals, new TypeToken<List<AnimalOutDTO>>(){}.getType());
+        return animalOutDTOS;
+    }
     // endregion
 
     // region POST request
@@ -136,18 +146,21 @@ public class AnimalService {
     // endregion
 
     // region PUT request
-    public AnimalOutDTO modifyAnimal(Animal newAnimal, long animalId) {
+    public AnimalOutDTO modifyAnimal(AnimalInDTO animalInDTO, long animalId) {
         Animal existingAnimal = animalRepository.findById(animalId)
                 .orElseThrow(() -> new ResourceNotFoundException("Animal con id " + animalId + " no encontrado."));
 
-        existingAnimal.setName(newAnimal.getName());
-        existingAnimal.setSpecies(newAnimal.getSpecies());
-        existingAnimal.setAge(newAnimal.getAge());
-        existingAnimal.setBreed(newAnimal.getBreed());
-        existingAnimal.setSize(newAnimal.getSize());
-        existingAnimal.setNeutered(newAnimal.isNeutered());
-        existingAnimal.setPrice(newAnimal.getPrice());
-        existingAnimal.setDescription(newAnimal.getDescription());
+        Animal animal = modelMapper.map(animalInDTO, Animal.class);
+
+        existingAnimal.setName(animal.getName());
+        existingAnimal.setSpecies(animal.getSpecies());
+        existingAnimal.setAge(animal.getAge());
+        existingAnimal.setBreed(animal.getBreed());
+        existingAnimal.setSize(animal.getSize());
+        existingAnimal.setNeutered(animal.isNeutered());
+        existingAnimal.setAdopted(animal.isAdopted());
+        existingAnimal.setPrice(animal.getPrice());
+        existingAnimal.setDescription(animal.getDescription());
 
         animalRepository.save(existingAnimal);
 
@@ -162,6 +175,23 @@ public class AnimalService {
                 .orElseThrow(() -> new ResourceNotFoundException("Ubicación con id " + locationId + " no encontrada."));
 
         existingAnimal.setLocation(location);
+        animalRepository.save(existingAnimal);
+
+        AnimalOutDTO animalOutDTO = modelMapper.map(existingAnimal, AnimalOutDTO.class);
+        return animalOutDTO;
+    }
+    // endregion
+
+    // region PATCH request
+    public AnimalOutDTO returnAnimal(long animalId) {
+        Animal existingAnimal = animalRepository.findById(animalId)
+                .orElseThrow(() -> new ResourceNotFoundException("Animal con id " + animalId + " no encontrado."));
+
+        if (!existingAnimal.isAdopted()) {
+            throw new NoChangeException("Este animal todavía está en adopción, no es posible devolverlo.");
+        }
+
+        existingAnimal.setAdopted(false);
         animalRepository.save(existingAnimal);
 
         AnimalOutDTO animalOutDTO = modelMapper.map(existingAnimal, AnimalOutDTO.class);

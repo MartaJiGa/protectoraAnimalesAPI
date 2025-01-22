@@ -2,6 +2,7 @@ package com.svalero.protectoraAnimales.controller;
 
 import com.svalero.protectoraAnimales.domain.Animal;
 import com.svalero.protectoraAnimales.domain.Location;
+import com.svalero.protectoraAnimales.domain.dto.location.LocationInDTO;
 import com.svalero.protectoraAnimales.service.LocationService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -29,7 +30,8 @@ public class LocationController {
         return location;
     }
     @GetMapping("/locations")
-    public ResponseEntity<List<Location>> findAllLocations(@RequestParam(defaultValue = "") String city, @RequestParam(defaultValue = "") String zipCode){
+    public ResponseEntity<List<Location>> findAllLocations(@RequestParam(defaultValue = "") String city,
+                                                           @RequestParam(defaultValue = "") String zipCode){
         List<Location> locations;
 
         if(!city.isEmpty() && zipCode.isEmpty()){
@@ -66,7 +68,7 @@ public class LocationController {
 
     // region POST request
     @PostMapping("/locations")
-    public ResponseEntity<Location> saveLocation(@Valid @RequestBody Location location){
+    public ResponseEntity<Location> saveLocation(@Valid @RequestBody LocationInDTO location){
         logger.info("BEGIN saveLocation()");
         Location savedLocation = locationService.saveLocation(location);
         logger.info("END saveLocation()");
@@ -86,11 +88,21 @@ public class LocationController {
 
     // region PUT request
     @PutMapping("/location/{locationId}")
-    public ResponseEntity<Location> modifyLocation(@Valid @RequestBody Location location, @PathVariable long locationId){
+    public ResponseEntity<Location> modifyLocation(@Valid @RequestBody LocationInDTO location,
+                                                   @PathVariable long locationId){
         logger.info("BEGIN modifyLocation()");
-        locationService.modifyLocation(location, locationId);
+        Location returnedLocation = locationService.modifyLocation(location, locationId);
         logger.info("END modifyLocation()");
-        return ResponseEntity.ok(location);
+        return ResponseEntity.ok(returnedLocation);
     }
     // endregion
+
+    // region PATCH request
+    @PatchMapping("/location/{locationId}/mainSite")
+    public ResponseEntity<Location> changeMainSite(@PathVariable long locationId){
+        logger.info("BEGIN changeMainSite()");
+        Location returnedLocation = locationService.changeMainSite(locationId);
+        logger.info("END changeMainSite()");
+        return ResponseEntity.ok(returnedLocation);
+    }
 }

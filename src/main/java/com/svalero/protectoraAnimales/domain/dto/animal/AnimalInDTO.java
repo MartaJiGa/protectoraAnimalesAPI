@@ -1,5 +1,6 @@
-package com.svalero.protectoraAnimales.domain.dto;
+package com.svalero.protectoraAnimales.domain.dto.animal;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -7,8 +8,6 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -34,6 +33,9 @@ public class AnimalInDTO {
     private String size;
 
     private boolean neutered;
+
+    @Column
+    private boolean adopted;
 
     @Min(value = 0, message = "El precio no puede ser negativo")
     private float price;

@@ -1,6 +1,8 @@
 package com.svalero.protectoraAnimales.controller;
 
 import com.svalero.protectoraAnimales.domain.User;
+import com.svalero.protectoraAnimales.domain.dto.user.UserChangeEmailInDTO;
+import com.svalero.protectoraAnimales.domain.dto.user.UserInDTO;
 import com.svalero.protectoraAnimales.service.UserService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -28,8 +30,14 @@ public class UserController {
         return user;
     }
     @GetMapping("/users")
-    public ResponseEntity<List<User>> findAllUsers(@RequestParam(defaultValue = "") String name, @RequestParam(defaultValue = "") String surname){
+    public ResponseEntity<List<User>> findAllUsers(@RequestParam(defaultValue = "") String name,
+                                                   @RequestParam(defaultValue = "") String surname,
+                                                   @RequestParam(required = false) Boolean includeAdoptionsAndDonations){
         List<User> users;
+
+        if (includeAdoptionsAndDonations == null) {
+            includeAdoptionsAndDonations = false;
+        }
 
         if(!name.isEmpty() && surname.isEmpty()){
             logger.info("BEGIN findAllUsers() -> ByName");
@@ -46,6 +54,11 @@ public class UserController {
             users = userService.findByNameAndSurname(name, surname);
             logger.info("END findAllUsers() -> ByNameAndSurname");
         }
+        else if (includeAdoptionsAndDonations) {
+            logger.info("BEGIN findAllUsers() -> WithAdoptionsAndDonations");
+            users = userService.findUsersWithAdoptionsAndDonations();
+            logger.info("END findAllUsers() -> WithAdoptionsAndDonations");
+        }
         else{
             logger.info("BEGIN findAllUsers()");
             users = userService.getUsers();
@@ -58,7 +71,7 @@ public class UserController {
 
     // region POST request
     @PostMapping("/users")
-    public ResponseEntity<User> saveUser(@Valid @RequestBody User user){
+    public ResponseEntity<User> saveUser(@Valid @RequestBody UserInDTO user){
         logger.info("BEGIN saveUser()");
         User savedUser = userService.saveUser(user);
         logger.info("END saveUser()");
@@ -78,11 +91,23 @@ public class UserController {
 
     // region PUT request
     @PutMapping("/user/{userId}")
-    public ResponseEntity<User> modifyUser(@Valid @RequestBody User user, @PathVariable long userId){
+    public ResponseEntity<User> modifyUser(@Valid @RequestBody UserInDTO user,
+                                           @PathVariable long userId){
         logger.info("BEGIN modifyUser()");
-        userService.modifyUser(user, userId);
+        User savedUser = userService.modifyUser(user, userId);
         logger.info("END modifyUser()");
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(savedUser);
+    }
+    // endregion
+
+    // region PATCH request
+    @PatchMapping("/user/{userId}/email")
+    public ResponseEntity<User> changeUserEmail(@PathVariable long userId,
+                                                @Valid @RequestBody UserChangeEmailInDTO userChangeEmail){
+        logger.info("BEGIN changeUserEmail()");
+        User changedEmail = userService.changeUserEmail(userId, userChangeEmail);
+        logger.info("END changeUserEmail()");
+        return ResponseEntity.ok(changedEmail);
     }
     // endregion
 }

@@ -1,7 +1,9 @@
 package com.svalero.protectoraAnimales.repository;
 
 import com.svalero.protectoraAnimales.domain.Animal;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,4 +19,7 @@ public interface AnimalRepository extends CrudRepository<Animal, Long> {
     List<Animal> findByAgeAndSize(int age, String species);
     List<Animal> findBySpeciesAndAgeAndSize(String species, int age, String size);
     List<Animal> findByLocationId(long locationId);
+
+    @Query("SELECT a FROM animals a WHERE a.adopted = false AND a.location.id = :locationId")
+    List<Animal> findUnadoptedAnimalsByLocation(@Param("locationId") long locationId);
 }

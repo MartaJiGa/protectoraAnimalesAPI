@@ -1,9 +1,12 @@
 package com.svalero.protectoraAnimales.service;
 
+import com.svalero.protectoraAnimales.domain.Animal;
 import com.svalero.protectoraAnimales.domain.Donation;
 import com.svalero.protectoraAnimales.domain.User;
-import com.svalero.protectoraAnimales.domain.dto.DonationOutDTO;
-import com.svalero.protectoraAnimales.exception.ResourceNotFoundException;
+import com.svalero.protectoraAnimales.domain.dto.donation.DonationInDTO;
+import com.svalero.protectoraAnimales.domain.dto.donation.DonationOutDTO;
+import com.svalero.protectoraAnimales.domain.dto.donation.DonationSplitPaymentInDTO;
+import com.svalero.protectoraAnimales.exception.runtime.ResourceNotFoundException;
 import com.svalero.protectoraAnimales.repository.DonationRepository;
 import com.svalero.protectoraAnimales.repository.UserRepository;
 import org.modelmapper.ModelMapper;
@@ -67,10 +70,12 @@ public class DonationService {
     // endregion
 
     // region POST request
-    public DonationOutDTO saveDonation(long userId, Donation donation){
+    public DonationOutDTO saveDonation(long userId, DonationInDTO donationInDTO){
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario con id " + userId + " no encontrado."));
+
+        Donation donation = modelMapper.map(donationInDTO, Donation.class);
 
         donation.setUser(user);
         donation.setDonationDate(LocalDate.now());
@@ -91,16 +96,18 @@ public class DonationService {
     // endregion
 
     // region PUT request
-    public DonationOutDTO modifyDonation(long donationId, long userId, Donation newDonation) {
+    public DonationOutDTO modifyDonation(long donationId, long userId, DonationInDTO donationInDTO) {
         Donation existingDonation = donationRepository.findById(donationId)
                 .orElseThrow(() -> new ResourceNotFoundException("Donación con id " + donationId + " no encontrada."));
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario con id " + userId + " no encontrado."));
 
-        existingDonation.setQuantity(newDonation.getQuantity());
-        existingDonation.setPaymentType(newDonation.getPaymentType());
-        existingDonation.setSplitPayment(newDonation.isSplitPayment());
+        Donation donation = modelMapper.map(donationInDTO, Donation.class);
+
+        existingDonation.setQuantity(donation.getQuantity());
+        existingDonation.setPaymentType(donation.getPaymentType());
+        existingDonation.setSplitPayment(donation.isSplitPayment());
         existingDonation.setUser(user);
 
         donationRepository.save(existingDonation);
@@ -109,4 +116,18 @@ public class DonationService {
         return donationOutDTO;
     }
     // endregion
+
+    // region PATCH request
+    public DonationOutDTO splitPayment(long donationId, DonationSplitPaymentInDTO donationSplitPayment) {
+        Donation existingDonation = donationRepository.findById(donationId)
+                .orElseThrow(() -> new ResourceNotFoundException("Donación con id " + donationId + " no encontrada."));
+
+        existingDonation.setSplitPayment(donationSplitPayment.isSplitPayment());
+        existingDonation.setSplitPaymentQuantity(donationSplitPayment.getSplitPaymentQuantity());
+
+        donationRepository.save(existingDonation);
+
+        DonationOutDTO donationOutDTO = modelMapper.map(existingDonation, DonationOutDTO.class);
+        return donationOutDTO;
+    }
 }

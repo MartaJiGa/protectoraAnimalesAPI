@@ -1,4 +1,4 @@
-package com.svalero.protectoraAnimales.domain.dto;
+package com.svalero.protectoraAnimales.domain.dto.animal;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +19,7 @@ public class AnimalOutDTO {
     private String breed;
     private String size;
     private boolean neutered;
+    private boolean adopted;
     private float price;
     private String description;
 

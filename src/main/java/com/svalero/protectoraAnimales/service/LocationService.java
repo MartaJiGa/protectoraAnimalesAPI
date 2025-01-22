@@ -2,9 +2,12 @@ package com.svalero.protectoraAnimales.service;
 
 import com.svalero.protectoraAnimales.domain.Animal;
 import com.svalero.protectoraAnimales.domain.Location;
-import com.svalero.protectoraAnimales.exception.ResourceNotFoundException;
+import com.svalero.protectoraAnimales.domain.dto.location.LocationInDTO;
+import com.svalero.protectoraAnimales.exception.runtime.ResourceNotFoundException;
+import com.svalero.protectoraAnimales.exception.runtime.NoChangeException;
 import com.svalero.protectoraAnimales.repository.AnimalRepository;
 import com.svalero.protectoraAnimales.repository.LocationRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +20,8 @@ public class LocationService {
     private LocationRepository locationRepository;
     @Autowired
     private AnimalRepository animalRepository;
+    @Autowired
+    private ModelMapper modelMapper;
 
     // region GET requests
     public Location findById(long locationId){
@@ -61,8 +66,11 @@ public class LocationService {
     // endregion
 
     // region POST request
-    public Location saveLocation(Location location){
-        return locationRepository.save(location);
+    public Location saveLocation(LocationInDTO locationInDTO){
+        Location location = modelMapper.map(locationInDTO, Location.class);
+        locationRepository.save(location);
+
+        return location;
     }
     // endregion
 
@@ -76,17 +84,36 @@ public class LocationService {
     // endregion
 
     // region PUT request
-    public Location modifyLocation(Location newLocation, long locationId){
+    public Location modifyLocation(LocationInDTO locationInDTO, long locationId){
         Location existingLocation = locationRepository.findById(locationId)
                 .orElseThrow(() -> new ResourceNotFoundException("Ubicación con id " + locationId + " no encontrada."));
 
-        existingLocation.setMainSite(newLocation.isMainSite());
-        existingLocation.setAddress(newLocation.getAddress());
-        existingLocation.setZipCode(newLocation.getZipCode());
-        existingLocation.setCity(newLocation.getCity());
-        existingLocation.setDescription(newLocation.getDescription());
+        Location location = modelMapper.map(locationInDTO, Location.class);
+        locationRepository.save(location);
+
+        existingLocation.setMainSite(location.isMainSite());
+        existingLocation.setAddress(location.getAddress());
+        existingLocation.setZipCode(location.getZipCode());
+        existingLocation.setCity(location.getCity());
+        existingLocation.setDescription(location.getDescription());
 
         return locationRepository.save(existingLocation);
+    }
+    // endregion
+
+    // region PATCH request
+    public Location changeMainSite(long locationId) {
+        Location existingLocation = locationRepository.findById(locationId)
+                .orElseThrow(() -> new ResourceNotFoundException("Ubicación con id " + locationId + " no encontrada."));
+
+        if (existingLocation.isMainSite()) {
+            throw new NoChangeException("Esta ubicación ya es la principal, por lo que no necesita cambiar.");
+        }
+
+        existingLocation.setMainSite(true);
+        locationRepository.save(existingLocation);
+
+        return existingLocation;
     }
     // endregion
 }

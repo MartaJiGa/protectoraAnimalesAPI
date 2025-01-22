@@ -3,17 +3,17 @@ Primera Actividad de Aprendizaje de la asignatura Acceso a Datos en Centro San V
 
 
 
-+---------------------------------------------------------------+
-                          INTRODUCCIÓN
-+---------------------------------------------------------------+
++---------------------------------+
+           INTRODUCCIÓN
++---------------------------------+
 
 Esta API es una herramienta para gestionar una protectora de animales. En este caso se le ha dado título: tiene como nombre "Refugio Bastet" en honor a la diosa egipcia de nombre homónimo con forma de gato que, entre otras cosas, representa la protección (base sobre la que se debería erigir cualquier protectora de animales). Por lo tanto, ponemos a disposición esta aplicación para facilitar la gestión de un centro de estas características.
 
 
 
-+----------------------------------------------------------+
-                    CARACTERÍSTICAS TÉCNICAS
-+----------------------------------------------------------+
++---------------------------------+
+     CARACTERÍSTICAS TÉCNICAS
++---------------------------------+
 
 Utiliza java, por lo que se necesita tener instalado un JRE (Java Runtime Environment) o JDK (Java Development Kit) para ejecutarse.
 

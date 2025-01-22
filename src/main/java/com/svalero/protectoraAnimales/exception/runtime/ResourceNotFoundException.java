@@ -1,4 +1,4 @@
-package com.svalero.protectoraAnimales.exception.resource;
+package com.svalero.protectoraAnimales.exception.runtime;
 
 public class ResourceNotFoundException extends RuntimeException {
     public ResourceNotFoundException(String message) {

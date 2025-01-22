@@ -3,8 +3,10 @@ package com.svalero.protectoraAnimales.service;
 import com.svalero.protectoraAnimales.domain.Adoption;
 import com.svalero.protectoraAnimales.domain.Animal;
 import com.svalero.protectoraAnimales.domain.User;
-import com.svalero.protectoraAnimales.domain.dto.AdoptionOutDTO;
-import com.svalero.protectoraAnimales.exception.resource.ResourceNotFoundException;
+import com.svalero.protectoraAnimales.domain.dto.adoption.AdoptionChangePickUpInDTO;
+import com.svalero.protectoraAnimales.domain.dto.adoption.AdoptionInDTO;
+import com.svalero.protectoraAnimales.domain.dto.adoption.AdoptionOutDTO;
+import com.svalero.protectoraAnimales.exception.runtime.ResourceNotFoundException;
 import com.svalero.protectoraAnimales.repository.AdoptionRepository;
 import com.svalero.protectoraAnimales.repository.AnimalRepository;
 import com.svalero.protectoraAnimales.repository.UserRepository;
@@ -117,12 +119,14 @@ public class AdoptionService {
     // endregion
 
     // region POST request
-    public AdoptionOutDTO saveAdoption(long userId, long animalId, Adoption adoption){
+    public AdoptionOutDTO saveAdoption(long userId, long animalId, AdoptionInDTO adoptionInDTO){
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario con id " + userId + " no encontrado."));
         Animal animal = animalRepository.findById(animalId)
                 .orElseThrow(() -> new ResourceNotFoundException("Animal con id " + animalId + " no encontrado."));
+
+        Adoption adoption = modelMapper.map(adoptionInDTO, Adoption.class);
 
         if (animal.isAdopted()) {
             throw new IllegalStateException("Este animal ya ha sido adoptado.");
@@ -151,7 +155,7 @@ public class AdoptionService {
     // endregion
 
     // region PUT request
-    public AdoptionOutDTO modifyAdoption(long adoptionId, long animalId, long userId, Adoption newAdoption) {
+    public AdoptionOutDTO modifyAdoption(long adoptionId, long animalId, long userId, AdoptionInDTO adoptionInDTO) {
         Adoption existingAdoption = adoptionRepository.findById(adoptionId)
                 .orElseThrow(() -> new ResourceNotFoundException("Adopción con id " + adoptionId + " no encontrada."));
 
@@ -161,11 +165,28 @@ public class AdoptionService {
         Animal animal = animalRepository.findById(animalId)
                 .orElseThrow(() -> new ResourceNotFoundException("Animal con id " + animalId + " no encontrado."));
 
-        existingAdoption.setTakeAccessories(newAdoption.isTakeAccessories());
-        existingAdoption.setPickUpDate(newAdoption.getPickUpDate());
-        existingAdoption.setPickUpTime(newAdoption.getPickUpTime());
+        Adoption adoption = modelMapper.map(adoptionInDTO, Adoption.class);
+
+        existingAdoption.setTakeAccessories(adoption.isTakeAccessories());
+        existingAdoption.setPickUpDate(adoption.getPickUpDate());
+        existingAdoption.setPickUpTime(adoption.getPickUpTime());
         existingAdoption.setUser(user);
         existingAdoption.setAnimal(animal);
+
+        adoptionRepository.save(existingAdoption);
+
+        AdoptionOutDTO adoptionOutDTO = modelMapper.map(existingAdoption, AdoptionOutDTO.class);
+        return adoptionOutDTO;
+    }
+    // endregion
+
+    // region PATCH request
+    public AdoptionOutDTO changePickUpData(long adoptionId, AdoptionChangePickUpInDTO adoptionPickUpData) {
+        Adoption existingAdoption = adoptionRepository.findById(adoptionId)
+                .orElseThrow(() -> new ResourceNotFoundException("Adopción con id " + adoptionId + " no encontrada."));
+
+        existingAdoption.setPickUpDate(adoptionPickUpData.getPickUpDate());
+        existingAdoption.setPickUpTime(adoptionPickUpData.getPickUpTime());
 
         adoptionRepository.save(existingAdoption);
 

@@ -1,7 +1,9 @@
 package com.svalero.protectoraAnimales.controller;
 
 import com.svalero.protectoraAnimales.domain.Donation;
-import com.svalero.protectoraAnimales.domain.dto.DonationOutDTO;
+import com.svalero.protectoraAnimales.domain.dto.donation.DonationInDTO;
+import com.svalero.protectoraAnimales.domain.dto.donation.DonationOutDTO;
+import com.svalero.protectoraAnimales.domain.dto.donation.DonationSplitPaymentInDTO;
 import com.svalero.protectoraAnimales.service.DonationService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -62,7 +64,7 @@ public class DonationController {
     // region POST request
     @PostMapping("/donations/user/{userId}")
     public ResponseEntity<DonationOutDTO> saveDonation(@PathVariable long userId,
-                                                       @Valid @RequestBody Donation donation) {
+                                                       @Valid @RequestBody DonationInDTO donation) {
         logger.info("BEGIN saveDonation()");
         DonationOutDTO savedDonation = donationService.saveDonation(userId, donation);
         logger.info("END saveDonation()");
@@ -84,11 +86,22 @@ public class DonationController {
     @PutMapping("/donation/{donationId}/user/{userId}")
     public ResponseEntity<DonationOutDTO> modifyAdoption(@PathVariable long donationId,
                                                          @PathVariable long userId,
-                                                         @Valid @RequestBody Donation donation){
+                                                         @Valid @RequestBody DonationInDTO donation){
         logger.info("BEGIN modifyAdoption()");
         DonationOutDTO updatedDonation = donationService.modifyDonation(donationId, userId, donation);
         logger.info("END modifyAdoption()");
         return ResponseEntity.ok(updatedDonation);
+    }
+    // endregion
+
+    // region PATCH request
+    @PatchMapping("/donation/{donationId}/splitPayment")
+    public ResponseEntity<DonationOutDTO> splitPayment(@PathVariable long donationId,
+                                                       @Valid @RequestBody DonationSplitPaymentInDTO donationSplitPayment){
+        logger.info("BEGIN splitPayment()");
+        DonationOutDTO paymentDataChanged = donationService.splitPayment(donationId, donationSplitPayment);
+        logger.info("END splitPayment()");
+        return ResponseEntity.ok(paymentDataChanged);
     }
     // endregion
 }

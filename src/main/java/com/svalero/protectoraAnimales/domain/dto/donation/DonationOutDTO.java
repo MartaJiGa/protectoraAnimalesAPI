@@ -1,4 +1,4 @@
-package com.svalero.protectoraAnimales.domain.dto;
+package com.svalero.protectoraAnimales.domain.dto.donation;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

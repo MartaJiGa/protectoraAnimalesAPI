@@ -1,4 +1,4 @@
-package com.svalero.protectoraAnimales.domain.dto;
+package com.svalero.protectoraAnimales.domain.dto.animal;
 
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.Min;
@@ -8,8 +8,6 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor

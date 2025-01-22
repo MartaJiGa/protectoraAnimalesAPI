@@ -1,7 +1,9 @@
 package com.svalero.protectoraAnimales.controller;
 
 import com.svalero.protectoraAnimales.domain.Adoption;
-import com.svalero.protectoraAnimales.domain.dto.AdoptionOutDTO;
+import com.svalero.protectoraAnimales.domain.dto.adoption.AdoptionChangePickUpInDTO;
+import com.svalero.protectoraAnimales.domain.dto.adoption.AdoptionInDTO;
+import com.svalero.protectoraAnimales.domain.dto.adoption.AdoptionOutDTO;
 import com.svalero.protectoraAnimales.service.AdoptionService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -95,7 +97,7 @@ public class AdoptionController {
     @PostMapping("/adoptions/user/{userId}/animal/{animalId}")
     public ResponseEntity<AdoptionOutDTO> saveAdoption(@PathVariable long userId,
                                                        @PathVariable long animalId,
-                                                       @Valid @RequestBody Adoption adoption) {
+                                                       @Valid @RequestBody AdoptionInDTO adoption) {
         logger.info("BEGIN saveAdoption()");
         AdoptionOutDTO savedAdoption = adoptionService.saveAdoption(userId, animalId, adoption);
         logger.info("END saveAdoption()");
@@ -118,11 +120,22 @@ public class AdoptionController {
     public ResponseEntity<AdoptionOutDTO> modifyAdoption(@PathVariable long adoptionId,
                                                          @PathVariable long animalId,
                                                          @PathVariable long userId,
-                                                         @Valid @RequestBody Adoption adoption){
+                                                         @Valid @RequestBody AdoptionInDTO adoption){
         logger.info("BEGIN modifyAdoption()");
         AdoptionOutDTO updatedAdoption = adoptionService.modifyAdoption(adoptionId, animalId, userId, adoption);
         logger.info("END modifyAdoption()");
         return ResponseEntity.ok(updatedAdoption);
+    }
+    // endregion
+
+    // region PATCH request
+    @PatchMapping("/adoption/{adoptionId}/pickUp")
+    public ResponseEntity<AdoptionOutDTO> changePickUpData(@PathVariable long adoptionId,
+                                                           @Valid @RequestBody AdoptionChangePickUpInDTO adoptionPickUpData){
+        logger.info("BEGIN changePickUpData()");
+        AdoptionOutDTO pickUpDataChanged = adoptionService.changePickUpData(adoptionId, adoptionPickUpData);
+        logger.info("END changePickUpData()");
+        return ResponseEntity.ok(pickUpDataChanged);
     }
     // endregion
 }

@@ -1,9 +1,8 @@
 package com.svalero.protectoraAnimales.exception;
 
 import com.svalero.protectoraAnimales.controller.AdoptionController;
-import com.svalero.protectoraAnimales.exception.adoption.AnimalAlreadyAdoptedException;
-import com.svalero.protectoraAnimales.exception.adoption.AnimalNotAdoptedException;
-import com.svalero.protectoraAnimales.exception.resource.ResourceNotFoundException;
+import com.svalero.protectoraAnimales.exception.runtime.NoChangeException;
+import com.svalero.protectoraAnimales.exception.runtime.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -59,21 +58,12 @@ public class GlobalExceptionHandler {
 
     // region excepciones específicas:
 
-    // 400: Animal ya adoptado
-    @org.springframework.web.bind.annotation.ExceptionHandler(AnimalAlreadyAdoptedException.class)
-    public ResponseEntity<ErrorResponse> animalAlreadyAdoptedException(AnimalAlreadyAdoptedException animalAlreadyAdoptedEx){
-        ErrorResponse errorResponse = new ErrorResponse(400, animalAlreadyAdoptedEx.getMessage(), null);
+    // 400: Comprobaciones de datos que no necesitan/deben cambiar
+    @org.springframework.web.bind.annotation.ExceptionHandler(NoChangeException.class)
+    public ResponseEntity<ErrorResponse> NoChangeException(NoChangeException noChangeEx){
+        ErrorResponse errorResponse = new ErrorResponse(400, noChangeEx.getMessage(), null);
 
-        logger.error(animalAlreadyAdoptedEx.getMessage(), animalAlreadyAdoptedEx);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
-    }
-
-    // 400: Animal no adoptado
-    @org.springframework.web.bind.annotation.ExceptionHandler(AnimalNotAdoptedException.class)
-    public ResponseEntity<ErrorResponse> animalNotAdoptedException(AnimalNotAdoptedException animalNotAdoptedEx){
-        ErrorResponse errorResponse = new ErrorResponse(400, animalNotAdoptedEx.getMessage(), null);
-
-        logger.error(animalNotAdoptedEx.getMessage(), animalNotAdoptedEx);
+        logger.error(noChangeEx.getMessage(), noChangeEx);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
     // endregion

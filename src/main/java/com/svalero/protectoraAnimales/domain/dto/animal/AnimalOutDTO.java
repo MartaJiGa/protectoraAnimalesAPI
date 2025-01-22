@@ -1,4 +1,4 @@
-package com.svalero.protectoraAnimales.domain.dto;
+package com.svalero.protectoraAnimales.domain.dto.animal;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

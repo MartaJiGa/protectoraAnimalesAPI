@@ -1,8 +1,8 @@
 package com.svalero.protectoraAnimales.controller;
 
 import com.svalero.protectoraAnimales.domain.Animal;
-import com.svalero.protectoraAnimales.domain.dto.AnimalInDTO;
-import com.svalero.protectoraAnimales.domain.dto.AnimalOutDTO;
+import com.svalero.protectoraAnimales.domain.dto.animal.AnimalInDTO;
+import com.svalero.protectoraAnimales.domain.dto.animal.AnimalOutDTO;
 import com.svalero.protectoraAnimales.service.AnimalService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -112,7 +112,7 @@ public class AnimalController {
 
     // region PUT request
     @PutMapping("/animal/{animalId}")
-    public ResponseEntity<AnimalOutDTO> modifyAnimal(@Valid @RequestBody Animal animal,
+    public ResponseEntity<AnimalOutDTO> modifyAnimal(@Valid @RequestBody AnimalInDTO animal,
                                                      @PathVariable long animalId){
         logger.info("BEGIN modifyAnimal()");
         AnimalOutDTO modifiedAnimal = animalService.modifyAnimal(animal, animalId);

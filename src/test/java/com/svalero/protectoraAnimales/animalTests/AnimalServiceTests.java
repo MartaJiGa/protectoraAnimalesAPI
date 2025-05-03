@@ -59,6 +59,17 @@ class AnimalServiceTests {
 	}
 
 	@Test
+	public void testFindAnimalWhenAnimalIsNotFound() {
+		long animalId = 35;
+
+		when(animalRepository.findById(animalId)).thenReturn(Optional.empty());
+
+		assertThrows(ResourceNotFoundException.class, () -> animalService.findById(animalId));
+
+		verify(animalRepository, times(1)).findById(animalId);
+	}
+
+	@Test
 	public void testGetAnimals() {
 		List<Animal> mockAnimalList = List.of(
 				new Animal(1, LocalDate.of(2023, 1, 10), "Luna", "Perro", 3, "Labrador", "Grande", true, false, 150.0f, "Muy amigable", new Location(), List.of()),

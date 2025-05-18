@@ -1,6 +1,7 @@
 package com.svalero.protectoraAnimales.repository;
 
 import com.svalero.protectoraAnimales.domain.User;
+import com.svalero.protectoraAnimales.domain.dto.user.UserOutDTO;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -13,6 +14,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
     List<User> findByName(String name);
     List<User> findBySurname(String surname);
     List<User> findByNameAndSurname(String name, String surname);
+    User findByUsername(String username);
 
     @Query("SELECT DISTINCT u FROM users u JOIN u.adoptions a JOIN u.donations d")
     List<User> findUsersWithAdoptionsAndDonations();

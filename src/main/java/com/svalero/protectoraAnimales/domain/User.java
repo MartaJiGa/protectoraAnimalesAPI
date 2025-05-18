@@ -47,6 +47,9 @@ public class User {
     @NotBlank(message = "El email no puede estar vacío")
     private String email;
 
+    @Column(name = "is_active")
+    private boolean isActive;
+
     @OneToMany(mappedBy = "user")
     @JsonBackReference(value = "user_adoptions")
     private List<Adoption> adoptions;

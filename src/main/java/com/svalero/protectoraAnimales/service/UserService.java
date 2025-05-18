@@ -3,6 +3,7 @@ package com.svalero.protectoraAnimales.service;
 import com.svalero.protectoraAnimales.domain.User;
 import com.svalero.protectoraAnimales.domain.dto.user.UserChangeEmailInDTO;
 import com.svalero.protectoraAnimales.domain.dto.user.UserInDTO;
+import com.svalero.protectoraAnimales.domain.dto.user.UserOutDTO;
 import com.svalero.protectoraAnimales.exception.runtime.ResourceNotFoundException;
 import com.svalero.protectoraAnimales.repository.UserRepository;
 import org.modelmapper.ModelMapper;
@@ -51,6 +52,12 @@ public class UserService {
         }
         return users;
     }
+    public UserOutDTO findByUsername(String username) {
+        User user = userRepository.findByUsername(username);
+        UserOutDTO userOutDto = modelMapper.map(user, UserOutDTO.class);
+
+        return userOutDto;
+    }
     public List<User> findUsersWithAdoptionsAndDonations() {
         List<User> users = userRepository.findUsersWithAdoptionsAndDonations();
         if (users.isEmpty()) {
@@ -61,6 +68,7 @@ public class UserService {
     // endregion
 
     // region POST request
+    //TODO: Cifrar contraseña mediante passwordEncoder() de la clase AppConfig
     public User saveUser(UserInDTO userInDTO){
         User user = modelMapper.map(userInDTO, User.class);
 

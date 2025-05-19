@@ -104,7 +104,7 @@ public class UserServiceTests {
     }
 
     @Test
-    public void Surname() {
+    public void testGetUsersBySurname() {
         String surname = "Martínez";
 
         List<User> mockUserList = List.of(

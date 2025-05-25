@@ -1,8 +1,6 @@
 package com.svalero.protectoraAnimales.userTests;
 
 import com.svalero.protectoraAnimales.domain.*;
-import com.svalero.protectoraAnimales.domain.dto.animal.AnimalInDTO;
-import com.svalero.protectoraAnimales.domain.dto.animal.AnimalOutDTO;
 import com.svalero.protectoraAnimales.domain.dto.user.UserChangeEmailInDTO;
 import com.svalero.protectoraAnimales.domain.dto.user.UserInDTO;
 import com.svalero.protectoraAnimales.exception.runtime.ResourceNotFoundException;

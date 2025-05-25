@@ -8,6 +8,7 @@ import com.svalero.protectoraAnimales.domain.Location;
 import com.svalero.protectoraAnimales.domain.dto.animal.AnimalInDTO;
 import com.svalero.protectoraAnimales.domain.dto.animal.AnimalOutDTO;
 import com.svalero.protectoraAnimales.exception.ErrorResponse;
+import com.svalero.protectoraAnimales.exception.runtime.NoChangeException;
 import com.svalero.protectoraAnimales.exception.runtime.ResourceNotFoundException;
 import com.svalero.protectoraAnimales.service.AnimalService;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -67,6 +67,19 @@ public class AnimalControllerTests {
         assertEquals(LocalDate.of(2022, 6, 15), result.getIncorporationDate());
 
         verify(animalService, times(1)).findById(animalId);
+    }
+
+    @Test
+    public void testGetAnimalValidationError() throws Exception {
+        MvcResult response = mockMvc.perform(MockMvcRequestBuilders.get("/animal/animalCat")
+                        .accept(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
+        String json = response.getResponse().getContentAsString(StandardCharsets.UTF_8);
+        ErrorResponse result = objectMapper.readValue(json, ErrorResponse.class);
+
+        assertEquals(400, result.getStatusCode());
     }
 
     @Test
@@ -474,6 +487,18 @@ public class AnimalControllerTests {
     }
 
     @Test
+    public void testDeleteAnimalValidationError() throws Exception {
+        MvcResult response = mockMvc.perform(MockMvcRequestBuilders.get("/animal/1d"))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
+        String json = response.getResponse().getContentAsString(StandardCharsets.UTF_8);
+        ErrorResponse result = objectMapper.readValue(json, ErrorResponse.class);
+
+        assertEquals(400, result.getStatusCode());
+    }
+
+    @Test
     public void testRemoveAnimalNotFound() throws Exception {
         long animalId = 102;
 
@@ -639,6 +664,50 @@ public class AnimalControllerTests {
         assertEquals(200, response.getResponse().getStatus());
         assertEquals(false, result.isAdopted());
         assertEquals("Bigotes", result.getName());
+
+        verify(animalService, times(1)).returnAnimal(animalId);
+    }
+
+    @Test
+    public void testReturnAnimalBadRequest() throws Exception {
+        long animalId = 1;
+
+        when(animalService.returnAnimal(animalId))
+                .thenThrow(new NoChangeException("Este animal todavía está en adopción, no es posible devolverlo."));
+
+        MvcResult response = mockMvc.perform(MockMvcRequestBuilders.patch("/animal/{animalId}/return", animalId)
+                        .accept(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
+        String jsonResponse = response.getResponse().getContentAsString(StandardCharsets.UTF_8);
+        ErrorResponse result = objectMapper.readValue(jsonResponse, ErrorResponse.class);
+
+        assertNotNull(result);
+        assertEquals(400, response.getResponse().getStatus());
+        assertEquals("Este animal todavía está en adopción, no es posible devolverlo.", result.getMessage());
+
+        verify(animalService, times(1)).returnAnimal(animalId);
+    }
+
+    @Test
+    public void testReturnAnimalNotFound() throws Exception {
+        long animalId = 3;
+
+        when(animalService.returnAnimal(animalId))
+                .thenThrow(new ResourceNotFoundException("Animal con id " + animalId + " no encontrado."));
+
+        MvcResult response = mockMvc.perform(MockMvcRequestBuilders.patch("/animal/{animalId}/return", animalId)
+                        .accept(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isNotFound())
+                .andReturn();
+
+        String jsonResponse = response.getResponse().getContentAsString(StandardCharsets.UTF_8);
+        ErrorResponse result = objectMapper.readValue(jsonResponse, ErrorResponse.class);
+
+        assertNotNull(result);
+        assertEquals(404, response.getResponse().getStatus());
+        assertEquals("Animal con id " + animalId + " no encontrado.", result.getMessage());
 
         verify(animalService, times(1)).returnAnimal(animalId);
     }

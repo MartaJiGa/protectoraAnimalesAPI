@@ -390,6 +390,17 @@ class AnimalServiceTests {
 		verify(animalRepository, times(1)).deleteById(animalId);
 	}
 
+	@Test
+	public void testRemoveAnimalWhenAnimalIsNotFound(){
+		long animalId = 3;
+
+		when(animalRepository.existsById(animalId)).thenReturn(false);
+
+		assertThrows(ResourceNotFoundException.class, () -> animalService.removeAnimal(animalId));
+
+		verify(animalRepository, never()).deleteById(animalId);
+	}
+
 	// endregion
 
 	//region PUT
@@ -415,6 +426,18 @@ class AnimalServiceTests {
 		assertEquals("Es alegre y le gusta dormir en el sofá. Se lleva muy bien con perros y niños.", result.getDescription());
 
 		verify(animalRepository, times(1)).save(mockExistingAnimal);
+	}
+
+	@Test
+	public void testModifyAnimalWhenAnimalIsNotFound() {
+		long animalId = 3;
+		AnimalInDTO mockAnimalInDTO = new AnimalInDTO("Bigotes","Gato",4,"Persa","Pequeño",true,true,128.7f,"Es alegre y le gusta dormir en el sofá. Se lleva muy bien con perros y niños.");
+
+		when(animalRepository.findById(animalId)).thenReturn(Optional.empty());
+
+		assertThrows(ResourceNotFoundException.class, () -> animalService.modifyAnimal(mockAnimalInDTO, animalId));
+
+		verify(animalRepository, never()).save(any());
 	}
 
 	@Test

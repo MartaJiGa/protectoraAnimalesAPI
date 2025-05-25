@@ -1,8 +1,10 @@
 package com.svalero.protectoraAnimales.userTests;
 
-import com.svalero.protectoraAnimales.domain.Adoption;
-import com.svalero.protectoraAnimales.domain.Donation;
-import com.svalero.protectoraAnimales.domain.User;
+import com.svalero.protectoraAnimales.domain.*;
+import com.svalero.protectoraAnimales.domain.dto.animal.AnimalInDTO;
+import com.svalero.protectoraAnimales.domain.dto.animal.AnimalOutDTO;
+import com.svalero.protectoraAnimales.domain.dto.user.UserChangeEmailInDTO;
+import com.svalero.protectoraAnimales.domain.dto.user.UserInDTO;
 import com.svalero.protectoraAnimales.exception.runtime.ResourceNotFoundException;
 import com.svalero.protectoraAnimales.repository.UserRepository;
 import com.svalero.protectoraAnimales.service.UserService;
@@ -17,8 +19,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
 
@@ -160,6 +161,131 @@ public class UserServiceTests {
         assertEquals(1, result.get(0).getDonations().size());
 
         verify(userRepository, times(1)).findUsersWithAdoptionsAndDonations();
+    }
+
+    //endregion
+
+    //region POST
+
+    @Test
+    public void testAddUser() {
+        UserInDTO mockUserInDTO = new UserInDTO("Lu327", "Lucía", "Gómez", LocalDate.of(1985, 2, 12), "lu327@gmail.com");
+        User mockUser = new User(2, "Lu327", "Lucía", "Gómez", LocalDate.of(1985, 2, 12), "lu327@gmail.com", List.of(), List.of());
+
+        when(modelMapper.map(mockUserInDTO, User.class)).thenReturn(mockUser);
+        when(userRepository.save(mockUser)).thenReturn(mockUser);
+
+        User result = userService.saveUser(mockUserInDTO);
+
+        assertNotNull(result);
+        assertEquals(2, result.getId());
+        assertEquals("Gómez", result.getSurname());
+        assertEquals(LocalDate.of(1985, 2, 12), result.getDateOfBirth());
+
+        verify(userRepository, times(1)).save(mockUser);
+    }
+
+    //endregion
+
+    //region DELETE
+
+    @Test
+    public void testRemoveUser(){
+        long userId = 2;
+
+        when(userRepository.existsById(userId)).thenReturn(true);
+
+        userService.removeUser(userId);
+
+        verify(userRepository, times(1)).deleteById(userId);
+    }
+
+    @Test
+    public void testRemoveUserWhenUserIsNotFound(){
+        long userId = 1;
+
+        when(userRepository.existsById(userId)).thenReturn(false);
+
+        assertThrows(ResourceNotFoundException.class, () -> userService.removeUser(userId));
+
+        verify(userRepository, never()).deleteById(userId);
+    }
+
+    //endregion
+
+    //region PUT
+
+    @Test
+    public void testModifyUser() {
+        long userId = 2;
+        UserInDTO mockUserInDTO = new UserInDTO("LuGom", "Lucía", "Gómez", LocalDate.of(1985, 2, 12), "luGom@gmail.com");
+        User mockExistingUser = new User(2, "Lu327", "Lucía", "Gómez", LocalDate.of(1985, 2, 12), "lu327@gmail.com", List.of(), List.of());
+        User mockUser = new User(2, "LuGom", "Lucía", "Gómez", LocalDate.of(1985, 2, 12), "luGom@gmail.com", List.of(), List.of());
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(mockExistingUser));
+        when(modelMapper.map(mockUserInDTO, User.class)).thenReturn(mockUser);
+
+        mockExistingUser.setUsername(mockUser.getUsername());
+        mockExistingUser.setName(mockUser.getName());
+        mockExistingUser.setSurname(mockUser.getSurname());
+        mockExistingUser.setDateOfBirth(mockUser.getDateOfBirth());
+        mockExistingUser.setEmail(mockUser.getEmail());
+
+        when(userRepository.save(mockExistingUser)).thenReturn(mockExistingUser);
+
+        User result = userService.modifyUser(mockUserInDTO, userId);
+
+        assertEquals("LuGom", result.getUsername());
+        assertEquals("luGom@gmail.com", result.getEmail());
+
+        verify(userRepository, times(1)).save(mockExistingUser);
+    }
+
+    @Test
+    public void testModifyUserWhenUserIsNotFound() {
+        long userId = 1;
+        UserInDTO mockUserInDTO = new UserInDTO("LuGom", "Lucía", "Gómez", LocalDate.of(1985, 2, 12), "luGom@gmail.com");
+
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> userService.modifyUser(mockUserInDTO, userId));
+
+        verify(userRepository, never()).save(any());
+    }
+
+    //endregion
+
+    //region PATCH
+
+    @Test
+    public void testChangeUserEmailSuccess() {
+        long userId = 2;
+        UserChangeEmailInDTO userChangeEmailDTO = new UserChangeEmailInDTO("luGom@gmail.com");
+        User mockExistingUser = new User(2, "Lu327", "Lucía", "Gómez", LocalDate.of(1985, 2, 12), "lu327@gmail.com", List.of(), List.of());
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(mockExistingUser));
+
+        mockExistingUser.setEmail(userChangeEmailDTO.getEmail());
+
+        when(userRepository.save(mockExistingUser)).thenReturn(mockExistingUser);
+
+        User result = userService.changeUserEmail(userId, userChangeEmailDTO);
+
+        assertEquals("luGom@gmail.com", result.getEmail());
+        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).save(mockExistingUser);
+    }
+
+    @Test
+    public void testChangeUserEmailUserNotFound() {
+        long userId = 1;
+        UserChangeEmailInDTO userChangeEmailDTO = new UserChangeEmailInDTO("luGom@gmail.com");
+
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> userService.changeUserEmail(userId, userChangeEmailDTO));
+        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, never()).save(any());
     }
 
     //endregion

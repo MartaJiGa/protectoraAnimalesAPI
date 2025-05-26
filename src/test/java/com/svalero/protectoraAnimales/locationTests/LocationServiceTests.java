@@ -2,10 +2,7 @@ package com.svalero.protectoraAnimales.locationTests;
 
 import com.svalero.protectoraAnimales.domain.Animal;
 import com.svalero.protectoraAnimales.domain.Location;
-import com.svalero.protectoraAnimales.domain.User;
 import com.svalero.protectoraAnimales.domain.dto.location.LocationInDTO;
-import com.svalero.protectoraAnimales.domain.dto.user.UserChangeEmailInDTO;
-import com.svalero.protectoraAnimales.domain.dto.user.UserInDTO;
 import com.svalero.protectoraAnimales.exception.runtime.NoChangeException;
 import com.svalero.protectoraAnimales.exception.runtime.ResourceNotFoundException;
 import com.svalero.protectoraAnimales.repository.AnimalRepository;

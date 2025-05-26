@@ -2,7 +2,11 @@ package com.svalero.protectoraAnimales.locationTests;
 
 import com.svalero.protectoraAnimales.domain.Animal;
 import com.svalero.protectoraAnimales.domain.Location;
-import com.svalero.protectoraAnimales.domain.dto.animal.AnimalOutDTO;
+import com.svalero.protectoraAnimales.domain.User;
+import com.svalero.protectoraAnimales.domain.dto.location.LocationInDTO;
+import com.svalero.protectoraAnimales.domain.dto.user.UserChangeEmailInDTO;
+import com.svalero.protectoraAnimales.domain.dto.user.UserInDTO;
+import com.svalero.protectoraAnimales.exception.runtime.NoChangeException;
 import com.svalero.protectoraAnimales.exception.runtime.ResourceNotFoundException;
 import com.svalero.protectoraAnimales.repository.AnimalRepository;
 import com.svalero.protectoraAnimales.repository.LocationRepository;
@@ -182,14 +186,134 @@ public class LocationServiceTests {
     //endregion
 
     //region POST
+
+    @Test
+    public void testAddLocation() {
+        LocationInDTO mockLocationInDTO = new LocationInDTO(true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.");
+        Location mockLocation = new Location(1, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", new ArrayList<>());
+
+        when(modelMapper.map(mockLocationInDTO, Location.class)).thenReturn(mockLocation);
+        when(locationRepository.save(mockLocation)).thenReturn(mockLocation);
+
+        Location result = locationService.saveLocation(mockLocationInDTO);
+
+        assertNotNull(result);
+        assertEquals(1, result.getId());
+        assertEquals("Calle del Gato 23", result.getAddress());
+        assertEquals(true, result.isMainSite());
+        assertEquals("Centro de adopción de animales en Zaragoza.", result.getDescription());
+
+        verify(locationRepository, times(1)).save(mockLocation);
+    }
+
     //endregion
 
     //region DELETE
+
+    @Test
+    public void testRemoveLocation(){
+        long locationId = 1;
+
+        when(locationRepository.existsById(locationId)).thenReturn(true);
+
+        locationService.removeLocation(locationId);
+
+        verify(locationRepository, times(1)).deleteById(locationId);
+    }
+
+    @Test
+    public void testRemoveLocationWhenLocationIsNotFound(){
+        long locationId = 3;
+
+        when(locationRepository.existsById(locationId)).thenReturn(false);
+
+        assertThrows(ResourceNotFoundException.class, () -> locationService.removeLocation(locationId));
+
+        verify(locationRepository, never()).deleteById(locationId);
+    }
+
     //endregion
 
     //region PUT
+
+    @Test
+    public void testModifyLocation() {
+        long locationId = 1;
+        LocationInDTO mockLocationInDTO = new LocationInDTO(true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.");
+        Location mockExistingLocation = new Location(locationId, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", new ArrayList<>());
+        Location mockLocation = new Location(locationId, true, "Avenida de los delfines S/N", "50004", "Zaragoza", "Centro de adopción de animales en Zaragoza.", new ArrayList<>());
+
+        when(locationRepository.findById(locationId)).thenReturn(Optional.of(mockExistingLocation));
+        when(modelMapper.map(mockLocationInDTO, Location.class)).thenReturn(mockLocation);
+
+        mockExistingLocation.setMainSite(mockLocation.isMainSite());
+        mockExistingLocation.setAddress(mockLocation.getAddress());
+        mockExistingLocation.setZipCode(mockLocation.getZipCode());
+        mockExistingLocation.setCity(mockLocation.getCity());
+        mockExistingLocation.setDescription(mockLocation.getDescription());
+
+        when(locationRepository.save(mockExistingLocation)).thenReturn(mockExistingLocation);
+
+        Location result = locationService.modifyLocation(mockLocationInDTO, locationId);
+
+        assertEquals("Avenida de los delfines S/N", result.getAddress());
+        assertEquals("50004", result.getZipCode());
+
+        verify(locationRepository, times(1)).save(mockExistingLocation);
+    }
+
+    @Test
+    public void testModifyLocationWhenLocationIsNotFound() {
+        long locationId = 1;
+        LocationInDTO mockLocationInDTO = new LocationInDTO(true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.");
+
+        when(locationRepository.findById(locationId)).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> locationService.modifyLocation(mockLocationInDTO, locationId));
+
+        verify(locationRepository, never()).save(any());
+    }
+
     //endregion
 
     //region PATCH
+
+    @Test
+    public void testChangeMainSiteSuccess() {
+        long locationId = 1;
+        Location mockExistingLocation = new Location(locationId, false, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", new ArrayList<>());
+
+        when(locationRepository.findById(locationId)).thenReturn(Optional.of(mockExistingLocation));
+        when(locationRepository.save(mockExistingLocation)).thenReturn(mockExistingLocation);
+
+        Location result = locationService.changeMainSite(locationId);
+
+        assertEquals(true, result.isMainSite());
+        verify(locationRepository, times(1)).findById(locationId);
+    }
+
+    @Test
+    public void testChangeMainSiteLocationNotFound() {
+        long locationId = 1;
+
+        when(locationRepository.findById(locationId)).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> locationService.changeMainSite(locationId));
+        verify(locationRepository, times(1)).findById(locationId);
+        verify(locationRepository, never()).save(any());
+    }
+
+    @Test
+    public void testChangeMainSiteLocationIsMain() {
+        long locationId = 1;
+        Location mockExistingLocation = new Location(locationId, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", new ArrayList<>());
+
+        when(locationRepository.findById(locationId)).thenReturn(Optional.of(mockExistingLocation));
+
+        assertThrows(NoChangeException.class, () -> locationService.changeMainSite(locationId));
+        verify(locationRepository, times(1)).findById(locationId);
+        verify(locationRepository, never()).save(any());
+    }
+
     //endregion
 }

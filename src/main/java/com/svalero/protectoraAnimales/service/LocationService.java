@@ -89,7 +89,6 @@ public class LocationService {
                 .orElseThrow(() -> new ResourceNotFoundException("Ubicación con id " + locationId + " no encontrada."));
 
         Location location = modelMapper.map(locationInDTO, Location.class);
-        locationRepository.save(location);
 
         existingLocation.setMainSite(location.isMainSite());
         existingLocation.setAddress(location.getAddress());

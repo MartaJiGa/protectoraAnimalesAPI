@@ -344,28 +344,31 @@ public class DonationServiceTests {
     //region METHODS
 
     private static List<Donation> getDonations() {
-        User user1 = new User(1, "juan32", "Juan", "Pérez", LocalDate.of(1990, 1, 1), "juan@gmail.com", List.of(), List.of());
-        User user2 = new User(2, "mary", "María", "López", LocalDate.of(1992, 3, 15), "mary@outlook.com", List.of(), List.of());
-        User user3 = new User(3, "carloooos", "Carlos", "Arantegui", LocalDate.of(1988, 7, 20), "carloooos@proton.com", List.of(), List.of());
-        User user4 = new User(4, "laMorena", "Laura", "Moreno", LocalDate.of(1995, 11, 5), "lamorena@gmail.es", List.of(), List.of());
+        List<User> userList = List.of(
+                new User(1, "juan32", "Juan", "Pérez", LocalDate.of(1990, 1, 1), "juan@gmail.com", List.of(), List.of()),
+                new User(2, "mary", "María", "López", LocalDate.of(1992, 3, 15), "mary@outlook.com", List.of(), List.of()),
+                new User(3, "carloooos", "Carlos", "Arantegui", LocalDate.of(1988, 7, 20), "carloooos@proton.com", List.of(), List.of()),
+                new User(4, "laMorena", "Laura", "Moreno", LocalDate.of(1995, 11, 5), "lamorena@gmail.es", List.of(), List.of())
+        );
 
-        Donation donation1 = new Donation(1, LocalDate.of(2022, 3, 12), 50, "Tarjeta", false, 0, user1);
-        Donation donation2 = new Donation(2, LocalDate.of(2023, 12, 27), 100, "Efectivo", true, 3, user2);
-        Donation donation3 = new Donation(3, LocalDate.of(2024, 2, 1), 75, "Transferencia", false, 0, user3);
-        Donation donation4 = new Donation(4, LocalDate.of(2024, 7, 3), 30, "Tarjeta", true, 2, user4);
-
-        return List.of(donation1, donation2, donation3, donation4);
+        return List.of(
+                new Donation(1, LocalDate.of(2022, 3, 12), 50, "Tarjeta", false, 0, userList.get(0)),
+                new Donation(2, LocalDate.of(2023, 12, 27), 100, "Efectivo", true, 3, userList.get(1)),
+                new Donation(3, LocalDate.of(2024, 2, 1), 75, "Transferencia", false, 0, userList.get(2)),
+                new Donation(4, LocalDate.of(2024, 7, 3), 30, "Tarjeta", true, 2, userList.get(3))
+        );
     }
 
     private static List<Donation> getDonationsByDonationDate(LocalDate donationDate) {
-        User user1 = new User(1, "juan32", "Juan", "Pérez", LocalDate.of(1990, 1, 1), "juan@gmail.com", List.of(), List.of());
-        User user2 = new User(2, "mary", "María", "López", LocalDate.of(1992, 3, 15), "mary@outlook.com", List.of(), List.of());
+        List<User> userList = List.of(
+                new User(1, "juan32", "Juan", "Pérez", donationDate, "juan@gmail.com", List.of(), List.of()),
+                new User(2, "mary", "María", "López", donationDate, "mary@outlook.com", List.of(), List.of())
+        );
 
-        Donation donation1 = new Donation(1, donationDate, 50, "Tarjeta", false, 0, user1);
-        Donation donation2 = new Donation(2, donationDate, 100, "Efectivo", true, 3, user2);
-
-        List<Donation> donationList = List.of(donation1, donation2);
-        return donationList;
+        return List.of(
+                new Donation(1, LocalDate.of(2022, 3, 12), 50, "Tarjeta", false, 0, userList.get(0)),
+                new Donation(2, LocalDate.of(2023, 12, 27), 100, "Efectivo", true, 3, userList.get(1))
+        );
     }
 
     //endregion

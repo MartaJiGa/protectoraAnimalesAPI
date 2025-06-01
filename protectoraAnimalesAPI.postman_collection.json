@@ -1,0 +1,1710 @@
+{
+	"info": {
+		"_postman_id": "8680faad-17ea-46ec-8ab4-dc167c22a1a4",
+		"name": "protectoraAnimalesAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31555828"
+	},
+	"item": [
+		{
+			"name": "Animals",
+			"item": [
+				{
+					"name": "/animals",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/animals",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"animals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/animal/:animalId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/animal/:animalId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"animal",
+								":animalId"
+							],
+							"variable": [
+								{
+									"key": "animalId",
+									"value": "15"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/animals/:locationId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/animals/:locationId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"animals",
+								":locationId"
+							],
+							"variable": [
+								{
+									"key": "locationId",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/animals?species={findBySpecies}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/animals?species=Perro",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"animals"
+							],
+							"query": [
+								{
+									"key": "species",
+									"value": "Perro"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/animals?age={findByAge}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/animals?age=3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"animals"
+							],
+							"query": [
+								{
+									"key": "age",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/animals?size={findBySize}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/animals?size=Mediano",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"animals"
+							],
+							"query": [
+								{
+									"key": "size",
+									"value": "Mediano"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/animals?species&age={findBySpeciesAndAge}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/animals?species=Perro&age=4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"animals"
+							],
+							"query": [
+								{
+									"key": "species",
+									"value": "Perro"
+								},
+								{
+									"key": "age",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/animals?species&size={findBySpeciesAndSize}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/animals?species=Perro&size=Pequeño",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"animals"
+							],
+							"query": [
+								{
+									"key": "species",
+									"value": "Perro"
+								},
+								{
+									"key": "size",
+									"value": "Pequeño"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/animals?age&size={findByAgeAndSize}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/animals?age=4&size=Pequeño",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"animals"
+							],
+							"query": [
+								{
+									"key": "age",
+									"value": "4"
+								},
+								{
+									"key": "size",
+									"value": "Pequeño"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/animals?species&age&size={findBySpeciesAndAgeAndSize}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/animals?species=Perro&age=4&size=Pequeño",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"animals"
+							],
+							"query": [
+								{
+									"key": "species",
+									"value": "Perro"
+								},
+								{
+									"key": "age",
+									"value": "4"
+								},
+								{
+									"key": "size",
+									"value": "Pequeño"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/location/:locationId/animals",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Coco\",\r\n    \"species\": \"Perro\",\r\n    \"age\": 4,\r\n    \"breed\": \"Chihuahua\",\r\n    \"size\": \"Pequeño\",\r\n    \"neutered\": true,\r\n    \"price\": 148.95,\r\n    \"description\": \"Simpático, enérgico y le gusta solo la comida blanda.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/location/:locationId/animals",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"location",
+								":locationId",
+								"animals"
+							],
+							"variable": [
+								{
+									"key": "locationId",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/animal/:animalId",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/animal/:animalId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"animal",
+								":animalId"
+							],
+							"variable": [
+								{
+									"key": "animalId",
+									"value": "48"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/animal/:animalId",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Petra\",\r\n    \"species\": \"Gato\",\r\n    \"age\": 12,\r\n    \"breed\": \"Azul Ruso\",\r\n    \"size\": \"Mediano\",\r\n    \"neutered\": false,\r\n    \"adopted\": false,\r\n    \"price\": 186.49,\r\n    \"description\": \"Le gusta estar con otros gatos y perros, pero no le gustan mucho los niños.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/animal/:animalId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"animal",
+								":animalId"
+							],
+							"variable": [
+								{
+									"key": "animalId",
+									"value": "15"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/location/:locationId/animal/:animalId",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/location/:locationId/animal/:animalId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"location",
+								":locationId",
+								"animal",
+								":animalId"
+							],
+							"variable": [
+								{
+									"key": "locationId",
+									"value": "2"
+								},
+								{
+									"key": "animalId",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/animal/:animalId/return",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/animal/:animalId/return",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"animal",
+								":animalId",
+								"return"
+							],
+							"variable": [
+								{
+									"key": "animalId",
+									"value": "49"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "/users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/user/:userId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/user/:userId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"user",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users?name={findByName}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/users?name=Pedro",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Pedro"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users?surname={findBySurname}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/users?surname=Roca",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "surname",
+									"value": "Roca"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users?name&surname={findByNameAndSurname}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/users?name=Pedro&surname=Roca",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Pedro"
+								},
+								{
+									"key": "surname",
+									"value": "Roca"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users?includeAdoptionsAndDonations={findUsersWithAdoptionsAndDonations}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/users?includeAdoptionsAndDonations=true",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "includeAdoptionsAndDonations",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"PedroPicapiedra3\",\r\n    \"name\": \"Pedro\",\r\n    \"surname\": \"Roca\",\r\n    \"dateOfBirth\": \"1989-04-21\",\r\n    \"email\": \"pedroPicapiedra@ejemplo.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/user/:userId",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/user/:userId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"user",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "7"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/user/:userId",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 6,\r\n    \"username\": \"Vilma565\",\r\n    \"name\": \"Vilma\",\r\n    \"surname\": \"Roca\",\r\n    \"dateOfBirth\": \"1993-09-25\",\r\n    \"email\": \"vilma565@ejemplo.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/user/:userId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"user",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/user/:userId/email",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"lunaaa@ejemplo.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/user/:userId/email",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"user",
+								":userId",
+								"email"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Locations",
+			"item": [
+				{
+					"name": "/locations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/locations",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"locations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/location/:locationId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/location/:locationId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"location",
+								":locationId"
+							],
+							"variable": [
+								{
+									"key": "locationId",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/locations?city={findByCity}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/locations?city=Madrid",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"locations"
+							],
+							"query": [
+								{
+									"key": "city",
+									"value": "Madrid"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/locations?zipCode={findByZipCode}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/locations?zipCode=29004",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"locations"
+							],
+							"query": [
+								{
+									"key": "zipCode",
+									"value": "29004"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/locations?city&zipCode={findByCityAndZipCode}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/locations?city=Madrid&zipCode=28011",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"locations"
+							],
+							"query": [
+								{
+									"key": "city",
+									"value": "Madrid"
+								},
+								{
+									"key": "zipCode",
+									"value": "28011"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/location/:locationId/animals",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/location/:locationId/animals",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"location",
+								":locationId",
+								"animals"
+							],
+							"variable": [
+								{
+									"key": "locationId",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/locations",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"mainSite\": true,\r\n    \"address\": \"Avenida de Murcia, 75, 2.º G\",\r\n    \"zipCode\": \"17260\",\r\n    \"city\": \"Gijón\",\r\n    \"description\": \"Sede secundaria de la protectora.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/locations",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"locations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/location/:locationId",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/location/:locationId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"location",
+								":locationId"
+							],
+							"variable": [
+								{
+									"key": "locationId",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/location/:locationId",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"mainSite\": true,\r\n    \"address\": \"Avenida de Murcia, 75, 2.º G\",\r\n    \"zipCode\": \"17260\",\r\n    \"city\": \"Gijón\",\r\n    \"description\": \"Sede principal de la protectora.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/location/:locationId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"location",
+								":locationId"
+							],
+							"variable": [
+								{
+									"key": "locationId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/location/:locationId/mainSite",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/location/:locationId/mainSite",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"location",
+								":locationId",
+								"mainSite"
+							],
+							"variable": [
+								{
+									"key": "locationId",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Adoptions",
+			"item": [
+				{
+					"name": "/adoptions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/adoptions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"adoptions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/adoption/:adoptionId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/adoption/:adoptionId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"adoption",
+								":adoptionId"
+							],
+							"variable": [
+								{
+									"key": "adoptionId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/adoptions?adoptionDate={findByAdoptionDate}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/adoptions?adoptionDate=2025-01-15",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"adoptions"
+							],
+							"query": [
+								{
+									"key": "adoptionDate",
+									"value": "2025-01-15"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/adoptions?userId={findByUserId}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/adoptions?userId=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"adoptions"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/adoptions?animalId={findByAnimalId}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/adoptions?animalId=14",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"adoptions"
+							],
+							"query": [
+								{
+									"key": "animalId",
+									"value": "14"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/adoptions?adoptionDate&userId={findByAdoptionDateAndUserId}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/adoptions?adoptionDate=2025-01-14&userId=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"adoptions"
+							],
+							"query": [
+								{
+									"key": "adoptionDate",
+									"value": "2025-01-14"
+								},
+								{
+									"key": "userId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/adoptions?adoptionDate&userId={findByAdoptionDateAndAnimalId}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/adoptions?adoptionDate=2025-01-14&animalId=4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"adoptions"
+							],
+							"query": [
+								{
+									"key": "adoptionDate",
+									"value": "2025-01-14"
+								},
+								{
+									"key": "animalId",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/adoptions?animalId&userId={findByAnimalIdAndUserIdd}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/adoptions?animalId=4&userId=Pequeño",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"adoptions"
+							],
+							"query": [
+								{
+									"key": "animalId",
+									"value": "4"
+								},
+								{
+									"key": "userId",
+									"value": "Pequeño"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/adoptions?adoptionDate&userId&animalId={findByAdoptionDateAndUserIdAndAnimalId}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/adoptions?adoptionDate=2025-01-14&userId=4&animalId=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"adoptions"
+							],
+							"query": [
+								{
+									"key": "adoptionDate",
+									"value": "2025-01-14"
+								},
+								{
+									"key": "userId",
+									"value": "4"
+								},
+								{
+									"key": "animalId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/adoptions/pickups-next-two-weeks",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/adoptions/pickups-next-two-weeks",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"adoptions",
+								"pickups-next-two-weeks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/adoptions/user/:userId/animal/:animalId",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"takeAccessories\": true,\r\n    \"pickUpDate\": \"2025-05-24\",\r\n    \"pickUpTime\": \"20:10\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/adoptions/user/:userId/animal/:animalId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"adoptions",
+								"user",
+								":userId",
+								"animal",
+								":animalId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "6"
+								},
+								{
+									"key": "animalId",
+									"value": "49"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/adoption/:adoptionId",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/adoption/:adoptionId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"adoption",
+								":adoptionId"
+							],
+							"variable": [
+								{
+									"key": "adoptionId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/adoption/:adoptionId/user/:userId/animal/:animalId",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"takeAccessories\": true,\r\n    \"pickUpDate\": \"2025-08-21\",\r\n    \"pickUpTime\": \"15:45\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/adoption/:adoptionId/user/:userId/animal/:animalId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"adoption",
+								":adoptionId",
+								"user",
+								":userId",
+								"animal",
+								":animalId"
+							],
+							"variable": [
+								{
+									"key": "adoptionId",
+									"value": "4"
+								},
+								{
+									"key": "userId",
+									"value": "2"
+								},
+								{
+									"key": "animalId",
+									"value": "14"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/adoption/:adoptionId/pickUp",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"pickUpDate\": \"2025-05-10\",\r\n    \"pickUpTime\": \"15:45\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/adoption/:adoptionId/pickUp",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"adoption",
+								":adoptionId",
+								"pickUp"
+							],
+							"variable": [
+								{
+									"key": "adoptionId",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Donations",
+			"item": [
+				{
+					"name": "/donations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/donations",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"donations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/donation/:donationId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/donation/:donationId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"donation",
+								":donationId"
+							],
+							"variable": [
+								{
+									"key": "donationId",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/donations?donationDate={findByDonationDate}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/donations?donationDate=2025-01-14",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"donations"
+							],
+							"query": [
+								{
+									"key": "donationDate",
+									"value": "2025-01-14"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/donations?userId={findByUserId}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/donations?userId=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"donations"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/donations?donationDate&userId={findByDonationDateAndUserId}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/donations?donationDate=2025-01-14&userId=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"donations"
+							],
+							"query": [
+								{
+									"key": "donationDate",
+									"value": "2025-01-14"
+								},
+								{
+									"key": "userId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/donations/user/:userId",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"quantity\": 120.0,\r\n   \"paymentType\": \"Tarjeta\",\r\n   \"splitPayment\": true,\r\n   \"splitPaymentQuantity\": 6\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/donations/user/:userId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"donations",
+								"user",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/donation/:donationId",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/donation/:donationId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"donation",
+								":donationId"
+							],
+							"variable": [
+								{
+									"key": "donationId",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/donation/:donationId/user/:userId",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"quantity\": 50.25,\r\n   \"paymentType\": \"Tarjeta\",\r\n   \"splitPayment\": false,\r\n   \"splitPaymentQuantity\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/donation/:donationId/user/:userId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"donation",
+								":donationId",
+								"user",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "donationId",
+									"value": "3"
+								},
+								{
+									"key": "userId",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/donation/:donationId/splitPayment",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"splitPayment\": true,\r\n   \"splitPaymentQuantity\": 9\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/donation/:donationId/splitPayment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"donation",
+								":donationId",
+								"splitPayment"
+							],
+							"variable": [
+								{
+									"key": "donationId",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "port",
+			"value": "8081",
+			"type": "string"
+		}
+	]
+}

@@ -52,7 +52,7 @@ public class AdoptionServiceTests {
     @Test
     public void testGetAdoptionById() {
         User user = new User(1, "laMorena", "Laura", "Moreno", LocalDate.of(1995, 11, 5), "lamorena@gmail.es", List.of(), List.of());
-        Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", new ArrayList<>());
+        Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", 15d, 16d, new ArrayList<>());
         Animal animal = new Animal(3, LocalDate.of(2021, 7, 10), "Rocky", "Perro", 10, "Bulldog", "Mediano", true, false, 214.25f,"Afable y dormilón.", location, null);
         Adoption adoption = new Adoption(1, LocalDate.of(2025, 4, 2), false, LocalDate.now().plusDays(3), "12:20", animal, user);
 
@@ -81,7 +81,7 @@ public class AdoptionServiceTests {
     @Test
     public void testGetAdoptions() {
         User user = new User(1, "laMorena", "Laura", "Moreno", LocalDate.of(1995, 11, 5), "lamorena@gmail.es", List.of(), List.of());
-        Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", new ArrayList<>());
+        Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", 15d, 16d, new ArrayList<>());
         Animal animal = new Animal(3, LocalDate.of(2021, 7, 10), "Rocky", "Perro", 10, "Bulldog", "Mediano", true, false, 214.25f,"Afable y dormilón.", location, null);
         Adoption adoption = new Adoption(1, LocalDate.of(2025, 4, 2), false, LocalDate.now().plusDays(3), "12:20", animal, user);
         AdoptionOutDTO adoptionOutDTO = new AdoptionOutDTO(1, LocalDate.of(2025, 4, 2), false, LocalDate.now().plusDays(3), "12:20", animal.getId(), animal.getIncorporationDate(), animal.getName(), animal.getSpecies(),location.getId(), location.getCity(),user.getId(), user.getUsername(), user.getEmail());
@@ -104,7 +104,7 @@ public class AdoptionServiceTests {
     @Test
     public void testGetAdoptionsByAdoptionDate() {
         User user = new User(1, "laMorena", "Laura", "Moreno", LocalDate.of(1995, 11, 5), "lamorena@gmail.es", List.of(), List.of());
-        Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", new ArrayList<>());
+        Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", 15d, 16d, new ArrayList<>());
         Animal animal = new Animal(3, LocalDate.of(2021, 7, 10), "Rocky", "Perro", 10, "Bulldog", "Mediano", true, false, 214.25f,"Afable y dormilón.", location, null);
         Adoption adoption = new Adoption(1, LocalDate.of(2025, 4, 2), false, LocalDate.now().plusDays(3), "12:20", animal, user);
         AdoptionOutDTO adoptionOutDTO = new AdoptionOutDTO(1, LocalDate.of(2025, 4, 2), false, LocalDate.now().plusDays(3), "12:20", animal.getId(), animal.getIncorporationDate(), animal.getName(), animal.getSpecies(), location.getId(), location.getCity(), user.getId(), user.getUsername(), user.getEmail());
@@ -127,7 +127,7 @@ public class AdoptionServiceTests {
     @Test
     public void testGetAdoptionsByUserId() {
         User user = new User(1, "laMorena", "Laura", "Moreno", LocalDate.of(1995, 11, 5), "lamorena@gmail.es", List.of(), List.of());
-        Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", new ArrayList<>());
+        Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", 15d, 16d, new ArrayList<>());
         Animal animal = new Animal(3, LocalDate.of(2021, 7, 10), "Rocky", "Perro", 10, "Bulldog", "Mediano", true, false, 214.25f,"Afable y dormilón.", location, null);
         Adoption adoption = new Adoption(1, LocalDate.of(2025, 4, 2), false, LocalDate.now().plusDays(3), "12:20", animal, user);
         AdoptionOutDTO adoptionOutDTO = new AdoptionOutDTO(1, LocalDate.of(2025, 4, 2), false, LocalDate.now().plusDays(3), "12:20", animal.getId(), animal.getIncorporationDate(), animal.getName(), animal.getSpecies(), location.getId(), location.getCity(), user.getId(), user.getUsername(), user.getEmail());
@@ -149,7 +149,7 @@ public class AdoptionServiceTests {
     @Test
     public void testGetAdoptionsByAnimalId() {
         User user = new User(1, "laMorena", "Laura", "Moreno", LocalDate.of(1995, 11, 5), "lamorena@gmail.es", List.of(), List.of());
-        Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", new ArrayList<>());
+        Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", 15d, 16d, new ArrayList<>());
         Animal animal = new Animal(3, LocalDate.of(2021, 7, 10), "Rocky", "Perro", 10, "Bulldog", "Mediano", true, false, 214.25f, "Afable y dormilón.", location, null);
         Adoption adoption = new Adoption(1, LocalDate.of(2025, 4, 2), false, LocalDate.now().plusDays(3), "12:20", animal, user);
         AdoptionOutDTO adoptionOutDTO = new AdoptionOutDTO(1, LocalDate.of(2025, 4, 2), false, LocalDate.now().plusDays(3), "12:20", animal.getId(), animal.getIncorporationDate(), animal.getName(), animal.getSpecies(), location.getId(), location.getCity(), user.getId(), user.getUsername(), user.getEmail());
@@ -171,7 +171,7 @@ public class AdoptionServiceTests {
     @Test
     public void testGetAdoptionsByAdoptionDateAndUserId() {
         User user = new User(1, "laMorena", "Laura", "Moreno", LocalDate.of(1995, 11, 5), "lamorena@gmail.es", List.of(), List.of());
-        Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", new ArrayList<>());
+        Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", 15d, 16d, new ArrayList<>());
         Animal animal = new Animal(3, LocalDate.of(2021, 7, 10), "Rocky", "Perro", 10, "Bulldog", "Mediano", true, false, 214.25f, "Afable y dormilón.", location, null);
         Adoption adoption = new Adoption(1, LocalDate.of(2025, 4, 2), false, LocalDate.now().plusDays(3), "12:20", animal, user);
         AdoptionOutDTO adoptionOutDTO = new AdoptionOutDTO(1, LocalDate.of(2025, 4, 2), false, LocalDate.now().plusDays(3), "12:20", animal.getId(), animal.getIncorporationDate(), animal.getName(), animal.getSpecies(), location.getId(), location.getCity(), user.getId(), user.getUsername(), user.getEmail());
@@ -195,7 +195,7 @@ public class AdoptionServiceTests {
     @Test
     public void testGetAdoptionsByAdoptionDateAndAnimalId() {
         User user = new User(1, "laMorena", "Laura", "Moreno", LocalDate.of(1995, 11, 5), "lamorena@gmail.es", List.of(), List.of());
-        Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", new ArrayList<>());
+        Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", 15d, 16d, new ArrayList<>());
         Animal animal = new Animal(3, LocalDate.of(2021, 7, 10), "Rocky", "Perro", 10, "Bulldog", "Mediano", true, false, 214.25f, "Afable y dormilón.", location, null);
         Adoption adoption = new Adoption(1, LocalDate.of(2025, 4, 2), false, LocalDate.now().plusDays(3), "12:20", animal, user);
         AdoptionOutDTO adoptionOutDTO = new AdoptionOutDTO(1, LocalDate.of(2025, 4, 2), false, LocalDate.now().plusDays(3), "12:20", animal.getId(), animal.getIncorporationDate(), animal.getName(), animal.getSpecies(), location.getId(), location.getCity(), user.getId(), user.getUsername(), user.getEmail());
@@ -219,7 +219,7 @@ public class AdoptionServiceTests {
     @Test
     public void testGetAdoptionsByAnimalIdAndUserId() {
         User user = new User(1, "laMorena", "Laura", "Moreno", LocalDate.of(1995, 11, 5), "lamorena@gmail.es", List.of(), List.of());
-        Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", new ArrayList<>());
+        Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", 15d, 16d, new ArrayList<>());
         Animal animal = new Animal(3, LocalDate.of(2021, 7, 10), "Rocky", "Perro", 10, "Bulldog", "Mediano", true, false, 214.25f, "Afable y dormilón.", location, null);
         Adoption adoption = new Adoption(1, LocalDate.of(2025, 4, 2), false, LocalDate.now().plusDays(3), "12:20", animal, user);
         AdoptionOutDTO adoptionOutDTO = new AdoptionOutDTO(1, LocalDate.of(2025, 4, 2), false, LocalDate.now().plusDays(3), "12:20", animal.getId(), animal.getIncorporationDate(), animal.getName(), animal.getSpecies(), location.getId(), location.getCity(), user.getId(), user.getUsername(), user.getEmail());
@@ -246,7 +246,7 @@ public class AdoptionServiceTests {
         long userId = 1;
 
         User user = new User(userId, "laMorena", "Laura", "Moreno", LocalDate.of(1995, 11, 5), "lamorena@gmail.es", List.of(), List.of());
-        Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", new ArrayList<>());
+        Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", 15d, 16d, new ArrayList<>());
         Animal animal = new Animal(animalId, LocalDate.of(2021, 7, 10), "Rocky", "Perro", 10, "Bulldog", "Mediano", true, false, 214.25f, "Afable y dormilón.", location, null);
         Adoption adoption = new Adoption(1L, adoptionDate, false, LocalDate.now().plusDays(3), "12:20", animal, user);
 
@@ -272,7 +272,7 @@ public class AdoptionServiceTests {
         LocalDate twoWeeksFromNow = today.plusWeeks(2);
 
         User user = new User(1, "laMorena", "Laura", "Moreno", LocalDate.of(1995, 11, 5), "lamorena@gmail.es", List.of(), List.of());
-        Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", new ArrayList<>());
+        Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", 15d, 16d, new ArrayList<>());
         Animal animal = new Animal(3, LocalDate.of(2021, 7, 10), "Rocky", "Perro", 10, "Bulldog", "Mediano", true, false, 214.25f, "Afable y dormilón.", location, null);
         Adoption adoption = new Adoption(1, LocalDate.of(2025, 4, 2), false, today.plusDays(10), "12:20", animal, user);
 
@@ -299,7 +299,7 @@ public class AdoptionServiceTests {
         long animalId = 2;
 
         User user = new User(userId, "laMorena", "Laura", "Moreno", LocalDate.of(1995, 11, 5), "lamorena@gmail.es", List.of(), List.of());
-        Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción", new ArrayList<>());
+        Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción", 15d, 16d, new ArrayList<>());
         Animal animal = new Animal(animalId, LocalDate.of(2021, 7, 10), "Rocky", "Perro", 10, "Bulldog", "Mediano", false, false, 214.25f, "Afable y dormilón.", location, null);
 
         AdoptionInDTO adoptionInDTO = new AdoptionInDTO(false, LocalDate.now().plusDays(5), "15:00");
@@ -347,7 +347,7 @@ public class AdoptionServiceTests {
         AdoptionInDTO adoptionInDTO = new AdoptionInDTO(false, LocalDate.now().plusDays(5), "15:00");
 
         User user = new User(userId, "laMorena", "Laura", "Moreno", LocalDate.of(1995, 11, 5), "lamorena@gmail.es", List.of(), List.of());
-        Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción", new ArrayList<>());
+        Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción", 15d, 16d, new ArrayList<>());
         Animal animal = new Animal(animalId, LocalDate.of(2021, 7, 10), "Rocky", "Perro", 10, "Bulldog", "Mediano", false, true, 214.25f, "Afable y dormilón.", location, null);
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
@@ -398,7 +398,7 @@ public class AdoptionServiceTests {
         long userId = 3;
 
         User user = new User(userId, "laMorena", "Laura", "Moreno", LocalDate.of(1995, 11, 5), "lamorena@gmail.es", List.of(), List.of());
-        Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción", new ArrayList<>());
+        Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción", 15d, 16d, new ArrayList<>());
         Animal animal = new Animal(animalId, LocalDate.of(2021, 7, 10), "Rocky", "Perro", 10, "Bulldog", "Mediano", false, false, 214.25f, "Afable y dormilón.", location, null);
 
         Adoption existingAdoption = new Adoption(adoptionId, LocalDate.now(), false, LocalDate.now().plusDays(3), "12:20", animal, user);
@@ -490,7 +490,7 @@ public class AdoptionServiceTests {
         AdoptionChangePickUpInDTO pickUpData = new AdoptionChangePickUpInDTO(LocalDate.now().plusDays(7), "16:30");
 
         User user = new User(3, "laMorena", "Laura", "Moreno", LocalDate.of(1995, 11, 5), "lamorena@gmail.es", List.of(), List.of());
-        Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción", new ArrayList<>());
+        Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción", 15d, 16d, new ArrayList<>());
         Animal animal = new Animal(2, LocalDate.of(2021, 7, 10), "Rocky", "Perro", 10, "Bulldog", "Mediano", false, false, 214.25f, "Afable y dormilón.", location, null);
 
         Adoption existingAdoption = new Adoption(adoptionId, LocalDate.now(), false, LocalDate.now().plusDays(3), "12:20", animal, user);

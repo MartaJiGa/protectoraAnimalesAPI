@@ -49,7 +49,7 @@ public class LocationControllerTests {
     @Test
     public void testGetLocationOk() throws Exception {
         long locationId = 1;
-        Location mockLocation = new Location(locationId, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", new ArrayList<>());
+        Location mockLocation = new Location(locationId, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", 15d, 16d, new ArrayList<>());
 
         when(locationService.findById(locationId)).thenReturn(mockLocation);
 
@@ -72,7 +72,7 @@ public class LocationControllerTests {
     @Test
     public void testGetAnimalsInLocationOk() throws Exception {
         long locationId = 1;
-        Location mockLocation = new Location(locationId, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", new ArrayList<>());
+        Location mockLocation = new Location(locationId, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", 15d, 16d, new ArrayList<>());
         List<Animal> mockAnimalList = List.of(
                 new Animal(1, LocalDate.of(2023, 1, 10), "Luna", "Perro", 3, "Labrador", "Grande", true, false, 150.0f, "Muy amigable", mockLocation, null),
                 new Animal(2, LocalDate.now(), "Milo", "Gato", 2, "Siamés", "Pequeño", false, true, 100.0f, "Cariñoso y tranquilo", mockLocation, null),
@@ -137,8 +137,8 @@ public class LocationControllerTests {
     @Test
     public void testAddLocationOk() throws Exception {
         long locationId = 1;
-        LocationInDTO locationInDTO = new LocationInDTO(true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.");
-        Location mockLocation = new Location(locationId, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", new ArrayList<>());
+        LocationInDTO locationInDTO = new LocationInDTO(true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", 15d, 16d);
+        Location mockLocation = new Location(locationId, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", 15d, 16d, new ArrayList<>());
 
         when(locationService.saveLocation(locationInDTO)).thenReturn(mockLocation);
 
@@ -169,7 +169,7 @@ public class LocationControllerTests {
 
     @Test
     public void testAddLocationValidationError() throws Exception {
-        LocationInDTO locationInDTO = new LocationInDTO(true, "Calle del Gato 23", "", "Zar8agoza", "Centro de adopción de animales en Zaragoza.");
+        LocationInDTO locationInDTO = new LocationInDTO(true, "Calle del Gato 23", "", "Zar8agoza", "Centro de adopción de animales en Zaragoza.", 15d, 16d);
 
         String requestBody = objectMapper.writeValueAsString(locationInDTO);
         MvcResult response = mockMvc.perform(MockMvcRequestBuilders.post("/locations", locationInDTO)
@@ -192,7 +192,7 @@ public class LocationControllerTests {
     @Test
     public void testAddLocationNotFound() throws Exception {
         long locationId = 1;
-        LocationInDTO locationInDTO = new LocationInDTO(true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.");
+        LocationInDTO locationInDTO = new LocationInDTO(true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", 15d, 16d);
 
         when(locationService.saveLocation(locationInDTO)).thenThrow(new ResourceNotFoundException("Ubicación con id " + locationId + " no encontrada."));
 
@@ -274,8 +274,8 @@ public class LocationControllerTests {
     @Test
     public void testModifyLocationOk() throws Exception {
         long locationId = 1;
-        LocationInDTO locationInDTO = new LocationInDTO(true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.");
-        Location mockLocation = new Location(locationId, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", new ArrayList<>());
+        LocationInDTO locationInDTO = new LocationInDTO(true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", 15d, 16d);
+        Location mockLocation = new Location(locationId, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", 15d, 16d, new ArrayList<>());
 
         when(locationService.modifyLocation(locationInDTO, locationId)).thenReturn(mockLocation);
 
@@ -308,7 +308,7 @@ public class LocationControllerTests {
     @Test
     public void testModifyLocationValidationError() throws Exception {
         long locationId = 1;
-        LocationInDTO locationInDTO = new LocationInDTO(true, "Calle del Gato 23", "60027", "", "Centro de adopción de animales en Zaragoza.");
+        LocationInDTO locationInDTO = new LocationInDTO(true, "Calle del Gato 23", "60027", "", "Centro de adopción de animales en Zaragoza.", 15d, 16d);
 
         String requestBody = objectMapper.writeValueAsString(locationInDTO);
 
@@ -331,7 +331,7 @@ public class LocationControllerTests {
     @Test
     public void testModifyLocationNotFound() throws Exception {
         long locationId = 3;
-        LocationInDTO locationInDTO = new LocationInDTO(true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.");
+        LocationInDTO locationInDTO = new LocationInDTO(true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", 15d, 16d);
 
         when(locationService.modifyLocation(locationInDTO, locationId))
                 .thenThrow(new ResourceNotFoundException("Ubicación con id " + locationId + " no encontrada."));
@@ -359,7 +359,7 @@ public class LocationControllerTests {
     @Test
     public void testChangeMainSiteOk() throws Exception {
         long locationId = 1;
-        Location mockLocation = new Location(locationId, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", new ArrayList<>());
+        Location mockLocation = new Location(locationId, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", 15d, 16d, new ArrayList<>());
 
         when(locationService.changeMainSite(locationId)).thenReturn(mockLocation);
 

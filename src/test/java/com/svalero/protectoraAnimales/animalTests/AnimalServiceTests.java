@@ -307,7 +307,7 @@ class AnimalServiceTests {
 	@Test
 	public void testGetUnadoptedAnimalsByLocation() {
 		int locationId = 3;
-		Location mockLocation = new Location(3, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", new ArrayList<>());
+		Location mockLocation = new Location(3, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", 15d, 16d, new ArrayList<>());
 
 		List<Animal> mockAnimalList = List.of(
 				new Animal(2, LocalDate.of(2023, 6, 5), "Luna", "Conejo", 8, "Angora", "Pequeño", false, false, 95.0f, "Tranquila, le gusta dormir cerca de la ventana.", mockLocation, List.of()),
@@ -345,7 +345,7 @@ class AnimalServiceTests {
 	@Test
 	public void testAddAnimal() {
 		long locationId = 1;
-		Location mockLocation = new Location(1, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", new ArrayList<>());
+		Location mockLocation = new Location(1, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", 15d, 16d, new ArrayList<>());
 		AnimalInDTO mockAnimalInDTO = new AnimalInDTO("Bigotes","Gato",2,"Persa","Pequeño",true,false,120.0f,"Es alegre y le gusta dormir en el sofá");
 		AnimalOutDTO mockAnimalOutDTO = new AnimalOutDTO(1, LocalDate.of(2021, 11, 15), "Bigotes", "Gato", 4, "Persa", "Pequeño", true, false, 120.0f, "Es alegre y le gusta dormir en el sofá", 0, null);
 		Animal mockAnimal = new Animal(1, LocalDate.of(2021, 11, 15), "Bigotes", "Gato", 4, "Persa", "Pequeño", true, false, 120.0f, "Es alegre y le gusta dormir en el sofá", new Location(), List.of());
@@ -446,7 +446,7 @@ class AnimalServiceTests {
 		long animalId = 1;
 		long locationId = 1;
 		Animal mockExistingAnimal = new Animal(1, LocalDate.of(2021, 11, 15), "Bigotes", "Gato", 4, "Persa", "Pequeño", true, false, 120.0f, "Es alegre y le gusta dormir en el sofá", new Location(), List.of());
-		Location mockLocation = new Location(1, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", new ArrayList<>());
+		Location mockLocation = new Location(1, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", 15d, 16d, new ArrayList<>());
 		AnimalOutDTO mockAnimalOutDTO = new AnimalOutDTO(1, LocalDate.of(2021, 11, 15), "Bigotes", "Gato", 4, "Persa", "Pequeño", true, false, 120.0f, "Es alegre y le gusta dormir en el sofá.", 1, "Zaragoza");
 
 		when(animalRepository.findById(animalId)).thenReturn(Optional.of(mockExistingAnimal));

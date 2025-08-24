@@ -48,7 +48,7 @@ public class AdoptionControllerTests {
     @Test
     public void testGetPickUpsInNextTwoWeeksOk() throws Exception {
         User user = new User(4, "laMorena", "Laura", "Moreno", LocalDate.of(1995, 11, 5), "lamorena@gmail.es", List.of(), List.of());
-        Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", new ArrayList<>());
+        Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", 15d, 16d, new ArrayList<>());
         Animal animal = new Animal(3, LocalDate.of(2021, 7, 10), "Rocky", "Perro", 10, "Bulldog", "Mediano", true, false, 214.25f,"Afable y dormilón. En invierno le gusta ponerse al lado de la estufa.", location, null);
 
         List<AdoptionOutDTO> adoptionList = List.of(
@@ -117,7 +117,7 @@ public class AdoptionControllerTests {
         long animalId = 3;
 
         User user = new User(userId, "laMorena", "Laura", "Moreno", LocalDate.of(1995, 11, 5), "lamorena@gmail.es", List.of(), List.of());
-        Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", new ArrayList<>());
+        Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", 15d, 16d, new ArrayList<>());
         Animal animal = new Animal(animalId, LocalDate.of(2021, 7, 10), "Rocky", "Perro", 10, "Bulldog", "Mediano", true, false, 214.25f,"Afable y dormilón. En invierno le gusta ponerse al lado de la estufa.", location, null);
 
         AdoptionInDTO adoptionInDTO = new AdoptionInDTO(false, LocalDate.now().plusDays(3), "12:20");
@@ -265,7 +265,7 @@ public class AdoptionControllerTests {
         long animalId = 3;
 
         User user = new User(userId, "laMorena", "Laura", "Moreno", LocalDate.of(1995, 11, 5), "lamorena@gmail.es", List.of(), List.of());
-        Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", new ArrayList<>());
+        Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", 15d, 16d, new ArrayList<>());
         Animal animal = new Animal(animalId, LocalDate.of(2021, 7, 10), "Rocky", "Perro", 10, "Bulldog", "Mediano", true, false, 214.25f,"Afable y dormilón. En invierno le gusta ponerse al lado de la estufa.", location, null);
 
         AdoptionInDTO adoptionInDTO = new AdoptionInDTO(true, LocalDate.now().plusDays(3), "12:20");

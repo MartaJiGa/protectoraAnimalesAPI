@@ -7,6 +7,7 @@ import com.svalero.protectoraAnimales.domain.Animal;
 import com.svalero.protectoraAnimales.domain.Location;
 import com.svalero.protectoraAnimales.domain.dto.animal.AnimalInDTO;
 import com.svalero.protectoraAnimales.domain.dto.animal.AnimalOutDTO;
+import com.svalero.protectoraAnimales.domain.dto.animal.AnimalUpdateDTO;
 import com.svalero.protectoraAnimales.exception.ErrorResponse;
 import com.svalero.protectoraAnimales.exception.runtime.NoChangeException;
 import com.svalero.protectoraAnimales.exception.runtime.ResourceNotFoundException;
@@ -527,7 +528,7 @@ public class AnimalControllerTests {
     public void testModifyAnimalOk() throws Exception {
         long animalId = 1;
 
-        AnimalInDTO animalInDTO = new AnimalInDTO("Bigotes","Gato",3,"Persa","Pequeño",true,false,120.0f,"Es alegre y le gusta dormir en el sofá. Le gusta mirar a los pájaros pasar al otro lado de la ventana.");
+        AnimalUpdateDTO animalInDTO = new AnimalUpdateDTO("Bigotes","Gato",3,"Persa","Pequeño",true,false,120.0f,"Es alegre y le gusta dormir en el sofá. Le gusta mirar a los pájaros pasar al otro lado de la ventana.", LocalDate.of(2024, 05, 23));
         AnimalOutDTO animalOutDTO = new AnimalOutDTO(1, LocalDate.of(2023, 1, 10), "Bigotes", "Gato", 3, "Persa","Pequeño",true,false,120.0f,"Es alegre y le gusta dormir en el sofá. Le gusta mirar a los pájaros pasar al otro lado de la ventana.", 1, "Zaragoza");
 
         when(animalService.modifyAnimal(animalInDTO, animalId)).thenReturn(animalOutDTO);

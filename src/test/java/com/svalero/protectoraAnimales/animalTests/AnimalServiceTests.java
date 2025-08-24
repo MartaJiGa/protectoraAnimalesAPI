@@ -4,6 +4,7 @@ import com.svalero.protectoraAnimales.domain.Animal;
 import com.svalero.protectoraAnimales.domain.Location;
 import com.svalero.protectoraAnimales.domain.dto.animal.AnimalInDTO;
 import com.svalero.protectoraAnimales.domain.dto.animal.AnimalOutDTO;
+import com.svalero.protectoraAnimales.domain.dto.animal.AnimalUpdateDTO;
 import com.svalero.protectoraAnimales.exception.runtime.ResourceNotFoundException;
 import com.svalero.protectoraAnimales.repository.AnimalRepository;
 import com.svalero.protectoraAnimales.repository.LocationRepository;
@@ -409,7 +410,7 @@ class AnimalServiceTests {
 	public void testModifyAnimal() {
 		long animalId = 1;
 		Animal mockExistingAnimal = new Animal(1, LocalDate.of(2021, 11, 15), "Bigotes", "Gato", 4, "Persa", "Pequeño", true, false, 120.0f, "Es alegre y le gusta dormir en el sofá", new Location(), List.of());
-		AnimalInDTO mockAnimalInDTO = new AnimalInDTO("Bigotes","Gato",4,"Persa","Pequeño",true,true,128.7f,"Es alegre y le gusta dormir en el sofá. Se lleva muy bien con perros y niños.");
+		AnimalUpdateDTO mockAnimalInDTO = new AnimalUpdateDTO("Bigotes","Gato",4,"Persa","Pequeño",true,true,128.7f,"Es alegre y le gusta dormir en el sofá. Se lleva muy bien con perros y niños.", LocalDate.of(2024, 05, 23));
 		Animal mockMappedAnimal = new Animal(1, LocalDate.of(2021, 11, 15), "Bigotes", "Gato", 4, "Persa", "Pequeño", true, false, 128.7f, "Es alegre y le gusta dormir en el sofá. Se lleva muy bien con perros y niños.", new Location(), List.of());
 		AnimalOutDTO mockAnimalOutDTO = new AnimalOutDTO(1, LocalDate.of(2021, 11, 15), "Bigotes", "Gato", 4, "Persa", "Pequeño", true, true, 128.7f, "Es alegre y le gusta dormir en el sofá. Se lleva muy bien con perros y niños.", 0, null);
 
@@ -431,7 +432,7 @@ class AnimalServiceTests {
 	@Test
 	public void testModifyAnimalWhenAnimalIsNotFound() {
 		long animalId = 3;
-		AnimalInDTO mockAnimalInDTO = new AnimalInDTO("Bigotes","Gato",4,"Persa","Pequeño",true,true,128.7f,"Es alegre y le gusta dormir en el sofá. Se lleva muy bien con perros y niños.");
+		AnimalUpdateDTO mockAnimalInDTO = new AnimalUpdateDTO("Bigotes","Gato",4,"Persa","Pequeño",true,true,128.7f,"Es alegre y le gusta dormir en el sofá. Se lleva muy bien con perros y niños.", LocalDate.of(2024, 05, 23));
 
 		when(animalRepository.findById(animalId)).thenReturn(Optional.empty());
 

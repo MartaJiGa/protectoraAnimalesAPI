@@ -7,6 +7,7 @@ import com.svalero.protectoraAnimales.domain.Animal;
 import com.svalero.protectoraAnimales.domain.Location;
 import com.svalero.protectoraAnimales.domain.dto.animal.AnimalInDTO;
 import com.svalero.protectoraAnimales.domain.dto.animal.AnimalOutDTO;
+import com.svalero.protectoraAnimales.domain.dto.animal.AnimalUpdateDTO;
 import com.svalero.protectoraAnimales.exception.runtime.NoChangeException;
 import com.svalero.protectoraAnimales.exception.runtime.ResourceNotFoundException;
 import com.svalero.protectoraAnimales.repository.AnimalRepository;
@@ -146,7 +147,7 @@ public class AnimalService {
     // endregion
 
     // region PUT request
-    public AnimalOutDTO modifyAnimal(AnimalInDTO animalInDTO, long animalId) {
+    public AnimalOutDTO modifyAnimal(AnimalUpdateDTO animalInDTO, long animalId) {
         Animal existingAnimal = animalRepository.findById(animalId)
                 .orElseThrow(() -> new ResourceNotFoundException("Animal con id " + animalId + " no encontrado."));
 
@@ -161,6 +162,7 @@ public class AnimalService {
         existingAnimal.setAdopted(animal.isAdopted());
         existingAnimal.setPrice(animal.getPrice());
         existingAnimal.setDescription(animal.getDescription());
+        existingAnimal.setIncorporationDate(animal.getIncorporationDate());
 
         animalRepository.save(existingAnimal);
 

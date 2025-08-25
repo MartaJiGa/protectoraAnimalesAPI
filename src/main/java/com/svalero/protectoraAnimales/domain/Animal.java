@@ -61,7 +61,7 @@ public class Animal {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "location_id", nullable = false)
+    @JoinColumn(name = "location_id")
     private Location location;
 
     @OneToMany(mappedBy = "animal")

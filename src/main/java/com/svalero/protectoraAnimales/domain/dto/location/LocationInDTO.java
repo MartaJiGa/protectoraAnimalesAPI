@@ -1,5 +1,6 @@
 package com.svalero.protectoraAnimales.domain.dto.location;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -25,4 +26,8 @@ public class LocationInDTO {
     private String city;
 
     private String description;
+
+    private Double latitude;
+
+    private Double longitude;
 }

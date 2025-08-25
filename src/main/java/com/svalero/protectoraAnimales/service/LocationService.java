@@ -95,6 +95,8 @@ public class LocationService {
         existingLocation.setZipCode(location.getZipCode());
         existingLocation.setCity(location.getCity());
         existingLocation.setDescription(location.getDescription());
+        existingLocation.setLatitude(location.getLatitude());
+        existingLocation.setLongitude(location.getLongitude());
 
         return locationRepository.save(existingLocation);
     }

@@ -41,6 +41,12 @@ public class Location {
     @Column
     private String description;
 
+    @Column
+    private Double latitude;
+
+    @Column
+    private Double longitude;
+
     @OneToMany(mappedBy = "location")
     @JsonBackReference(value = "locations_animals")
     private List<Animal> animals;

@@ -147,9 +147,12 @@ public class AnimalService {
     // endregion
 
     // region PUT request
-    public AnimalOutDTO modifyAnimal(AnimalUpdateDTO animalInDTO, long animalId) {
+    public AnimalOutDTO modifyAnimal(AnimalUpdateDTO animalInDTO, long animalId, long locationId) {
         Animal existingAnimal = animalRepository.findById(animalId)
                 .orElseThrow(() -> new ResourceNotFoundException("Animal con id " + animalId + " no encontrado."));
+
+        Location location = locationRepository.findById(locationId)
+                .orElseThrow(() -> new ResourceNotFoundException("Ubicación con id " + locationId + " no encontrada."));
 
         Animal animal = modelMapper.map(animalInDTO, Animal.class);
 
@@ -163,20 +166,8 @@ public class AnimalService {
         existingAnimal.setPrice(animal.getPrice());
         existingAnimal.setDescription(animal.getDescription());
         existingAnimal.setIncorporationDate(animal.getIncorporationDate());
-
-        animalRepository.save(existingAnimal);
-
-        AnimalOutDTO animalOutDTO = modelMapper.map(existingAnimal, AnimalOutDTO.class);
-        return animalOutDTO;
-    }
-    public AnimalOutDTO modifyAnimalLocation(long animalId, long locationId) {
-        Animal existingAnimal = animalRepository.findById(animalId)
-                .orElseThrow(() -> new ResourceNotFoundException("Animal con id " + animalId + " no encontrado."));
-
-        Location location = locationRepository.findById(locationId)
-                .orElseThrow(() -> new ResourceNotFoundException("Ubicación con id " + locationId + " no encontrada."));
-
         existingAnimal.setLocation(location);
+
         animalRepository.save(existingAnimal);
 
         AnimalOutDTO animalOutDTO = modelMapper.map(existingAnimal, AnimalOutDTO.class);

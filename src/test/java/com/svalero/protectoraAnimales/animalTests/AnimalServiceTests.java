@@ -5,6 +5,7 @@ import com.svalero.protectoraAnimales.domain.Location;
 import com.svalero.protectoraAnimales.domain.dto.animal.AnimalInDTO;
 import com.svalero.protectoraAnimales.domain.dto.animal.AnimalOutDTO;
 import com.svalero.protectoraAnimales.domain.dto.animal.AnimalUpdateDTO;
+import com.svalero.protectoraAnimales.domain.dto.location.LocationOutDTO;
 import com.svalero.protectoraAnimales.exception.runtime.ResourceNotFoundException;
 import com.svalero.protectoraAnimales.repository.AnimalRepository;
 import com.svalero.protectoraAnimales.repository.LocationRepository;
@@ -79,9 +80,9 @@ class AnimalServiceTests {
 		);
 
 		List<AnimalOutDTO> mockAnimalOutDTOList = List.of(
-				new AnimalOutDTO(1, LocalDate.of(2023, 1, 10), "Luna", "Perro", 3, "Labrador", "Grande", true, false, 150.0f, "Muy amigable", 0, null),
-				new AnimalOutDTO(2, LocalDate.now(), "Milo", "Gato", 2, "Siamés", "Pequeño", false, true, 100.0f, "Cariñoso y tranquilo", 0L, null),
-				new AnimalOutDTO(3, LocalDate.of(2024, 3, 5), "Kira", "Conejo", 1, "Enano", "Pequeño", true, false, 50.0f, "Le encanta saltar", 0, null)
+				new AnimalOutDTO(1, LocalDate.of(2023, 1, 10), "Luna", "Perro", 3, "Labrador", "Grande", true, false, 150.0f, "Muy amigable", null),
+				new AnimalOutDTO(2, LocalDate.now(), "Milo", "Gato", 2, "Siamés", "Pequeño", false, true, 100.0f, "Cariñoso y tranquilo", null),
+				new AnimalOutDTO(3, LocalDate.of(2024, 3, 5), "Kira", "Conejo", 1, "Enano", "Pequeño", true, false, 50.0f, "Le encanta saltar", null)
 		);
 
 		when(animalRepository.findAll()).thenReturn(mockAnimalList);
@@ -109,12 +110,11 @@ class AnimalServiceTests {
 				new Animal(2, LocalDate.of(2021, 11, 15), "Nala", "Gato", 4, "Persa", "Mediano", true, false, 120.0f, "Juguetona y tranquila", new Location(), List.of())
 		);
 
-		List<AnimalOutDTO> mockAnimalDTOList = List.of(
-				new AnimalOutDTO(1, LocalDate.of(2022, 5, 20), "Milo", "Gato", 2, "Siamés", "Pequeño", false, true, 100.0f, "Cariñoso y tranquilo", 0, null),
-				new AnimalOutDTO(2, LocalDate.of(2021, 11, 15), "Nala", "Gato", 4, "Persa", "Mediano", true, false, 120.0f, "Juguetona y tranquila", 0, null)
-		);
+		List<AnimalOutDTO> mockAnimalDTOList = new ArrayList<>();
+        mockAnimalDTOList.add(new AnimalOutDTO(1, LocalDate.of(2022, 5, 20), "Milo", "Gato", 2, "Siamés", "Pequeño", false, true, 100.0f, "Cariñoso y tranquilo", null));
+        mockAnimalDTOList.add(new AnimalOutDTO(2, LocalDate.of(2021, 11, 15), "Nala", "Gato", 4, "Persa", "Mediano", true, false, 120.0f, "Juguetona y tranquila", null));
 
-		when(animalRepository.findBySpecies(species)).thenReturn(mockAnimalList);
+        when(animalRepository.findBySpecies(species)).thenReturn(mockAnimalList);
 		when(modelMapper.map(mockAnimalList, new TypeToken<List<AnimalOutDTO>>() {}.getType())).thenReturn(mockAnimalDTOList);
 
 		List<AnimalOutDTO> result = animalService.findBySpecies(species);
@@ -140,9 +140,9 @@ class AnimalServiceTests {
 		);
 
 		List<AnimalOutDTO> mockAnimalDTOList = List.of(
-				new AnimalOutDTO(1, LocalDate.of(2023, 3, 10), "Simba", "Perro", 3, "Labrador", "Grande", true, false, 150.0f, "Activo, le encanta correr y jugar con pelotas.", 0, null),
-				new AnimalOutDTO(2, LocalDate.of(2023, 6, 5), "Luna", "Gato", 3, "Angora", "Pequeño", false, true, 95.0f, "Tranquila, le gusta dormir cerca de la ventana.", 0, null),
-				new AnimalOutDTO(3, LocalDate.of(2023, 1, 25), "Rocky", "Conejo", 3, "Enano", "Pequeño", true, false, 60.0f, "Muy sociable y curioso, ideal para familias.", 0, null)
+				new AnimalOutDTO(1, LocalDate.of(2023, 3, 10), "Simba", "Perro", 3, "Labrador", "Grande", true, false, 150.0f, "Activo, le encanta correr y jugar con pelotas.", null),
+				new AnimalOutDTO(2, LocalDate.of(2023, 6, 5), "Luna", "Gato", 3, "Angora", "Pequeño", false, true, 95.0f, "Tranquila, le gusta dormir cerca de la ventana.", null),
+				new AnimalOutDTO(3, LocalDate.of(2023, 1, 25), "Rocky", "Conejo", 3, "Enano", "Pequeño", true, false, 60.0f, "Muy sociable y curioso, ideal para familias.", null)
 
 		);
 
@@ -169,8 +169,8 @@ class AnimalServiceTests {
 		);
 
 		List<AnimalOutDTO> mockAnimalDTOList = List.of(
-				new AnimalOutDTO(2, LocalDate.of(2023, 6, 5), "Luna", "Gato", 12, "Angora", "Pequeño", false, true, 95.0f, "Tranquila, le gusta dormir cerca de la ventana.", 0, null),
-				new AnimalOutDTO(8, LocalDate.of(2023, 1, 25), "Rocky", "Conejo", 6, "Enano", "Pequeño", true, false, 60.0f, "Muy sociable y curioso, ideal para familias.", 0, null)
+				new AnimalOutDTO(2, LocalDate.of(2023, 6, 5), "Luna", "Gato", 12, "Angora", "Pequeño", false, true, 95.0f, "Tranquila, le gusta dormir cerca de la ventana.", null),
+				new AnimalOutDTO(8, LocalDate.of(2023, 1, 25), "Rocky", "Conejo", 6, "Enano", "Pequeño", true, false, 60.0f, "Muy sociable y curioso, ideal para familias.", null)
 
 		);
 
@@ -198,8 +198,8 @@ class AnimalServiceTests {
 		);
 
 		List<AnimalOutDTO> mockAnimalDTOList = List.of(
-				new AnimalOutDTO(2, LocalDate.of(2023, 6, 5), "Luna", "Conejo", 6, "Angora", "Mediano", false, true, 95.0f, "Tranquila, le gusta dormir cerca de la ventana.", 0, null),
-				new AnimalOutDTO(8, LocalDate.of(2023, 1, 25), "Rocky", "Conejo", 6, "Enano", "Pequeño", true, false, 60.0f, "Muy sociable y curioso, ideal para familias.", 0, null)
+				new AnimalOutDTO(2, LocalDate.of(2023, 6, 5), "Luna", "Conejo", 6, "Angora", "Mediano", false, true, 95.0f, "Tranquila, le gusta dormir cerca de la ventana.", null),
+				new AnimalOutDTO(8, LocalDate.of(2023, 1, 25), "Rocky", "Conejo", 6, "Enano", "Pequeño", true, false, 60.0f, "Muy sociable y curioso, ideal para familias.", null)
 
 		);
 
@@ -228,10 +228,10 @@ class AnimalServiceTests {
 		);
 
 		List<AnimalOutDTO> mockAnimalDTOList = List.of(
-				new AnimalOutDTO(2, LocalDate.of(2023, 6, 5), "Luna", "Conejo", 8, "Angora", "Pequeño", false, true, 95.0f, "Tranquila, le gusta dormir cerca de la ventana.", 0, null),
-				new AnimalOutDTO(8, LocalDate.of(2023, 1, 25), "Rocky", "Conejo", 6, "Enano", "Pequeño", true, false, 60.0f, "Muy sociable y curioso, ideal para familias.", 0, null),
-				new AnimalOutDTO(12, LocalDate.of(2022, 11, 10), "Nube", "Conejo", 5, "Cabeza de León", "Pequeño", false, true, 85.0f, "Es tímida al principio, pero muy cariñosa cuando entra en confianza.", 0, null),
-				new AnimalOutDTO(15, LocalDate.of(2023, 3, 3), "Toby", "Conejo", 4, "Mini Lop", "Pequeño", true, true, 75.0f, "Juguetón y activo, le encanta correr por el jardín.", 0, null)
+				new AnimalOutDTO(2, LocalDate.of(2023, 6, 5), "Luna", "Conejo", 8, "Angora", "Pequeño", false, true, 95.0f, "Tranquila, le gusta dormir cerca de la ventana.", null),
+				new AnimalOutDTO(8, LocalDate.of(2023, 1, 25), "Rocky", "Conejo", 6, "Enano", "Pequeño", true, false, 60.0f, "Muy sociable y curioso, ideal para familias.", null),
+				new AnimalOutDTO(12, LocalDate.of(2022, 11, 10), "Nube", "Conejo", 5, "Cabeza de León", "Pequeño", false, true, 85.0f, "Es tímida al principio, pero muy cariñosa cuando entra en confianza.", null),
+				new AnimalOutDTO(15, LocalDate.of(2023, 3, 3), "Toby", "Conejo", 4, "Mini Lop", "Pequeño", true, true, 75.0f, "Juguetón y activo, le encanta correr por el jardín.", null)
 		);
 
 		when(animalRepository.findBySpeciesAndSize(species, size)).thenReturn(mockAnimalList);
@@ -259,10 +259,10 @@ class AnimalServiceTests {
 		);
 
 		List<AnimalOutDTO> mockAnimalDTOList = List.of(
-				new AnimalOutDTO(2, LocalDate.of(2023, 6, 5), "Luna", "Conejo", 8, "Angora", "Pequeño", false, true, 95.0f, "Tranquila, le gusta dormir cerca de la ventana.", 0, null),
-				new AnimalOutDTO(8, LocalDate.of(2023, 1, 25), "Rocky", "Conejo", 8, "Enano", "Pequeño", true, false, 60.0f, "Muy sociable y curioso, ideal para familias.", 0, null),
-				new AnimalOutDTO(12, LocalDate.of(2022, 11, 10), "Nube", "Conejo", 8, "Cabeza de León", "Pequeño", false, true, 85.0f, "Es tímida al principio, pero muy cariñosa cuando entra en confianza.", 0, null),
-				new AnimalOutDTO(15, LocalDate.of(2023, 3, 3), "Toby", "Conejo", 8, "Mini Lop", "Pequeño", true, true, 75.0f, "Juguetón y activo, le encanta correr por el jardín.", 0, null)
+				new AnimalOutDTO(2, LocalDate.of(2023, 6, 5), "Luna", "Conejo", 8, "Angora", "Pequeño", false, true, 95.0f, "Tranquila, le gusta dormir cerca de la ventana.", null),
+				new AnimalOutDTO(8, LocalDate.of(2023, 1, 25), "Rocky", "Conejo", 8, "Enano", "Pequeño", true, false, 60.0f, "Muy sociable y curioso, ideal para familias.", null),
+				new AnimalOutDTO(12, LocalDate.of(2022, 11, 10), "Nube", "Conejo", 8, "Cabeza de León", "Pequeño", false, true, 85.0f, "Es tímida al principio, pero muy cariñosa cuando entra en confianza.", null),
+				new AnimalOutDTO(15, LocalDate.of(2023, 3, 3), "Toby", "Conejo", 8, "Mini Lop", "Pequeño", true, true, 75.0f, "Juguetón y activo, le encanta correr por el jardín.", null)
 		);
 
 		when(animalRepository.findByAgeAndSize(age, size)).thenReturn(mockAnimalList);
@@ -288,7 +288,7 @@ class AnimalServiceTests {
 		);
 
 		List<AnimalOutDTO> mockAnimalDTOList = List.of(
-				new AnimalOutDTO(12, LocalDate.of(2022, 11, 10), "Nube", "Conejo", 8, "Cabeza de León", "Pequeño", false, true, 85.0f, "Es tímida al principio, pero muy cariñosa cuando entra en confianza.", 0, null)
+				new AnimalOutDTO(12, LocalDate.of(2022, 11, 10), "Nube", "Conejo", 8, "Cabeza de León", "Pequeño", false, true, 85.0f, "Es tímida al principio, pero muy cariñosa cuando entra en confianza.", null)
 		);
 
 		when(animalRepository.findBySpeciesAndAgeAndSize(species, age, size)).thenReturn(mockAnimalList);
@@ -307,7 +307,7 @@ class AnimalServiceTests {
 	@Test
 	public void testGetUnadoptedAnimalsByLocation() {
 		int locationId = 3;
-		Location mockLocation = new Location(3, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", new ArrayList<>());
+		Location mockLocation = new Location(3, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", 15d, 16d, new ArrayList<>());
 
 		List<Animal> mockAnimalList = List.of(
 				new Animal(2, LocalDate.of(2023, 6, 5), "Luna", "Conejo", 8, "Angora", "Pequeño", false, false, 95.0f, "Tranquila, le gusta dormir cerca de la ventana.", mockLocation, List.of()),
@@ -318,11 +318,11 @@ class AnimalServiceTests {
 		);
 
 		List<AnimalOutDTO> mockAnimalDTOList = List.of(
-				new AnimalOutDTO(2, LocalDate.of(2023, 6, 5), "Luna", "Conejo", 8, "Angora", "Pequeño", false, false, 95.0f, "Tranquila, le gusta dormir cerca de la ventana.", locationId, "Zaragoza"),
-				new AnimalOutDTO(8, LocalDate.of(2023, 1, 25), "Rocky", "Conejo", 8, "Enano", "Pequeño", true, false, 60.0f, "Muy sociable y curioso, ideal para familias.", locationId, "Zaragoza"),
-				new AnimalOutDTO(20, LocalDate.of(2022, 9, 15), "Max", "Perro", 5, "Labrador", "Grande", true, false, 120.0f, "Muy activo y cariñoso. Le gusta jugar con pelotas.", locationId, "Zaragoza"),
-				new AnimalOutDTO(21, LocalDate.of(2024, 2, 10), "Misu", "Gato", 2, "Siamés", "Mediano", false, false, 80.0f, "Curiosa y juguetona. Ideal para apartamento.", locationId, "Zaragoza"),
-				new AnimalOutDTO(22, LocalDate.of(2023, 11, 20), "Firu", "Hurón", 1, "Albino", "Pequeño", true, false, 50.0f, "Muy inquieto, necesita espacio para explorar.", locationId, "Zaragoza")
+				new AnimalOutDTO(2, LocalDate.of(2023, 6, 5), "Luna", "Conejo", 8, "Angora", "Pequeño", false, false, 95.0f, "Tranquila, le gusta dormir cerca de la ventana.", new LocationOutDTO(3, "Paseo Independencia", "Zaragoza")),
+				new AnimalOutDTO(8, LocalDate.of(2023, 1, 25), "Rocky", "Conejo", 8, "Enano", "Pequeño", true, false, 60.0f, "Muy sociable y curioso, ideal para familias.", new LocationOutDTO(3, "Paseo Independencia", "Zaragoza")),
+				new AnimalOutDTO(20, LocalDate.of(2022, 9, 15), "Max", "Perro", 5, "Labrador", "Grande", true, false, 120.0f, "Muy activo y cariñoso. Le gusta jugar con pelotas.", new LocationOutDTO(3, "Paseo Independencia", "Zaragoza")),
+				new AnimalOutDTO(21, LocalDate.of(2024, 2, 10), "Misu", "Gato", 2, "Siamés", "Mediano", false, false, 80.0f, "Curiosa y juguetona. Ideal para apartamento.", new LocationOutDTO(3, "Paseo Independencia", "Zaragoza")),
+				new AnimalOutDTO(22, LocalDate.of(2023, 11, 20), "Firu", "Hurón", 1, "Albino", "Pequeño", true, false, 50.0f, "Muy inquieto, necesita espacio para explorar.", new LocationOutDTO(3, "Paseo Independencia", "Zaragoza"))
 		);
 
 		when(animalRepository.findUnadoptedAnimalsByLocation(locationId)).thenReturn(mockAnimalList);
@@ -345,9 +345,9 @@ class AnimalServiceTests {
 	@Test
 	public void testAddAnimal() {
 		long locationId = 1;
-		Location mockLocation = new Location(1, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", new ArrayList<>());
+		Location mockLocation = new Location(1, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", 15d, 16d, new ArrayList<>());
 		AnimalInDTO mockAnimalInDTO = new AnimalInDTO("Bigotes","Gato",2,"Persa","Pequeño",true,false,120.0f,"Es alegre y le gusta dormir en el sofá");
-		AnimalOutDTO mockAnimalOutDTO = new AnimalOutDTO(1, LocalDate.of(2021, 11, 15), "Bigotes", "Gato", 4, "Persa", "Pequeño", true, false, 120.0f, "Es alegre y le gusta dormir en el sofá", 0, null);
+		AnimalOutDTO mockAnimalOutDTO = new AnimalOutDTO(1, LocalDate.of(2021, 11, 15), "Bigotes", "Gato", 4, "Persa", "Pequeño", true, false, 120.0f, "Es alegre y le gusta dormir en el sofá", null);
 		Animal mockAnimal = new Animal(1, LocalDate.of(2021, 11, 15), "Bigotes", "Gato", 4, "Persa", "Pequeño", true, false, 120.0f, "Es alegre y le gusta dormir en el sofá", new Location(), List.of());
 
 		when(locationRepository.findById(locationId)).thenReturn(Optional.of(mockLocation));
@@ -409,16 +409,17 @@ class AnimalServiceTests {
 	@Test
 	public void testModifyAnimal() {
 		long animalId = 1;
+		long locationId = 3;
 		Animal mockExistingAnimal = new Animal(1, LocalDate.of(2021, 11, 15), "Bigotes", "Gato", 4, "Persa", "Pequeño", true, false, 120.0f, "Es alegre y le gusta dormir en el sofá", new Location(), List.of());
 		AnimalUpdateDTO mockAnimalInDTO = new AnimalUpdateDTO("Bigotes","Gato",4,"Persa","Pequeño",true,true,128.7f,"Es alegre y le gusta dormir en el sofá. Se lleva muy bien con perros y niños.", LocalDate.of(2024, 05, 23));
 		Animal mockMappedAnimal = new Animal(1, LocalDate.of(2021, 11, 15), "Bigotes", "Gato", 4, "Persa", "Pequeño", true, false, 128.7f, "Es alegre y le gusta dormir en el sofá. Se lleva muy bien con perros y niños.", new Location(), List.of());
-		AnimalOutDTO mockAnimalOutDTO = new AnimalOutDTO(1, LocalDate.of(2021, 11, 15), "Bigotes", "Gato", 4, "Persa", "Pequeño", true, true, 128.7f, "Es alegre y le gusta dormir en el sofá. Se lleva muy bien con perros y niños.", 0, null);
+		AnimalOutDTO mockAnimalOutDTO = new AnimalOutDTO(1, LocalDate.of(2021, 11, 15), "Bigotes", "Gato", 4, "Persa", "Pequeño", true, true, 128.7f, "Es alegre y le gusta dormir en el sofá. Se lleva muy bien con perros y niños.", null);
 
 		when(animalRepository.findById(animalId)).thenReturn(Optional.of(mockExistingAnimal));
 		when(modelMapper.map(mockAnimalInDTO, Animal.class)).thenReturn(mockMappedAnimal);
 		when(modelMapper.map(mockExistingAnimal, AnimalOutDTO.class)).thenReturn(mockAnimalOutDTO);
 
-		AnimalOutDTO result = animalService.modifyAnimal(mockAnimalInDTO, animalId);
+		AnimalOutDTO result = animalService.modifyAnimal(mockAnimalInDTO, animalId, locationId);
 
 		assertEquals("Bigotes", result.getName());
 		assertEquals("Gato", result.getSpecies());
@@ -432,34 +433,14 @@ class AnimalServiceTests {
 	@Test
 	public void testModifyAnimalWhenAnimalIsNotFound() {
 		long animalId = 3;
+		long locationId = 3;
 		AnimalUpdateDTO mockAnimalInDTO = new AnimalUpdateDTO("Bigotes","Gato",4,"Persa","Pequeño",true,true,128.7f,"Es alegre y le gusta dormir en el sofá. Se lleva muy bien con perros y niños.", LocalDate.of(2024, 05, 23));
 
 		when(animalRepository.findById(animalId)).thenReturn(Optional.empty());
 
-		assertThrows(ResourceNotFoundException.class, () -> animalService.modifyAnimal(mockAnimalInDTO, animalId));
+		assertThrows(ResourceNotFoundException.class, () -> animalService.modifyAnimal(mockAnimalInDTO, animalId, locationId));
 
 		verify(animalRepository, never()).save(any());
-	}
-
-	@Test
-	public void testModifyAnimalLocation() {
-		long animalId = 1;
-		long locationId = 1;
-		Animal mockExistingAnimal = new Animal(1, LocalDate.of(2021, 11, 15), "Bigotes", "Gato", 4, "Persa", "Pequeño", true, false, 120.0f, "Es alegre y le gusta dormir en el sofá", new Location(), List.of());
-		Location mockLocation = new Location(1, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", new ArrayList<>());
-		AnimalOutDTO mockAnimalOutDTO = new AnimalOutDTO(1, LocalDate.of(2021, 11, 15), "Bigotes", "Gato", 4, "Persa", "Pequeño", true, false, 120.0f, "Es alegre y le gusta dormir en el sofá.", 1, "Zaragoza");
-
-		when(animalRepository.findById(animalId)).thenReturn(Optional.of(mockExistingAnimal));
-		when(locationRepository.findById(locationId)).thenReturn(Optional.of(mockLocation));
-		when(modelMapper.map(mockExistingAnimal, AnimalOutDTO.class)).thenReturn(mockAnimalOutDTO);
-
-		AnimalOutDTO result = animalService.modifyAnimalLocation(animalId, locationId);
-
-		assertEquals(1, result.getLocationId());
-		assertEquals("Zaragoza", result.getLocationCity());
-		assertEquals("Bigotes", result.getName());
-
-		verify(animalRepository, times(1)).save(mockExistingAnimal);
 	}
 
 	//endregion
@@ -470,7 +451,7 @@ class AnimalServiceTests {
 	public void testReturnAnimal() {
 		long animalId = 1;
 		Animal mockExistingAnimal = new Animal(1, LocalDate.of(2021, 11, 15), "Bigotes", "Gato", 4, "Persa", "Pequeño", true, true, 120.0f, "Es alegre y le gusta dormir en el sofá", new Location(), List.of());
-		AnimalOutDTO mockAnimalOutDTO = new AnimalOutDTO(1, LocalDate.of(2021, 11, 15), "Bigotes", "Gato", 4, "Persa", "Pequeño", true, false, 128.7f, "Es alegre y le gusta dormir en el sofá.", 0, null);
+		AnimalOutDTO mockAnimalOutDTO = new AnimalOutDTO(1, LocalDate.of(2021, 11, 15), "Bigotes", "Gato", 4, "Persa", "Pequeño", true, false, 128.7f, "Es alegre y le gusta dormir en el sofá.", null);
 
 		when(animalRepository.findById(animalId)).thenReturn(Optional.of(mockExistingAnimal));
 		when(modelMapper.map(mockExistingAnimal, AnimalOutDTO.class)).thenReturn(mockAnimalOutDTO);

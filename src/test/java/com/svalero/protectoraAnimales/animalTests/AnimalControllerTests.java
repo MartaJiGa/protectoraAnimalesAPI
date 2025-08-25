@@ -528,11 +528,12 @@ public class AnimalControllerTests {
     @Test
     public void testModifyAnimalOk() throws Exception {
         long animalId = 1;
+        long locationId = 3;
 
         AnimalUpdateDTO animalInDTO = new AnimalUpdateDTO("Bigotes","Gato",3,"Persa","Pequeño",true,false,120.0f,"Es alegre y le gusta dormir en el sofá. Le gusta mirar a los pájaros pasar al otro lado de la ventana.", LocalDate.of(2024, 05, 23));
         AnimalOutDTO animalOutDTO = new AnimalOutDTO(1, LocalDate.of(2023, 1, 10), "Bigotes", "Gato", 3, "Persa","Pequeño",true,false,120.0f,"Es alegre y le gusta dormir en el sofá. Le gusta mirar a los pájaros pasar al otro lado de la ventana.", new LocationOutDTO(3, "Paseo Independencia", "Zaragoza"));
 
-        when(animalService.modifyAnimal(animalInDTO, animalId)).thenReturn(animalOutDTO);
+        when(animalService.modifyAnimal(animalInDTO, animalId, locationId)).thenReturn(animalOutDTO);
 
         String requestBody = objectMapper.writeValueAsString(animalInDTO);
 
@@ -564,7 +565,7 @@ public class AnimalControllerTests {
         assertEquals("Persa", result.getBreed());
         assertEquals("Zaragoza", result.getLocation().getCity());
 
-        verify(animalService, times(1)).modifyAnimal(animalInDTO, animalId);
+        verify(animalService, times(1)).modifyAnimal(animalInDTO, animalId, locationId);
     }
 
     @Test
@@ -588,56 +589,6 @@ public class AnimalControllerTests {
         assertEquals(400, result.getStatusCode());
         assertEquals("Errores de validación", result.getMessage());
         assertEquals(true, result.getValidationErrors().containsKey("age"));
-    }
-
-    @Test
-    public void testModifyAnimalLocationOk() throws Exception {
-        long locationId = 7;
-        long animalId = 1;
-
-        AnimalOutDTO animalOutDTO = new AnimalOutDTO(1, LocalDate.of(2023, 1, 10), "Bigotes", "Gato", 3, "Persa","Pequeño",true,false,120.0f,"Es alegre y le gusta dormir en el sofá. Le gusta mirar a los pájaros pasar al otro lado de la ventana.", new LocationOutDTO(3, "Paseo Independencia", "Zaragoza"));
-
-        when(animalService.modifyAnimalLocation(animalId, locationId)).thenReturn(animalOutDTO);
-
-        MvcResult response = mockMvc.perform(MockMvcRequestBuilders.put("/location/{locationId}/animal/{animalId}", locationId, animalId)
-                        .accept(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(animalId))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.locationId").value(7))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.locationCity").value("Barcelona"))
-                .andReturn();
-
-        String jsonResponse = response.getResponse().getContentAsString(StandardCharsets.UTF_8);
-        AnimalOutDTO result = objectMapper.readValue(jsonResponse, new TypeReference<>() {});
-
-        assertNotNull(result);
-        assertEquals(200, response.getResponse().getStatus());
-        assertEquals("Barcelona", result.getLocation().getCity());
-        assertEquals(7, result.getLocation().getId());
-
-        verify(animalService, times(1)).modifyAnimalLocation(animalId, locationId);
-    }
-
-    @Test
-    public void testModifyAnimalLocationNotFound() throws Exception {
-        long animalId = 1;
-        long locationId = 999;
-
-        when(animalService.modifyAnimalLocation(animalId, locationId))
-                .thenThrow(new ResourceNotFoundException("Ubicación con id " + locationId + " no encontrada."));
-
-        MvcResult response = mockMvc.perform(MockMvcRequestBuilders.put("/location/{locationId}/animal/{animalId}", locationId, animalId)
-                        .accept(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isNotFound())
-                .andReturn();
-
-        String jsonResponse = response.getResponse().getContentAsString(StandardCharsets.UTF_8);
-        AnimalOutDTO result = objectMapper.readValue(jsonResponse, new TypeReference<>() {});
-
-        assertNotNull(result);
-        assertEquals(404, response.getResponse().getStatus());
-
-        verify(animalService, times(1)).modifyAnimalLocation(animalId, locationId);
     }
 
     //endregion

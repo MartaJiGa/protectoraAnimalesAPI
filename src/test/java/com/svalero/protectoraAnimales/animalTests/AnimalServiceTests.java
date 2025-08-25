@@ -409,6 +409,7 @@ class AnimalServiceTests {
 	@Test
 	public void testModifyAnimal() {
 		long animalId = 1;
+		long locationId = 3;
 		Animal mockExistingAnimal = new Animal(1, LocalDate.of(2021, 11, 15), "Bigotes", "Gato", 4, "Persa", "Pequeño", true, false, 120.0f, "Es alegre y le gusta dormir en el sofá", new Location(), List.of());
 		AnimalUpdateDTO mockAnimalInDTO = new AnimalUpdateDTO("Bigotes","Gato",4,"Persa","Pequeño",true,true,128.7f,"Es alegre y le gusta dormir en el sofá. Se lleva muy bien con perros y niños.", LocalDate.of(2024, 05, 23));
 		Animal mockMappedAnimal = new Animal(1, LocalDate.of(2021, 11, 15), "Bigotes", "Gato", 4, "Persa", "Pequeño", true, false, 128.7f, "Es alegre y le gusta dormir en el sofá. Se lleva muy bien con perros y niños.", new Location(), List.of());
@@ -418,7 +419,7 @@ class AnimalServiceTests {
 		when(modelMapper.map(mockAnimalInDTO, Animal.class)).thenReturn(mockMappedAnimal);
 		when(modelMapper.map(mockExistingAnimal, AnimalOutDTO.class)).thenReturn(mockAnimalOutDTO);
 
-		AnimalOutDTO result = animalService.modifyAnimal(mockAnimalInDTO, animalId);
+		AnimalOutDTO result = animalService.modifyAnimal(mockAnimalInDTO, animalId, locationId);
 
 		assertEquals("Bigotes", result.getName());
 		assertEquals("Gato", result.getSpecies());
@@ -432,34 +433,14 @@ class AnimalServiceTests {
 	@Test
 	public void testModifyAnimalWhenAnimalIsNotFound() {
 		long animalId = 3;
+		long locationId = 3;
 		AnimalUpdateDTO mockAnimalInDTO = new AnimalUpdateDTO("Bigotes","Gato",4,"Persa","Pequeño",true,true,128.7f,"Es alegre y le gusta dormir en el sofá. Se lleva muy bien con perros y niños.", LocalDate.of(2024, 05, 23));
 
 		when(animalRepository.findById(animalId)).thenReturn(Optional.empty());
 
-		assertThrows(ResourceNotFoundException.class, () -> animalService.modifyAnimal(mockAnimalInDTO, animalId));
+		assertThrows(ResourceNotFoundException.class, () -> animalService.modifyAnimal(mockAnimalInDTO, animalId, locationId));
 
 		verify(animalRepository, never()).save(any());
-	}
-
-	@Test
-	public void testModifyAnimalLocation() {
-		long animalId = 1;
-		long locationId = 1;
-		Animal mockExistingAnimal = new Animal(1, LocalDate.of(2021, 11, 15), "Bigotes", "Gato", 4, "Persa", "Pequeño", true, false, 120.0f, "Es alegre y le gusta dormir en el sofá", new Location(), List.of());
-		Location mockLocation = new Location(1, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", 15d, 16d, new ArrayList<>());
-		AnimalOutDTO mockAnimalOutDTO = new AnimalOutDTO(1, LocalDate.of(2021, 11, 15), "Bigotes", "Gato", 4, "Persa", "Pequeño", true, false, 120.0f, "Es alegre y le gusta dormir en el sofá.", new LocationOutDTO(3, "Paseo Independencia", "Zaragoza"));
-
-		when(animalRepository.findById(animalId)).thenReturn(Optional.of(mockExistingAnimal));
-		when(locationRepository.findById(locationId)).thenReturn(Optional.of(mockLocation));
-		when(modelMapper.map(mockExistingAnimal, AnimalOutDTO.class)).thenReturn(mockAnimalOutDTO);
-
-		AnimalOutDTO result = animalService.modifyAnimalLocation(animalId, locationId);
-
-		assertEquals(1, result.getLocation().getId());
-		assertEquals("Zaragoza", result.getLocation().getCity());
-		assertEquals("Bigotes", result.getName());
-
-		verify(animalRepository, times(1)).save(mockExistingAnimal);
 	}
 
 	//endregion

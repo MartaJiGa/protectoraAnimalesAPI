@@ -1,5 +1,6 @@
 package com.svalero.protectoraAnimales.domain.dto.animal;
 
+import com.svalero.protectoraAnimales.domain.dto.location.LocationOutDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,5 @@ public class AnimalOutDTO {
     private String description;
 
     // From location relationship:
-    private long locationId;
-    private String locationCity;
+    private LocationOutDTO location;
 }

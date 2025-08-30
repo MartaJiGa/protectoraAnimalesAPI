@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.awt.*;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -49,7 +50,7 @@ public class AdoptionControllerTests {
     public void testGetPickUpsInNextTwoWeeksOk() throws Exception {
         User user = new User(4, "laMorena", "Laura", "Moreno", LocalDate.of(1995, 11, 5), "lamorena@gmail.es", List.of(), List.of());
         Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", 15d, 16d, new ArrayList<>());
-        Animal animal = new Animal(3, LocalDate.of(2021, 7, 10), "Rocky", "Perro", 10, "Bulldog", "Mediano", true, false, 214.25f,"Afable y dormilón. En invierno le gusta ponerse al lado de la estufa.", location, null);
+        Animal animal = new Animal(3, LocalDate.of(2021, 7, 10), "Rocky", "Perro", 10, "Bulldog", "Mediano", true, false, 214.25f,"Afable y dormilón. En invierno le gusta ponerse al lado de la estufa.", null, location, null);
 
         List<AdoptionOutDTO> adoptionList = List.of(
                 new AdoptionOutDTO(1, LocalDate.of(2025,4,2), false, LocalDate.now().plusDays(3), "12:20", animal.getId(), animal.getIncorporationDate(), animal.getName(), animal.getSpecies(), animal.getLocation().getId(), animal.getLocation().getCity(), user.getId(), user.getUsername(), user.getEmail())
@@ -118,7 +119,7 @@ public class AdoptionControllerTests {
 
         User user = new User(userId, "laMorena", "Laura", "Moreno", LocalDate.of(1995, 11, 5), "lamorena@gmail.es", List.of(), List.of());
         Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", 15d, 16d, new ArrayList<>());
-        Animal animal = new Animal(animalId, LocalDate.of(2021, 7, 10), "Rocky", "Perro", 10, "Bulldog", "Mediano", true, false, 214.25f,"Afable y dormilón. En invierno le gusta ponerse al lado de la estufa.", location, null);
+        Animal animal = new Animal(animalId, LocalDate.of(2021, 7, 10), "Rocky", "Perro", 10, "Bulldog", "Mediano", true, false, 214.25f,"Afable y dormilón. En invierno le gusta ponerse al lado de la estufa.", null, location, null);
 
         AdoptionInDTO adoptionInDTO = new AdoptionInDTO(false, LocalDate.now().plusDays(3), "12:20");
         AdoptionOutDTO adoptionOutDTO = new AdoptionOutDTO(1, LocalDate.of(2025,4,2), false, LocalDate.now().plusDays(3), "12:20", animal.getId(), animal.getIncorporationDate(), animal.getName(), animal.getSpecies(), animal.getLocation().getId(), animal.getLocation().getCity(), user.getId(), user.getUsername(), user.getEmail());
@@ -266,7 +267,7 @@ public class AdoptionControllerTests {
 
         User user = new User(userId, "laMorena", "Laura", "Moreno", LocalDate.of(1995, 11, 5), "lamorena@gmail.es", List.of(), List.of());
         Location location = new Location(12, true, "Calle del Gato 23", "50003", "Zaragoza", "Centro de adopción de animales en Zaragoza.", 15d, 16d, new ArrayList<>());
-        Animal animal = new Animal(animalId, LocalDate.of(2021, 7, 10), "Rocky", "Perro", 10, "Bulldog", "Mediano", true, false, 214.25f,"Afable y dormilón. En invierno le gusta ponerse al lado de la estufa.", location, null);
+        Animal animal = new Animal(animalId, LocalDate.of(2021, 7, 10), "Rocky", "Perro", 10, "Bulldog", "Mediano", true, false, 214.25f,"Afable y dormilón. En invierno le gusta ponerse al lado de la estufa.", null, location, null);
 
         AdoptionInDTO adoptionInDTO = new AdoptionInDTO(true, LocalDate.now().plusDays(3), "12:20");
         AdoptionOutDTO adoptionOutDTO = new AdoptionOutDTO(1, LocalDate.of(2025,4,2), true, LocalDate.now().plusDays(3), "12:20", animal.getId(), animal.getIncorporationDate(), animal.getName(), animal.getSpecies(), animal.getLocation().getId(), animal.getLocation().getCity(), user.getId(), user.getUsername(), user.getEmail());

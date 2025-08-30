@@ -60,8 +60,12 @@ public class Animal {
     @Column
     private String description;
 
+    @Lob
+    @Column(name = "image")
+    private byte[] image;
+
     @ManyToOne
-    @JoinColumn(name = "location_id")
+    @JoinColumn(name = "location_id", nullable = true)
     private Location location;
 
     @OneToMany(mappedBy = "animal")

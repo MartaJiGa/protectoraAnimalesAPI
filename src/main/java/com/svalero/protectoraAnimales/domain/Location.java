@@ -47,7 +47,7 @@ public class Location {
     @Column
     private Double longitude;
 
-    @OneToMany(mappedBy = "location")
+    @OneToMany(mappedBy = "location", cascade = CascadeType.PERSIST)
     @JsonBackReference(value = "locations_animals")
     private List<Animal> animals;
 }

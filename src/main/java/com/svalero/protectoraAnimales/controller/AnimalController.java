@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -91,11 +92,12 @@ public class AnimalController {
     // endregion
 
     // region POST request
-    @PostMapping("/location/{locationId}/animals")
+    @PostMapping(value = "/location/{locationId}/animals", consumes = {"multipart/form-data"})
     public ResponseEntity<AnimalOutDTO> saveAnimal(@PathVariable long locationId,
-                                                   @Valid @RequestBody AnimalInDTO animal) {
+                                                   @Valid @RequestPart("animal") AnimalInDTO animal,
+                                                   @RequestPart(value = "image", required = false) MultipartFile imageFile) throws Exception {
         logger.info("BEGIN saveAnimal()");
-        AnimalOutDTO savedAnimal = animalService.saveAnimal(locationId, animal);
+        AnimalOutDTO savedAnimal = animalService.saveAnimal(locationId, animal, imageFile);
         logger.info("END saveAnimal()");
         return new ResponseEntity<>(savedAnimal, HttpStatus.CREATED);
     }
@@ -112,12 +114,13 @@ public class AnimalController {
     // endregion
 
     // region PUT request
-    @PutMapping("/location/{locationId}/animal/{animalId}")
-    public ResponseEntity<AnimalOutDTO> modifyAnimalLocation(@Valid @RequestBody AnimalUpdateDTO animal,
+    @PutMapping(value = "/location/{locationId}/animal/{animalId}", consumes = {"multipart/form-data"})
+    public ResponseEntity<AnimalOutDTO> modifyAnimalLocation(@Valid @RequestPart("animal") AnimalUpdateDTO animal,
+                                                             @RequestPart(value = "image", required = false) MultipartFile imageFile,
                                                              @PathVariable long animalId,
-                                                             @PathVariable long locationId) {
+                                                             @PathVariable long locationId) throws Exception {
         logger.info("BEGIN modifyAnimal()");
-        AnimalOutDTO modifiedAnimal = animalService.modifyAnimal(animal, animalId, locationId);
+        AnimalOutDTO modifiedAnimal = animalService.modifyAnimal(animal, animalId, locationId, imageFile);
         logger.info("END modifyAnimal()");
         return ResponseEntity.ok(modifiedAnimal);
     }

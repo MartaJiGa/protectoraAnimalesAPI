@@ -109,7 +109,7 @@ public class AnimalService {
     public List<AnimalOutDTO> findUnadoptedAnimalsByLocation(long locationId) {
         List<Animal> animals = animalRepository.findUnadoptedAnimalsByLocation(locationId);
         if (animals.isEmpty()) {
-            throw new ResourceNotFoundException("No se encontraron animales en adopción en la ubicación " + locationId);
+            throw new ResourceNotFoundException("No se han encontrado animales en adopción en esta ubicación");
         }
 
         List<AnimalOutDTO> animalOutDTOS = modelMapper.map(animals, new TypeToken<List<AnimalOutDTO>>(){}.getType());

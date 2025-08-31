@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.Base64;
 import java.util.List;
 
 
@@ -71,4 +72,12 @@ public class Animal {
     @OneToMany(mappedBy = "animal")
     @JsonBackReference(value = "animal_adoptions")
     private List<Adoption> adoptions;
+
+    public String getImageBase64() {
+        return image != null ? Base64.getEncoder().encodeToString(image) : null;
+    }
+
+    public void setImageBase64(String base64) {
+        this.image = base64 != null ? Base64.getDecoder().decode(base64) : null;
+    }
 }

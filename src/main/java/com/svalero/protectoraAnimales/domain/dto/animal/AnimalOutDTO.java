@@ -23,6 +23,7 @@ public class AnimalOutDTO {
     private boolean adopted;
     private float price;
     private String description;
+    private String imageBase64;
 
     // From location relationship:
     private LocationOutDTO location;

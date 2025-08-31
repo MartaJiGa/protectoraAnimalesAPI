@@ -1,6 +1,7 @@
 package com.svalero.protectoraAnimales.service;
 
 import java.time.LocalDate;
+import java.util.Base64;
 import java.util.List;
 
 import com.svalero.protectoraAnimales.domain.Animal;
@@ -16,6 +17,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class AnimalService {
@@ -116,8 +118,7 @@ public class AnimalService {
     // endregion
 
     // region POST request
-    public AnimalOutDTO saveAnimal(long locationId, AnimalInDTO animalInDTO){
-
+    public AnimalOutDTO saveAnimal(long locationId, AnimalInDTO animalInDTO, MultipartFile imageFile) throws Exception {
         try {
             Location location = locationRepository.findById(locationId)
                     .orElseThrow(() -> new ResourceNotFoundException("Ubicación con id " + locationId + " no encontrada."));
@@ -125,9 +126,17 @@ public class AnimalService {
             Animal animal = modelMapper.map(animalInDTO, Animal.class);
             animal.setLocation(location);
             animal.setIncorporationDate(LocalDate.now());
+
+            if (imageFile != null && !imageFile.isEmpty())
+                animal.setImage(imageFile.getBytes());
+
             animalRepository.save(animal);
 
             AnimalOutDTO animalOutDTO = modelMapper.map(animal, AnimalOutDTO.class);
+
+            if (animal.getImage() != null)
+                animalOutDTO.setImageBase64(Base64.getEncoder().encodeToString(animal.getImage()));
+
             return animalOutDTO;
 
         } catch (Exception e) {
@@ -147,7 +156,7 @@ public class AnimalService {
     // endregion
 
     // region PUT request
-    public AnimalOutDTO modifyAnimal(AnimalUpdateDTO animalInDTO, long animalId, long locationId) {
+    public AnimalOutDTO modifyAnimal(AnimalUpdateDTO animalInDTO, long animalId, long locationId, MultipartFile imageFile) throws Exception {
         Animal existingAnimal = animalRepository.findById(animalId)
                 .orElseThrow(() -> new ResourceNotFoundException("Animal con id " + animalId + " no encontrado."));
 
@@ -168,9 +177,16 @@ public class AnimalService {
         existingAnimal.setIncorporationDate(animal.getIncorporationDate());
         existingAnimal.setLocation(location);
 
+        if (imageFile != null && !imageFile.isEmpty())
+            existingAnimal.setImage(imageFile.getBytes());
+
         animalRepository.save(existingAnimal);
 
         AnimalOutDTO animalOutDTO = modelMapper.map(existingAnimal, AnimalOutDTO.class);
+
+        if (animal.getImage() != null)
+            animalOutDTO.setImageBase64(Base64.getEncoder().encodeToString(existingAnimal.getImage()));
+
         return animalOutDTO;
     }
     // endregion

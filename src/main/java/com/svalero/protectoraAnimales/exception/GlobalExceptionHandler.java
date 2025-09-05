@@ -38,6 +38,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(errorResponse);
     }
 
+    // 400: No se puede borrar una ubicación con animales asociados, entre otros.
+    @org.springframework.web.bind.annotation.ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<ErrorResponse> illegalStateException(IllegalStateException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(400, ex.getMessage(), null);
+
+        logger.error(ex.getMessage(), ex);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
     // 404
     @org.springframework.web.bind.annotation.ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> resourceNotFoundException(ResourceNotFoundException resNotFoundEx){

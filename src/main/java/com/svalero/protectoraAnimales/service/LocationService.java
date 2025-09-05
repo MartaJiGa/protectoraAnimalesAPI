@@ -76,8 +76,11 @@ public class LocationService {
 
     // region DELETE request
     public void removeLocation(long locationId){
-        if (!locationRepository.existsById(locationId)) {
-            throw new ResourceNotFoundException("Ubicación con id " + locationId + " no encontrada.");
+        Location location = locationRepository.findById(locationId)
+                .orElseThrow(() -> new ResourceNotFoundException("Ubicación con id " + locationId + " no encontrada."));
+
+        if (location.getAnimals() != null && !location.getAnimals().isEmpty()) {
+            throw new IllegalStateException("No se pudo borrar la ubicación al tener animales asociados");
         }
         locationRepository.deleteById(locationId);
     }
